@@ -14,7 +14,8 @@ Arcan DepGraph Generator with TS and SG
 
 #### Languaggi da Supportare
 
-| linguaggio | estensione di file |
+| linguaggio | estensioni dei file |
+| ---------- | ------------------ |
 | `java` | `.java` |
 | `c` | `.c` |
 | `cpp` | `.cpp` `.cc` |
