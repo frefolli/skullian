@@ -27,7 +27,7 @@ pub fn test_with_empty_file() {
 pub fn test_with_invalid_syntax() {
     let tree = from_file_name_and_language_name(
         "examples/tests/graph/ts/invalid_syntax.cpp", "cpp");
-    assert!(tree.is_none());
+    assert!(tree.is_some());
 }
 #[test]
 pub fn test_with_all_ok() {

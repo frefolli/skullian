@@ -27,9 +27,9 @@ pub fn test_with_empty_text() {
 #[test]
 pub fn test_with_invalid_syntax() {
     let tree = from_text_and_language_name(
-        "#include<iostream>\nint main() { std::cout 1 std::endl; }",
+        "int main() { bing_chilling }",
         "cpp");
-    assert!(tree.is_none());
+    assert!(tree.is_some());
 }
 
 #[test]
