@@ -1,4 +1,4 @@
-pub mod get_grammar_from_language_name {
+pub mod test_from_language_name {
     use skullian::language::grammar::from_language_name;
 
     #[test]

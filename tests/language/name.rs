@@ -1,4 +1,4 @@
-pub mod get_language_name_from_file_name {
+pub mod test_name_from_file_name {
     use skullian::language::name::from_file_name;
 
     #[test]

@@ -23,3 +23,23 @@ pub fn from_language_name(
         &_ => return None
     }
 }
+
+/// Returns grammar: Option<tree_sitter::Language> from file name
+/// 
+/// # Arguments
+/// 
+/// * `file_name`: &str - the file name
+/// 
+/// # Examples
+/// 
+/// ```
+/// let language_grammar = skullian::language::grammar::from_file_name("main.cpp");
+/// ```
+pub fn from_file_name(
+    file_name: &str
+) -> Option<Language> {
+    match crate::language::name::from_file_name(file_name) {
+        Some(language_name) => return from_language_name(language_name),
+        None => return None
+    }
+}
