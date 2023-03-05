@@ -1,6 +1,18 @@
 use tree_sitter::Language;
 
-pub fn get_grammar_from_language_name(
+
+/// Returns grammar: Option<tree_sitter::Language> from language name
+/// 
+/// # Arguments
+/// 
+/// * `language_name`: &str - the language name
+/// 
+/// # Examples
+/// 
+/// ```
+/// let language_grammar = skullian::language::grammar::from_language_name("cpp");
+/// ```
+pub fn from_language_name(
     language_name: &str
 ) -> Option<Language> {
     match language_name {

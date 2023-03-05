@@ -1,5 +1,8 @@
-mod language;
-mod graph;
+// module with abstraction for languages
+pub mod language;
 
-#[cfg(test)]
-mod tests;
+// module with abstraction for graphs
+pub mod graph;
+
+// module with abstraction for command line interface
+pub mod cli;

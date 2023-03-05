@@ -1,4 +1,16 @@
-pub fn get_language_name_from_file_name(
+/// returns language_name: &str from file name
+/// by looking at its extension
+///
+/// # Arguments
+///
+/// * `file_name`: &str - the file name or path
+/// 
+/// # Examples
+/// 
+/// ```
+/// let language_name = skullian::language::name::from_file_name("/home/user/Documents/main.cpp");
+/// ```
+pub fn from_file_name(
     file_name: &str
 ) -> Option<&str> {
     let extension = std::path::Path::new(file_name).extension().unwrap_or_default().to_str().unwrap();
