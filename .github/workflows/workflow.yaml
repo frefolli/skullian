@@ -32,6 +32,8 @@ jobs:
         with:
           command: doc
           args: --no-deps
+      - run: |
+        cp ./target/doc/help.html ./target/doc/index.html
       - uses: actions/upload-artifact@v2
         with:
           name: documentation
@@ -53,7 +55,7 @@ jobs:
     - name: Zip and Upload Artifact
       uses: actions/upload-pages-artifact@v1
       with:
-        path: './documentation/doc'
+        path: './documentation'
     - name: Deploy to GitHub Pages
       id: deployment
       uses: actions/deploy-pages@v1
