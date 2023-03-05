@@ -10,7 +10,7 @@ on:
     types: [opened, synchronize, reopened]
 jobs:
   build:
-    name: Rust project
+    name: Build, Test, Document
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -24,4 +24,32 @@ jobs:
       - uses: actions-rs/cargo@v1
         with:
           command: test
-      - run: rustc --print target-list
+      - uses: actions-rs/cargo@v1
+        with:
+          command: doc
+    # now upload documentation artifact
+    - uses: actions/upload-artifact@v2
+      with:
+        name: documentation
+        path: |
+          ./target/doc
+  documentation:
+    name: upload documentation
+    needs: [build]
+    if: github.ref == 'refs/heads/master'
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+    - name: Download all workflow run artifacts
+      uses: actions/download-artifact@v3
+    - name: Configure Pages
+      uses: actions/configure-pages@v2
+    - name: Zip and Upload Artifact
+      uses: actions/upload-pages-artifact@v1
+      with:
+        path: './documentation/doc'
+    - name: Deploy to GitHub Pages
+      id: deployment
+      uses: actions/deploy-pages@v1

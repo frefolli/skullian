@@ -10,7 +10,7 @@
 /// * must return None when language_name is invalid
 /// * must return None when language_name is unsupported
 /// * must return None when file_name is invalid
-/// * must return None when file_name is empty
+/// * must return None when file is empty
 /// * must return None when syntax is invalid
 pub fn from_file_name_and_language_name(
     file_path: &str,
@@ -31,7 +31,7 @@ pub fn from_file_name_and_language_name(
 /// * must return None when file extension is invalid
 /// * must return None when language_name is unsupported
 /// * must return None when file_name is invalid
-/// * must return None when file_name is empty
+/// * must return None when file is empty
 /// * must return None when syntax is invalid
 pub fn from_file_name(
     file_path: &str
