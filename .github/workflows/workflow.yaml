@@ -9,7 +9,7 @@ on:
   pull_request:
     types: [opened, synchronize, reopened]
 jobs:
-  build:
+  run_tests:
     name: Build, Test, Document
     runs-on: ubuntu-latest
     steps:
@@ -19,11 +19,15 @@ jobs:
           toolchain: stable
       - uses: actions-rs/cargo@v1
         with:
-          command: build
-          args: --release --all-features
-      - uses: actions-rs/cargo@v1
-        with:
           command: test
+  build_documentation:
+    name: Build, Test, Document
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
       - uses: actions-rs/cargo@v1
         with:
           command: doc
@@ -33,9 +37,9 @@ jobs:
           name: documentation
           path: |
             ./target/doc
-  documentation:
+  upload_documentation:
     name: upload documentation
-    needs: [build]
+    needs: [build_documentation]
     if: github.ref == 'refs/heads/master'
     environment:
       name: github-pages
