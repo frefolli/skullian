@@ -27,12 +27,11 @@ jobs:
       - uses: actions-rs/cargo@v1
         with:
           command: doc
-    # now upload documentation artifact
-    - uses: actions/upload-artifact@v2
-      with:
-        name: documentation
-        path: |
-          ./target/doc
+      - uses: actions/upload-artifact@v2
+        with:
+          name: documentation
+          path: |
+            ./target/doc
   documentation:
     name: upload documentation
     needs: [build]
