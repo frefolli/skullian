@@ -8,6 +8,10 @@ on:
       - master
   pull_request:
     types: [opened, synchronize, reopened]
+permissions:
+  contents: write
+  pages: write
+  id-token: write
 jobs:
   run_tests:
     name: Test
