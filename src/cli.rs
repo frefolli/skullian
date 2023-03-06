@@ -1,23 +1,34 @@
 pub struct CLIConfig {
-    pub file_names: Vec<String>,
-    pub language_name: String
+    pub file_name: String,
+    pub language_name: String,
+    pub stack_graph_rules: String,
+    pub perform_job_ts: bool,
+    pub perform_job_sg: bool
 }
 
 pub fn new_config(
-    file_name: Vec<String>,
-    language_name: String
+    file_name: String,
+    language_name: String,
+    stack_graph_rules: String,
+    perform_job_ts: bool,
+    perform_job_sg: bool
 ) -> CLIConfig {
     return CLIConfig {
-        file_names: file_name,
-        language_name: language_name
+        file_name: file_name,
+        language_name: language_name,
+        stack_graph_rules: stack_graph_rules,
+        perform_job_ts: perform_job_ts,
+        perform_job_sg: perform_job_sg,
     }
 }
 
 pub fn new_empty_config() -> CLIConfig {
-    return CLIConfig {
-        file_names: Vec::from([]),
-        language_name: String::from("")
-    }
+    return new_config(
+        String::from(""),
+        String::from(""),
+        String::from(""),
+        true, true
+    )
 }
 
 pub fn parse_args(config: &mut CLIConfig) {
@@ -28,12 +39,30 @@ pub fn parse_args(config: &mut CLIConfig) {
         .add_option(
             &["-l", "--language"],
             argparse::Store,
-            "if issued uses this as language name and ignores file extensions");
+            "if issued uses this as language name and ignores file extension");
     argument_parser
-        .refer(&mut config.file_names)
+        .refer(&mut config.stack_graph_rules)
+        .add_option(
+            &["-c", "--stack-graph-rules"],
+            argparse::Store,
+            "stack graph rules file");
+        argument_parser
+        .refer(&mut config.perform_job_ts)
+        .add_option(
+            &["-T", "--no-tree-sitter"],
+            argparse::StoreFalse,
+            "if issued don't perform tree sitter job");
+    argument_parser
+        .refer(&mut config.perform_job_sg)
+        .add_option(
+            &["-S", "--no-stack-graph"],
+            argparse::StoreFalse,
+            "if issued don't perform stack graph job");
+    argument_parser
+        .refer(&mut config.file_name)
         .add_argument(
-            "file_names",
-            argparse::Collect,
-            "input file names");
+            "file_name",
+            argparse::Store,
+            "input file");
     argument_parser.parse_args_or_exit();
 }

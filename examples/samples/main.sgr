@@ -1,0 +1,9 @@
+(identifier) @id {
+  node new_exported_scope_node
+  attr (new_exported_scope_node) is_exported
+  node new_push_scoped_symbol_node
+  attr (new_push_scoped_symbol_node)
+    type = "push_scoped_symbol",
+    symbol = (source-text @id),
+    scope = new_exported_scope_node
+}
