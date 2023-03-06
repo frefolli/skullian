@@ -10,7 +10,7 @@ on:
     types: [opened, synchronize, reopened]
 jobs:
   run_tests:
-    name: Build, Test, Document
+    name: Test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -21,7 +21,7 @@ jobs:
         with:
           command: test
   build_documentation:
-    name: Build, Test, Document
+    name: Document
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -32,15 +32,14 @@ jobs:
         with:
           command: doc
           args: --no-deps
-      - run: |
-        cp ./target/doc/help.html ./target/doc/index.html
+      - run: cp ./target/doc/help.html ./target/doc/index.html
       - uses: actions/upload-artifact@v2
         with:
           name: documentation
           path: |
             ./target/doc
   upload_documentation:
-    name: upload documentation
+    name: Upload Documentation
     needs: [build_documentation]
     if: github.ref == 'refs/heads/master'
     environment:
