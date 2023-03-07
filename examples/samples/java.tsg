@@ -7,14 +7,16 @@ attribute node_symbol = node     => symbol = (source-text node), source_node = n
 
 ;; file level
 
-(translation_unit)@tu {
-  node @tu.scope
+(program)@program {
+  node @program.scope
 }
 
 ;; functions
-(function_definition
+(method_declaration
+  (modifiers)@modifiers
   type: (_)@type
-  declarator: (function_declarator (identifier)@name parameters: (parameter_list)@params)@declarator
+  name: (identifier)@name
+  parameters: (_)@params
   body: (_)@body
   )@defun {
   node @body.scope
@@ -25,19 +27,24 @@ attribute node_symbol = node     => symbol = (source-text node), source_node = n
     is_definition
 }
 
-(compound_statement (_)@expr)@comp {
-  let @expr.scope = @comp.scope
+(if_statement
+  consequence: (_)@cons)@if_stmt {
+  let @cons.scope = @if_stmt.scope
+}
+
+(block (_)@expr)@block {
+  let @expr.scope = @block.scope
 }
 
 (expression_statement (_)@expr)@expr_stmt {
   let @expr.scope = @expr_stmt.scope
 }
 
-(call_expression
-  function: (identifier)@name
-  arguments: (_)@args)@call_expr {
+(method_invocation
+  name: (identifier)@name
+  arguments: (_)@args)@method_invocation {
   node ref
   attr (ref)
     node_reference = @name
-  edge ref -> @call_expr.scope
+  edge @method_invocation.scope -> ref
 }

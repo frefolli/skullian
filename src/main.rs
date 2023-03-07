@@ -43,7 +43,7 @@ fn job_stack_graph(config: &CLIConfig) {
     for node_handle in stack_graph.iter_nodes() {
         let node = stack_graph.index(node_handle);
         if node.symbol().is_some() {
-            println!("Node: (symbol: {})", stack_graph.index(node.symbol().unwrap()));
+            // println!("Node: (symbol: {})", stack_graph.index(node.symbol().unwrap()));
         }
         for edge in stack_graph.outgoing_edges(node_handle) {
             let source = match stack_graph.index(edge.source).symbol() {
