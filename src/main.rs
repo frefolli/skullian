@@ -26,13 +26,19 @@ fn job_stack_graph(config: &CLIConfig) {
     let mut stack_graph = stack_graphs::graph::StackGraph::new();
     let file_handle = stack_graph.get_or_create_file(&config.file_name);
     let globals = tree_sitter_stack_graphs::Variables::new();
-    language.build_stack_graph_into(
+    match language.build_stack_graph_into(
         &mut stack_graph,
         file_handle,
         source_code.as_str(),
         &globals,
         &tree_sitter_stack_graphs::NoCancellation
-    ).unwrap();
+    ) {
+        Ok(()) => (),
+        Err(_err) => {
+            println!("{}", _err);
+            panic!();
+        }
+    };
 
     for node_handle in stack_graph.iter_nodes() {
         let node = stack_graph.index(node_handle);
@@ -40,11 +46,18 @@ fn job_stack_graph(config: &CLIConfig) {
             println!("Node: (symbol: {})", stack_graph.index(node.symbol().unwrap()));
         }
         for edge in stack_graph.outgoing_edges(node_handle) {
-            let source = stack_graph.index(edge.source);
-            let sink = stack_graph.index(edge.sink);
+            let source = match stack_graph.index(edge.source).symbol() {
+                Some(source) => stack_graph.index(source),
+                None => "<NO-NAME>"
+            };
+
+            let sink = match stack_graph.index(edge.sink).symbol() {
+                Some(sink) => stack_graph.index(sink),
+                None => "<NO-NAME>"
+            };
+
             println!("Edge: (source: {}, sink: {})",
-                stack_graph.index(source.symbol().unwrap()),
-                stack_graph.index(sink.symbol().unwrap())
+                source, sink
             );
         }
     }
