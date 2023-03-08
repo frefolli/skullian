@@ -1,18 +1,17 @@
-#include <iostream>
+class Boh {
+  void bar() {
+    // comment
+  }
+};
 
-void bar() {
-    std::cout << 2 << std::endl;
-    if (1 == 2) {
-      foo();
-    }
-}
+class BingChilling {
+  void foo() {
+    // comment
+  }
 
-void foo() {
-    std::cout << 1 << std::endl;
-    bar();
-}
-
-int main() {
+  int main() {
+    Boh boh;
+    boh.bar();
     foo();
-    return 0;
-}
+  }
+};

@@ -1,48 +1,165 @@
-;;;;;;;;;;;;;;;;;;;;;;;
-;; Attribute Shorthands
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; CPP TSG                                 ;;
+;; .scope, a node with links that goes up  ;;
+;; .defs, a node with links that goes down ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; top-level
+global ROOT_NODE
 
-attribute node_definition = node => type = "pop_symbol", node_symbol = node, is_definition
-attribute node_reference = node  => type = "push_symbol", node_symbol = node, is_reference
-attribute node_symbol = node     => symbol = (source-text node), source_node = node
-
-;; file level
-
-(translation_unit)@tu {
-  node @tu.scope
+(translation_unit)@unit {
+  node @unit.scope
+  edge ROOT_NODE -> @unit.scope
 }
 
-;; functions
+(translation_unit
+  (_)@statement
+)@unit {
+  edge @statement.scope -> @unit.scope
+  edge @unit.scope -> @statement.defs
+}
+
+;; function_definition
+
 (function_definition
-  type: (_)@type
-  declarator: (function_declarator (identifier)@name parameters: (parameter_list)@params)@declarator
-  body: (_)@body
-  )@defun {
-  node @body.scope
-  attr (@body.scope)
+  declarator: (function_declarator
+                declarator: (_)@name
+                parameters: (_)@parameters
+  )
+  body:(_)@function_body
+)@function_definition {
+  node def
+  attr (def)
     type = "pop_symbol",
     symbol = (source-text @name),
-    source_node  = @defun,
+    source_node = @function_definition,
     is_definition
+  
+  node @function_definition.scope
+  node @function_definition.defs
+  
+  edge @function_definition.defs -> def
+  edge @function_body.scope -> @function_definition.scope
 }
 
-(if_statement
-  consequence: (_)@cons)@if_stmt {
-  let @cons.scope = @if_stmt.scope
+;; compound_statement
+
+(compound_statement)@block {
+  node @block.scope
+  node @block.defs
 }
 
-(compound_statement (_)@expr)@comp {
-  let @expr.scope = @comp.scope
+(compound_statement (_)@statement)@block {
+  edge @statement.scope -> @block.scope
+  edge @block.scope -> @statement.defs
 }
 
-(expression_statement (_)@expr)@expr_stmt {
-  let @expr.scope = @expr_stmt.scope
+;; expression
+
+(expression_statement)@expression_statement {
+  node @expression_statement.scope
+  node @expression_statement.defs
 }
+
+(expression_statement (_)@expression)@expression_statement {
+  edge @expression.scope -> @expression_statement.scope
+  edge @expression_statement.scope -> @expression.defs
+}
+
+;; call_expression
 
 (call_expression
   function: (identifier)@name
-  arguments: (_)@args)@call_expr {
+)@call_expression {
+  node @call_expression.scope
+  node @call_expression.defs
   node ref
-  attr (ref)
-    node_reference = @name
-  edge @call_expr.scope -> ref
+    attr (ref)
+      type = "push_symbol",
+      symbol = (source-text @name),
+      is_reference
+  edge ref -> @call_expression.scope
+}
+
+(call_expression
+  function: (field_expression)@name
+)@call_expression {
+  node @call_expression.scope
+  node @call_expression.defs
+  edge @name.scope -> @call_expression.scope
+}
+
+;; comments
+
+(comment)@comment {
+  node @comment.scope
+  node @comment.defs
+}
+
+;; stub
+
+(class_specifier
+  name: (_)@name
+  body: (_)@class_body
+)@class_definition {
+  node def
+  attr (def)
+    type = "pop_symbol",
+    symbol = (source-text @name),
+    source_node = @class_definition,
+    is_definition
+  
+  node @class_definition.scope
+  node @class_definition.defs
+  
+  edge @class_definition.defs -> def
+  edge @class_body.scope -> @class_definition.scope
+}
+
+(field_declaration_list)@block {
+  node @block.scope
+  node @block.defs
+}
+
+(field_declaration_list (_)@statement)@block {
+  edge @statement.scope -> @block.scope
+  edge @block.scope -> @statement.defs
+}
+
+(declaration
+  type: (_)@type
+  declarator: (_)@name
+)@declaration {
+  node @declaration.scope
+  node @declaration.defs
+  node ref
+    attr (ref)
+      type = "push_symbol",
+      symbol = (source-text @type),
+      is_reference
+  edge ref -> @declaration.scope
+}
+
+(field_expression
+  argument: (_)@argument
+  field: (_)@field
+)@field_expression {
+  node @field_expression.scope
+  node @field_expression.defs
+  node ref_argument
+    attr (ref_argument)
+      type = "push_symbol",
+      symbol = (source-text @argument),
+      is_reference
+  edge ref_argument -> @field_expression.scope
+  node ref_member
+    attr (ref_member)
+      type = "pop_symbol",
+      symbol = "."
+  edge ref_member -> ref_argument
+  node ref_field
+    attr (ref_field)
+      type = "push_symbol",
+      symbol = (source-text @field),
+      is_reference
+  edge ref_field -> ref_member
 }

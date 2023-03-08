@@ -1,50 +1,26 @@
-;;;;;;;;;;;;;;;;;;;;;;;
-;; Attribute Shorthands
+;;; JAVA
+;; .scope, a node with links that goes up
+;; .defs, a node with links that goes down
+;; .scope_prefix
+global ROOT_NODE
 
-attribute node_definition = node => type = "pop_symbol", node_symbol = node, is_definition
-attribute node_reference = node  => type = "push_symbol", node_symbol = node, is_reference
-attribute node_symbol = node     => symbol = (source-text node), source_node = node
+;; top-level
 
-;; file level
-
-(program)@program {
-  node @program.scope
+(program)@unit {
+  node @unit.scope
+  edge ROOT_NODE -> @unit.scope
 }
 
-;; functions
-(method_declaration
-  (modifiers)@modifiers
-  type: (_)@type
-  name: (identifier)@name
-  parameters: (_)@params
+(class_declaration
+  name: (_)@name
   body: (_)@body
-  )@defun {
-  node @body.scope
-  attr (@body.scope)
+)@class_declaration {
+  node @class_declaration.scope
+  node @class_declaration.defs
+  node def
+  attr (def)
     type = "pop_symbol",
     symbol = (source-text @name),
-    source_node  = @defun,
-    is_definition
-}
-
-(if_statement
-  consequence: (_)@cons)@if_stmt {
-  let @cons.scope = @if_stmt.scope
-}
-
-(block (_)@expr)@block {
-  let @expr.scope = @block.scope
-}
-
-(expression_statement (_)@expr)@expr_stmt {
-  let @expr.scope = @expr_stmt.scope
-}
-
-(method_invocation
-  name: (identifier)@name
-  arguments: (_)@args)@method_invocation {
-  node ref
-  attr (ref)
-    node_reference = @name
-  edge @method_invocation.scope -> ref
+    is_definition,
+    debug_kind = "class_def"
 }

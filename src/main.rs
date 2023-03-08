@@ -43,24 +43,35 @@ fn job_stack_graph(config: &CLIConfig) {
     for node_handle in stack_graph.iter_nodes() {
         let node = stack_graph.index(node_handle);
         if node.symbol().is_some() {
-            // println!("Node: (symbol: {})", stack_graph.index(node.symbol().unwrap()));
-        }
-        for edge in stack_graph.outgoing_edges(node_handle) {
-            let source = match stack_graph.index(edge.source).symbol() {
-                Some(source) => stack_graph.index(source),
-                None => "<NO-NAME>"
-            };
-
-            let sink = match stack_graph.index(edge.sink).symbol() {
-                Some(sink) => stack_graph.index(sink),
-                None => "<NO-NAME>"
-            };
-
-            println!("Edge: (source: {}, sink: {})",
-                source, sink
-            );
+            println!("(node \"{}\")", stack_graph.index(node.symbol().unwrap()));
         }
     }
+        let mut paths = stack_graphs::paths::Paths::new();
+        paths.find_all_paths(
+            &stack_graph,
+            stack_graph.iter_nodes(),
+            &stack_graphs::NoCancellation,
+            |_the_stack_graph, _the_paths, _the_path| {
+                if _the_path.is_complete(&_the_stack_graph) {
+                    print!("(path");
+                    for edge in _the_path.edges.iter(_the_paths) {
+                        let node = stack_graph.index(stack_graph.node_for_id(edge.source_node_id).unwrap());
+                        if node.is_definition() {
+                            if node.symbol().is_some() {
+                                print!(" {}", stack_graph.index(node.symbol().unwrap()))
+                            }
+                        }
+                    }
+                    let node = stack_graph.index(_the_path.end_node);
+                    if node.is_definition() {
+                        if node.symbol().is_some() {
+                            print!(" {}", stack_graph.index(node.symbol().unwrap()))
+                        }
+                    }
+                    println!(")");
+                }
+            }
+        ).unwrap();
     println!("#----------------------------------------------------------------!job_stack_graph!----------------------------------------------------------------#");
 }
 
