@@ -6,7 +6,7 @@ fn job_stack_graph(config: &CLIConfig) {
     if config.file_name.is_empty() {
         panic!("no input file issued!");
     }
-
+    
     let extension_method : ExtensionMethod;
     if config.language_name.is_empty() {
         if config.tsg_path.is_empty() {
@@ -23,7 +23,8 @@ fn job_stack_graph(config: &CLIConfig) {
     }
 
     let mut stack_graph = stack_graphs::graph::StackGraph::new();
-    stack_graph.extend(&extension_method);
+    let mut globals = tree_sitter_stack_graphs::Variables::new();
+    stack_graph.extend(&mut globals, &extension_method);
     skullian::graph::dg::walk_stack_graph(&stack_graph);
     println!("#----------------------------------------------------------------!job_stack_graph!----------------------------------------------------------------#");
 }

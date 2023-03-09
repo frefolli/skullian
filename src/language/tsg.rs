@@ -17,6 +17,7 @@ pub fn from_language_name(
 ) -> Option<&str> {
     match language_name {
         "java" => return Some("examples/samples/java.tsg"),
+        "cpp" => return Some("examples/samples/cpp.tsg"),
         &_ => return None
     }
 }
