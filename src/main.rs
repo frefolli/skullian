@@ -98,7 +98,7 @@ fn job_tree_sitter(config: &CLIConfig) {
     println!("#----------------------------------------------------------------!job_tree_sitter!----------------------------------------------------------------#");
 }
 
-fn main() {
+fn command_line() {
     let mut config = skullian::cli::new_empty_config();
     skullian::cli::parse_args(&mut config);
 
@@ -109,4 +109,9 @@ fn main() {
     if config.perform_job_sg {
         job_stack_graph(&config);
     }
+}
+
+fn main() {
+    command_line();
+    // skullian::graph::dg::main();
 }
