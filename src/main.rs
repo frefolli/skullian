@@ -1,77 +1,30 @@
 use core::panic;
-use std::ops::Index;
-use skullian::cli::CLIConfig;
+use skullian::{cli::CLIConfig, graph::sg::{ExtensionMethod, ExtendableWithTSGrammar}};
 
 fn job_stack_graph(config: &CLIConfig) {
     println!("#----------------------------------------------------------------+job_stack_graph+----------------------------------------------------------------#");
-    let source_code = std::fs::read_to_string(&config.file_name).expect("no inputs file issued");
-    let grammar: Option<tree_sitter::Language>;
+    if config.file_name.is_empty() {
+        panic!("no input file issued!");
+    }
+
+    let extension_method : ExtensionMethod;
     if config.language_name.is_empty() {
-        let language_name = skullian::language::name::from_file_name(config.file_name.as_str());
-        if language_name.is_none() {
-            panic!("unable to detect a language name from file name");
-        }
-        grammar = skullian::language::grammar::from_language_name(language_name.unwrap());
-        if grammar.is_none() {
-            panic!("language is not supported");
+        if config.tsg_path.is_empty() {
+            extension_method = ExtensionMethod::from_file_path(&config.file_name);
+        } else {
+            extension_method = ExtensionMethod::from_file_path_and_tsg_path(&config.file_name, &config.tsg_path);
         }
     } else {
-        grammar = skullian::language::grammar::from_language_name(config.language_name.as_str());
-        if grammar.is_none() {
-            panic!("language is not supported");
+        if config.tsg_path.is_empty() {
+            extension_method = ExtensionMethod::from_file_path_and_language_name(&config.file_name, &config.language_name);
+        } else {
+            extension_method = ExtensionMethod::from_all(&config.file_name, &config.language_name, &config.tsg_path);
         }
     }
-    let ts_rules = std::fs::read_to_string(&config.stack_graph_rules).expect("stack graph rules not issued");
-    let language = tree_sitter_stack_graphs::StackGraphLanguage::from_str(grammar.unwrap(), ts_rules.as_str()).unwrap();
-    let mut stack_graph = stack_graphs::graph::StackGraph::new();
-    let file_handle = stack_graph.get_or_create_file(&config.file_name);
-    let globals = tree_sitter_stack_graphs::Variables::new();
-    match language.build_stack_graph_into(
-        &mut stack_graph,
-        file_handle,
-        source_code.as_str(),
-        &globals,
-        &tree_sitter_stack_graphs::NoCancellation
-    ) {
-        Ok(()) => (),
-        Err(_err) => {
-            println!("{}", _err);
-            panic!();
-        }
-    };
 
-    for node_handle in stack_graph.iter_nodes() {
-        let node = stack_graph.index(node_handle);
-        if node.symbol().is_some() {
-            println!("(node \"{}\")", stack_graph.index(node.symbol().unwrap()));
-        }
-    }
-        let mut paths = stack_graphs::paths::Paths::new();
-        paths.find_all_paths(
-            &stack_graph,
-            stack_graph.iter_nodes(),
-            &stack_graphs::NoCancellation,
-            |_the_stack_graph, _the_paths, _the_path| {
-                if _the_path.is_complete(&_the_stack_graph) {
-                    print!("(path");
-                    for edge in _the_path.edges.iter(_the_paths) {
-                        let node = stack_graph.index(stack_graph.node_for_id(edge.source_node_id).unwrap());
-                        if node.is_definition() {
-                            if node.symbol().is_some() {
-                                print!(" {}", stack_graph.index(node.symbol().unwrap()))
-                            }
-                        }
-                    }
-                    let node = stack_graph.index(_the_path.end_node);
-                    if node.is_definition() {
-                        if node.symbol().is_some() {
-                            print!(" {}", stack_graph.index(node.symbol().unwrap()))
-                        }
-                    }
-                    println!(")");
-                }
-            }
-        ).unwrap();
+    let mut stack_graph = stack_graphs::graph::StackGraph::new();
+    stack_graph.extend(&extension_method);
+    skullian::graph::dg::walk_stack_graph(&stack_graph);
     println!("#----------------------------------------------------------------!job_stack_graph!----------------------------------------------------------------#");
 }
 

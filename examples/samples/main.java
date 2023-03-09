@@ -1,3 +1,5 @@
+package program;
+
 class Boh {
   public void bar() {
     // comment
@@ -5,6 +7,12 @@ class Boh {
 };
 
 public class BingChilling {
+  class Child {
+    void bong() {
+      // comment
+    }
+  }
+
   public void foo() {
     // comment
   }
@@ -13,5 +21,7 @@ public class BingChilling {
     Boh boh;
     boh.bar();
     foo();
+    Child child;
+    child.bong();
   }
 };

@@ -1,7 +1,7 @@
 pub struct CLIConfig {
     pub file_name: String,
     pub language_name: String,
-    pub stack_graph_rules: String,
+    pub tsg_path: String,
     pub perform_job_ts: bool,
     pub perform_job_sg: bool
 }
@@ -9,14 +9,14 @@ pub struct CLIConfig {
 pub fn new_config(
     file_name: String,
     language_name: String,
-    stack_graph_rules: String,
+    tsg_path: String,
     perform_job_ts: bool,
     perform_job_sg: bool
 ) -> CLIConfig {
     return CLIConfig {
         file_name: file_name,
         language_name: language_name,
-        stack_graph_rules: stack_graph_rules,
+        tsg_path: tsg_path,
         perform_job_ts: perform_job_ts,
         perform_job_sg: perform_job_sg,
     }
@@ -41,9 +41,9 @@ pub fn parse_args(config: &mut CLIConfig) {
             argparse::Store,
             "if issued uses this as language name and ignores file extension");
     argument_parser
-        .refer(&mut config.stack_graph_rules)
+        .refer(&mut config.tsg_path)
         .add_option(
-            &["-c", "--stack-graph-rules"],
+            &["-s", "--tsg_path"],
             argparse::Store,
             "stack graph rules file");
         argument_parser
