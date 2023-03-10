@@ -66,8 +66,12 @@ fn command_line() {
 }
 
 fn main() {
-    let discovery = skullian::discovery::Discovery::from_dirpath(String::from("."));
-    skullian::discovery::find_all_files(&discovery);
     // command_line();
-    // skullian::graph::dg::main();
+    let mut stack_graph = stack_graphs::graph::StackGraph::new();
+    let mut globals = tree_sitter_stack_graphs::Variables::new();
+    for entry in walkdir::WalkDir::new("examples/samples/main.java") {
+        let extension_method = ExtensionMethod::from_file_path(&entry.unwrap().path().to_str().unwrap().to_string());
+        stack_graph.extend(&mut globals, &extension_method);
+    }
+    skullian::graph::dg::walk_stack_graph(&stack_graph);
 }
