@@ -66,6 +66,8 @@ fn command_line() {
 }
 
 fn main() {
-    command_line();
+    let discovery = skullian::discovery::Discovery::from_dirpath(String::from("."));
+    skullian::discovery::find_all_files(&discovery);
+    // command_line();
     // skullian::graph::dg::main();
 }
