@@ -1,6 +1,3 @@
-use tree_sitter::Language;
-
-
 /// Returns tsg_path: Option<String> from language name
 /// 
 /// # Arguments
@@ -16,8 +13,7 @@ pub fn from_language_name(
     language_name: &str
 ) -> Option<&str> {
     match language_name {
-        "java" => return Some("examples/samples/java.tsg"),
-        "cpp" => return Some("examples/samples/cpp.tsg"),
+        "java" => return Some("assets/tsg/java.tsg"),
         &_ => return None
     }
 }

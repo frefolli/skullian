@@ -1,6 +1,5 @@
 use stack_graphs::graph::{StackGraph, Node};
 use stack_graphs::arena::{Handle, SupplementalArena};
-use std::fmt::Display;
 use std::ops::Index;
 
 struct EdgeData {
@@ -53,7 +52,7 @@ impl VisitContext {
     }
 
     pub fn edge_to_string(&self, edge: &EdgeData) -> String {
-        format!("(edge \"{}\" -> \"{}\" -> \"{}\")",
+        format!("(edge \"{}\" \"{}\" \"{}\")",
             self.get_qualified_name(edge.source).unwrap(),
             edge.label,
             self.get_qualified_name(edge.sink).unwrap()

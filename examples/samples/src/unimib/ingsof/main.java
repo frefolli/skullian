@@ -1,4 +1,4 @@
-package program2;
+package unimib.ingsof;
 
 class Boh {
   public void bar() {
