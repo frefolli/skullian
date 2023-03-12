@@ -10,7 +10,7 @@ use tree_sitter::Language;
 /// # Examples
 /// 
 /// ```
-/// let language_grammar = skullian::language::grammar::from_language_name("cpp");
+/// let language_grammar = skullian::language::grammar::from_language_name("cpp".to_string());
 /// ```
 pub fn from_language_name(
     language_name: String
@@ -33,7 +33,8 @@ pub fn from_language_name(
 /// # Examples
 /// 
 /// ```
-/// let language_grammar = skullian::language::grammar::from_file_name("main.cpp");
+/// let language_grammar = skullian::language::grammar::from_file_name(
+///     std::path::Path::new("main.cpp"));
 /// ```
 pub fn from_file_name(
     file_name: &std::path::Path

@@ -8,7 +8,8 @@
 /// # Examples
 /// 
 /// ```
-/// let language_name = skullian::language::name::from_file_name("/home/user/Documents/main.cpp");
+/// let language_name = skullian::language::name::from_file_name(
+///     std::path::Path::new("/home/user/Documents/main.cpp"));
 /// ```
 pub fn from_file_name(
     file_name: &std::path::Path

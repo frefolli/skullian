@@ -7,7 +7,7 @@
 /// # Examples
 /// 
 /// ```
-/// let tsg_path = skullian::language::tsg::from_language_name("java");
+/// let tsg_path = skullian::language::tsg::from_language_name("java".to_string());
 /// ```
 pub fn from_language_name(
     language_name: String
@@ -27,7 +27,8 @@ pub fn from_language_name(
 /// # Examples
 /// 
 /// ```
-/// let tsg_path = skullian::language::tsg::from_file_name("main.java");
+/// let tsg_path = skullian::language::tsg::from_file_name(
+///     std::path::Path::new("main.java"));
 /// ```
 pub fn from_file_name(
     file_name: &std::path::Path
