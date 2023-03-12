@@ -29,7 +29,7 @@ impl DepGraphEdge {
     }
 
     pub fn to_string(&self, graph: &DepGraph) -> String {
-        format!("(edge\n\t\"{}\"\n\t\"{}\")",
+        format!("(edge\n\t{}\n\t{})",
             graph.get_node(self.source).unwrap(),
             graph.get_node(self.sink).unwrap())
     }

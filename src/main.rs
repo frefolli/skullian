@@ -1,5 +1,5 @@
 use core::panic;
-use std::{path::Path, ops::Index};
+use std::path::Path;
 use skullian::{cli::CLIConfig, graph::sg::{ExtensionMethod, ExtendableWithTSGrammar}};
 
 trait PathProcessor : Sized {
