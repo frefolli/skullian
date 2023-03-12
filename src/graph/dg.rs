@@ -9,11 +9,10 @@
 pub mod dep_graph;
 pub mod dep_graph_node;
 pub mod dep_graph_edge;
+use std::fmt::Pointer;
 
 use stack_graphs::graph::StackGraph;
-use crate::graph::dg::dep_graph::DepGraph;
 
 pub fn todo(stack_graph: &StackGraph) {
-    let dep_graph = DepGraph::from(stack_graph);
-    println!("{}", dep_graph);
+    println!("{}", "boh");
 }

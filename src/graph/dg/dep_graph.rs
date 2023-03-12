@@ -1,7 +1,8 @@
-use std::{collections::HashMap, fmt::Display, ops::Index};
-use stack_graphs::{arena::Handle, graph::{Node, StackGraph}};
+use std::{collections::HashMap, fmt::Display};
+use stack_graphs::{arena::Handle, graph::Node};
 
-use super::{dep_graph_node::DepGraphNode, dep_graph_edge::DepGraphEdge};
+use super::dep_graph_node::DepGraphNode;
+use super::dep_graph_edge::DepGraphEdge;
 
 pub struct DepGraph {
     nodes: HashMap<Handle<Node>, DepGraphNode>,
@@ -14,22 +15,6 @@ impl DepGraph {
             nodes: HashMap::<Handle<Node>, DepGraphNode>::new(),
             edges: HashMap::<Handle<Node>, Vec<DepGraphEdge>>::new()
         }
-    }
-
-    pub fn from(stack_graph: &StackGraph) -> DepGraph {
-        let mut dep_graph = Self::new();
-        for node_handle in stack_graph.iter_nodes() {
-            if stack_graph.index(node_handle).is_definition() {
-                dep_graph.add_node(
-                    node_handle,
-                    DepGraphNode::new(
-                        stack_graph.index(
-                            stack_graph.index(node_handle).symbol().unwrap()
-                        ).to_string()
-                    ));
-            }
-        }
-        dep_graph
     }
 
     pub fn get_node(&self, node_handle: Handle<Node>) -> Option<&DepGraphNode> {
