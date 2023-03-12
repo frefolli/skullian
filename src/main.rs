@@ -3,7 +3,7 @@ use std::path::Path;
 use skullian::{cli::CLIConfig, graph::sg::{ExtensionMethod, ExtendableWithTSGrammar}};
 
 trait PathProcessor : Sized {
-    fn process(&mut self, path_str : &str);
+    fn process(&mut self, path_str : &std::path::Path);
 }
 
 fn map_target_files<P : PathProcessor>(config: &CLIConfig, processor: &mut P) {
@@ -14,9 +14,8 @@ fn map_target_files<P : PathProcessor>(config: &CLIConfig, processor: &mut P) {
         }
         for direntry in walkdir::WalkDir::new(target_path) {
             let entry = direntry.unwrap();
-            let path_str = entry.path().to_str().unwrap();
             if entry.file_type().is_file() {
-                processor.process(path_str);
+                processor.process(entry.path());
             }
         }
     }
@@ -27,22 +26,22 @@ struct TreeSitterProcessor<'a> {
 }
 
 impl <'a> PathProcessor for TreeSitterProcessor<'a> {
-    fn process(&mut self, path_str : &str) {
+    fn process(&mut self, path_str : &std::path::Path) {
         let tree: Option<tree_sitter::Tree>;
         if self.config.language_name.is_empty() {
             tree = skullian::graph::ts::from_file_name(path_str);
         } else {
             tree = skullian::graph::ts::from_file_name_and_language_name(
                 path_str,
-                self.config.language_name.as_str());
+                self.config.language_name.clone());
         }
         if tree.is_none() {
-            panic!("error while parsing file {}", path_str)
+            panic!("error while parsing file {}", path_str.display())
         } else {
-            println!("# --- {} --- #", path_str);
+            println!("# --- {} --- #", path_str.display());
             println!("{}",
-                skullian::graph::ts::tree_to_sexp(tree.unwrap()));
-            println!("# --- {} --- #", path_str);
+                skullian::graph::ts::tree_to_sexp(&tree.unwrap()));
+            println!("# --- {} --- #", path_str.display());
         }
     }
 }
@@ -74,13 +73,13 @@ impl <'a> StackGraphProcessor<'a> {
 }
 
 impl <'a> PathProcessor for StackGraphProcessor<'a> {
-    fn process(&mut self, path_str : &str) {
-        let file_name = String::from(path_str);
+    fn process(&mut self, path_str : &std::path::Path) {
         let extension_method : ExtensionMethod;
         if self.config.language_name.is_empty() {
-            extension_method = ExtensionMethod::from_file_path(&file_name);
+            extension_method = ExtensionMethod::from_file_path(path_str);
         } else {
-            extension_method = ExtensionMethod::from_file_path_and_language_name(&file_name, &self.config.language_name);
+            extension_method = ExtensionMethod::from_file_path_and_language_name(
+                path_str, self.config.language_name.clone());
         }
         self.stack_graph.extend(self.globals, &extension_method);
     }

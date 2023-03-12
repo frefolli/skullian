@@ -6,7 +6,13 @@ class Boh {
   }
 };
 
-public class BingChilling {
+class Xi {
+  private void jinping() {
+    // comment
+  } 
+}
+
+public class BingChilling extends Xi {
   class Child {
     void bong() {
       // comment
@@ -18,10 +24,6 @@ public class BingChilling {
   }
 
   public int main() {
-    Boh boh;
-    boh.bar();
-    foo();
-    Child child;
-    child.bong();
+    // comment
   }
 };

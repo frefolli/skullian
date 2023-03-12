@@ -1,0 +1,78 @@
+;;; JAVA
+;; .scope, a node with links that goes up
+;; .defs, a node with links that goes down
+;; .scope_prefix
+global ROOT_NODE
+
+;; top-level
+
+(program)@unit {
+  node @unit.scope
+  edge ROOT_NODE -> @unit.scope
+}
+
+;; DA CONTROLLARE
+(program
+  (package_declaration
+    (_)@name
+  )@package_declaration
+)@unit {
+  attr (@unit.scope)
+    type = "pop_symbol",
+    is_definition,
+    symbol = (source-text @name)
+}
+;; DA CONTROLLARE
+
+(package_declaration)@package_declaration {
+  node @package_declaration.scope
+  node @package_declaration.defs
+}
+
+(program (_)@statement)@program {
+  edge @statement.scope -> @program.scope
+  edge @program.scope -> @statement.defs
+}
+
+(class_declaration
+  name: (_)@name
+  body: (_)@body
+)@class_declaration {
+  node @class_declaration.scope
+  node @class_declaration.defs
+  node def
+  attr (def)
+    type = "pop_symbol",
+    symbol = (source-text @name),
+    is_definition,
+    debug_kind = "defclass"
+  edge @class_declaration.defs -> def
+  edge def -> @body.defs
+  edge @body.scope -> @class_declaration.scope
+}
+
+(class_body)@class_body {
+  node @class_body.scope
+  node @class_body.defs
+  edge @class_body.scope -> @class_body.defs
+}
+
+(class_body (_)@declaration)@class_body {
+  edge @class_body.defs -> @declaration.defs
+  edge @declaration.scope -> @class_body.scope
+}
+
+(method_declaration
+  name: (_)@name
+  body: (_)@body
+)@method_declaration {
+  node @method_declaration.scope
+  node @method_declaration.defs
+  node def
+  attr (def)
+    type = "pop_symbol",
+    symbol = (source-text @name),
+    is_definition,
+    debug_kind = "defun"
+  edge @method_declaration.defs -> def
+}

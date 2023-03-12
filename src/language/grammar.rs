@@ -13,9 +13,9 @@ use tree_sitter::Language;
 /// let language_grammar = skullian::language::grammar::from_language_name("cpp");
 /// ```
 pub fn from_language_name(
-    language_name: &str
+    language_name: String
 ) -> Option<Language> {
-    match language_name {
+    match language_name.as_str() {
         "java" => return Some(tree_sitter_java::language()),
         "c" => return Some(tree_sitter_c::language()),
         "cpp" => return Some(tree_sitter_cpp::language()),
@@ -36,7 +36,7 @@ pub fn from_language_name(
 /// let language_grammar = skullian::language::grammar::from_file_name("main.cpp");
 /// ```
 pub fn from_file_name(
-    file_name: &str
+    file_name: &std::path::Path
 ) -> Option<Language> {
     match crate::language::name::from_file_name(file_name) {
         Some(language_name) => return from_language_name(language_name),

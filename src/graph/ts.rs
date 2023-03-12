@@ -13,8 +13,8 @@
 /// * must return None when file is empty
 /// * must return Some when syntax is invalid
 pub fn from_file_name_and_language_name(
-    file_path: &str,
-    language_name: &str
+    file_path: &std::path::Path,
+    language_name: String
 ) -> Option<tree_sitter::Tree> {
     let grammar = crate::language::grammar::from_language_name(language_name);
     if grammar.is_none() {
@@ -51,7 +51,7 @@ pub fn from_file_name_and_language_name(
 /// * must return None when file is empty
 /// * must return Some when syntax is invalid
 pub fn from_file_name(
-    file_path: &str
+    file_path: &std::path::Path
 ) -> Option<tree_sitter::Tree> {
     let grammar = crate::language::grammar::from_file_name(file_path);
     if grammar.is_none() {
@@ -87,8 +87,8 @@ pub fn from_file_name(
 /// * must return None when text is empty
 /// * must return Some when syntax is invalid
 pub fn from_text_and_language_name(
-    text: &str,
-    language_name: &str
+    text: String,
+    language_name: String
 ) -> Option<tree_sitter::Tree> {
     let grammar = crate::language::grammar::from_language_name(language_name);
     if grammar.is_none() {
@@ -113,11 +113,11 @@ pub fn from_text_and_language_name(
 /// 
 /// # Arguments
 /// 
-/// * `tree`: tree_sitter::Tree - the graph produced by tree-sitter
+/// * `tree`: &tree_sitter::Tree - the graph produced by tree-sitter
 /// 
 /// # Behavior
 pub fn tree_to_sexp(
-    tree: tree_sitter::Tree
+    tree: &tree_sitter::Tree
 ) -> String {
     return tree.root_node().to_sexp();
 }

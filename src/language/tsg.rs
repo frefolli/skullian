@@ -10,10 +10,10 @@
 /// let tsg_path = skullian::language::tsg::from_language_name("java");
 /// ```
 pub fn from_language_name(
-    language_name: &str
-) -> Option<&str> {
-    match language_name {
-        "java" => return Some("assets/tsg/java.tsg"),
+    language_name: String
+) -> Option<Box<std::path::Path>> {
+    match language_name.as_str() {
+        "java" => return Some(std::path::Path::new("assets/tsg/java.tsg").into()),
         &_ => return None
     }
 }
@@ -30,8 +30,8 @@ pub fn from_language_name(
 /// let tsg_path = skullian::language::tsg::from_file_name("main.java");
 /// ```
 pub fn from_file_name(
-    file_name: &str
-) -> Option<&str> {
+    file_name: &std::path::Path
+) -> Option<Box<std::path::Path>> {
     let language_name = crate::language::name::from_file_name(file_name).unwrap();
     crate::language::tsg::from_language_name(language_name)
 }
