@@ -90,13 +90,20 @@ fn job_stack_graph(config: &CLIConfig) {
     let mut globals = tree_sitter_stack_graphs::Variables::new();
     let mut processor = StackGraphProcessor::new(config, &mut stack_graph, &mut globals);
     map_target_files(config, &mut processor);
-    skullian::graph::dg::walk_stack_graph(&stack_graph);
 }
 
 
 fn job_tree_sitter(config: &CLIConfig) {
     let mut processor = TreeSitterProcessor::new(config);
     map_target_files(config, &mut processor);
+}
+
+fn job_todo(config: &CLIConfig) {
+    let mut stack_graph = stack_graphs::graph::StackGraph::new();
+    let mut globals = tree_sitter_stack_graphs::Variables::new();
+    let mut processor = StackGraphProcessor::new(config, &mut stack_graph, &mut globals);
+    map_target_files(config, &mut processor);
+    skullian::graph::dg::todo(&stack_graph);
 }
 
 fn command_line() {
@@ -107,6 +114,7 @@ fn command_line() {
     match config.action {
         skullian::cli::CLIAction::TreeSitter() => job_tree_sitter(&config),
         skullian::cli::CLIAction::StackGraph() => job_stack_graph(&config),
+        skullian::cli::CLIAction::Debug() => job_todo(&config),
         _ => ()
     }
 }
