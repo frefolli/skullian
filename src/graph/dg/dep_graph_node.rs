@@ -1,4 +1,6 @@
-struct DepGraphNode {
+use std::fmt::Display;
+
+pub struct DepGraphNode {
     qualified_name: String
 }
 
