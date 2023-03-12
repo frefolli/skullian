@@ -70,6 +70,31 @@ impl DepGraph {
         strings.retain(|ss| ss.len()> 0);
         strings.join("\n")
     }
+
+    pub fn nodes_to_json(&self) -> Vec<serde_json::value::Value> {
+        Vec::<serde_json::value::Value>::from_iter(
+            self.iter_nodes().map(
+                |(_,data)| data.to_json()
+            )
+        )
+    }
+
+    pub fn edges_to_json(&self) -> Vec<serde_json::value::Value> {
+        let mut edges_data = Vec::<serde_json::value::Value>::new();
+        for (_, edges) in self.iter_edges() {
+            for edge in edges.iter() {
+                edges_data.push(edge.to_json(self));
+            }
+        }
+        edges_data
+    }
+
+    pub fn to_json(&self) -> serde_json::value::Value {
+        let mut nodes_data = self.nodes_to_json();
+        let mut edges_data = self.edges_to_json();
+        nodes_data.append(&mut edges_data);
+        serde_json::json!(nodes_data)
+    }
 }
 
 impl Display for DepGraph {

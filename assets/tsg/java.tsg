@@ -94,8 +94,10 @@ attribute node_symbol = node            => symbol = (source-text node), source_n
   name: (identifier) @name
   body: (class_body) @class_body) @class {
 
-  node def
-  attr (def) node_definition = @name
+  node @class.def
+  attr (@class.def)
+    node_definition = @name,
+    debug_defkind = "class"
 
   node ref
   attr (ref) node_reference = @name
@@ -106,8 +108,8 @@ attribute node_symbol = node            => symbol = (source-text node), source_n
 
   edge @class_body.lexical_scope -> @class_body.defs
   attr (@class_body.lexical_scope -> @class_body.defs) precedence = 1
-  edge @class.defs -> def
-  edge def -> @class_body.defs
+  edge @class.defs -> @class.def
+  edge @class.def -> @class_body.defs
 
   node this__expr_def
   node @class.type
@@ -129,7 +131,10 @@ attribute node_symbol = node            => symbol = (source-text node), source_n
     body: (class_body) @class_body) @class {
 
     node ref
-    attr (ref) node_reference = @superclass_name
+    attr (ref)
+      node_reference = @superclass_name,
+      debug_refkind = "extends"
+    edge @class.def -> ref
 
     edge @superclass_name.lexical_scope -> @class.lexical_scope
 
@@ -177,6 +182,9 @@ attribute node_symbol = node            => symbol = (source-text node), source_n
 
 (class_declaration interfaces: (super_interfaces (type_list (_) @type))) @this {
   edge @type.lexical_scope -> @this.lexical_scope
+  attr (@type.type)
+    debug_refkind = "implements"
+  edge @this.def -> @type.type
 }
 
 (class_body) @class_body {
@@ -262,7 +270,8 @@ attribute node_symbol = node            => symbol = (source-text node), source_n
 
 (enum_declaration name: (_) @name) @this {
   node def
-  attr (def) node_definition = @name
+  attr (def)
+    node_definition = @name
   edge @this.defs -> def
 
   node @this.constants
@@ -345,16 +354,21 @@ attribute node_symbol = node            => symbol = (source-text node), source_n
 }
 
 (interface_declaration name: (_) @name body: (_) @body) @this {
-  node def
-  attr (def) node_definition = @name
-  edge @this.defs -> def
+  node @this.def
+  attr (@this.def)
+    node_definition = @name,
+    debug_defkind = "interface"
+  edge @this.defs -> @this.def
 
-  edge def -> @body.defs
+  edge @this.def -> @body.defs
   edge @body.lexical_scope -> @this.lexical_scope
 }
 
 (interface_declaration (extends_interfaces (type_list (_) @type))) @this {
   edge @type.lexical_scope -> @this.lexical_scope
+  attr (@type.type)
+    debug_refkind = "extends"
+  edge @this.def -> @type.type
 }
 
 (interface_body) @this {
@@ -379,16 +393,18 @@ attribute node_symbol = node            => symbol = (source-text node), source_n
 
   attr (member) pop_symbol = "."
 
-  node def
-  attr (def) node_definition = @name
-  edge member -> def
+  node @method.def
+  attr (@method.def)
+    node_definition = @name,
+    debug_defkind = "function"
+  edge member -> @method.def
 }
 
 (method_declaration (formal_parameters (_) @param)) @method
 {
   edge @param.lexical_scope -> @method.lexical_scope
   edge @method.lexical_scope -> @param.def
-  edge @method.defs -> @param.def
+  edge @method.def -> @param.def
 }
 
 (formal_parameter type: (_) @type (_) @name) @param

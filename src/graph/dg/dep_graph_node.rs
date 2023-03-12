@@ -1,7 +1,8 @@
 use std::fmt::Display;
-
+use super::defkind::Defkind;
 pub struct DepGraphNode {
-    qualified_name: String
+    qualified_name: String,
+    defkind: Defkind
 }
 
 impl Display for DepGraphNode {
@@ -13,16 +14,37 @@ impl Display for DepGraphNode {
 }
 
 impl DepGraphNode {
-    pub fn new(qualified_name: String) -> DepGraphNode {
-        DepGraphNode { qualified_name: qualified_name }
+    pub fn new(
+        qualified_name: String,
+        defkind: Defkind
+    ) -> DepGraphNode {
+        DepGraphNode {
+            qualified_name: qualified_name,
+            defkind: defkind
+        }
     }
 
     pub fn get_qualified_name(&self) -> String {
         self.qualified_name.clone()
     }
 
+    pub fn get_defkind(&self) -> Defkind {
+        self.defkind.clone()
+    }
+
     pub fn to_string(&self) -> String {
-        format!("(node \"{}\")",
-            self.qualified_name)
+        format!("(node {} {})",
+            self.qualified_name,
+            self.defkind
+        )
+    }
+
+    pub fn to_json(&self) -> serde_json::Value {
+        serde_json::json!({
+            "data": {
+                "id": self.qualified_name
+            },
+            "style": self.defkind.cytoscape_style()
+        })
     }
 }

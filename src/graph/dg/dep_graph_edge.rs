@@ -2,21 +2,24 @@ use std::fmt::Display;
 
 use stack_graphs::{arena::Handle, graph::Node};
 
-use super::dep_graph::DepGraph;
+use super::{dep_graph::DepGraph, edge_label::EdgeLabel};
 
 pub struct DepGraphEdge {
     source: Handle<Node>,
-    sink: Handle<Node>
+    sink: Handle<Node>,
+    label: EdgeLabel
 }
 
 impl DepGraphEdge {
     pub fn new(
         source: Handle<Node>,
-        sink: Handle<Node>
+        sink: Handle<Node>,
+        label: EdgeLabel
     ) -> DepGraphEdge {
         DepGraphEdge {
             source: source,
-            sink: sink
+            sink: sink,
+            label: label
         }
     }
 
@@ -29,9 +32,26 @@ impl DepGraphEdge {
     }
 
     pub fn to_string(&self, graph: &DepGraph) -> String {
-        format!("(edge\n\t{}\n\t{})",
-            graph.get_node(self.source).unwrap(),
-            graph.get_node(self.sink).unwrap())
+        let source = graph.get_node(self.source).unwrap().get_qualified_name();
+        let target = graph.get_node(self.sink).unwrap().get_qualified_name();
+        let label = self.label.to_string();
+        format!("(edge {} {} {})",
+            source, label, target)
+    }
+
+    pub fn to_json(&self, graph: &DepGraph) -> serde_json::value::Value {
+        let source = graph.get_node(self.source).unwrap().get_qualified_name();
+        let target = graph.get_node(self.sink).unwrap().get_qualified_name();
+        let id = format!("{} -> {}", source, target);
+        let label = self.label.to_string();
+        serde_json::json!({
+            "data": {
+                "id": id,
+                "source": source,
+                "target": target,
+                "label": label
+            }
+        })
     }
 
     pub fn display<'a>(&'a self, graph: &'a DepGraph) -> impl Display + 'a {

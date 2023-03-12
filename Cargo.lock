@@ -390,6 +390,7 @@ name = "skullian"
 version = "0.1.0"
 dependencies = [
  "argparse",
+ "serde_json",
  "stack-graphs",
  "tree-sitter",
  "tree-sitter-c",
