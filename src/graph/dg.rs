@@ -224,7 +224,10 @@ pub fn todo(stack_graph: &StackGraph) {
     let mut dep_graph = DepGraph::new();
     explorer.set_current_node(Some(stack_graphs::graph::StackGraph::root_node()));
     resolve_all_paths(&mut explorer, stack_graph);
+    log::info!("Explorer is_done_with resolving_paths");
     walk_step(&mut explorer, &mut dep_graph, stack_graph);
+    log::info!("Explorer is_done_with exploring graph");
     save_to_data_json(&dep_graph);
-    println!("{}", dep_graph);
+    log::info!("Explorer is_done_with saving_graph_to_json");
+    // println!("{}", dep_graph);
 }

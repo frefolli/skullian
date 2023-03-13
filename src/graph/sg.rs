@@ -54,8 +54,11 @@ pub trait ExtendableWithTSGrammar {
 impl ExtendableWithTSGrammar for StackGraph {
     fn extend(&mut self, globals: &mut tree_sitter_stack_graphs::Variables, extension_method: &ExtensionMethod) {
         let source_code = std::fs::read_to_string(&extension_method.file_path).expect("no inputs file issued");
+        log::info!("StackGraph is_done_with loading source_code");
         let stack_graph_language = extension_method.as_stack_graph_language().expect("unable to load stack_graph_language");
+        log::info!("StackGraph is_done_with loading sgl");
         let file_handle = self.get_or_create_file(extension_method.file_path.as_os_str().to_str().unwrap());
+        log::info!("StackGraph is_done_with loading file handle");
         stack_graph_language.build_stack_graph_into(
             self,
             file_handle,

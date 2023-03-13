@@ -38,11 +38,12 @@ impl <'a> PathProcessor for TreeSitterProcessor<'a> {
         if tree.is_none() {
             panic!("error while parsing file {}", path_str.display())
         } else {
-            println!("# --- {} --- #", path_str.display());
-            println!("{}",
-                skullian::graph::ts::tree_to_sexp(&tree.unwrap()));
-            println!("# --- {} --- #", path_str.display());
+            //println!("# --- {} --- #", path_str.display());
+            //println!("{}",
+            //    skullian::graph::ts::tree_to_sexp(&tree.unwrap()));
+            //println!("# --- {} --- #", path_str.display());
         }
+        log::info!("TreeSitterProcessor is_done_with {}", path_str.display());
     }
 }
 
@@ -82,6 +83,7 @@ impl <'a> PathProcessor for StackGraphProcessor<'a> {
                 path_str, self.config.language_name.clone());
         }
         self.stack_graph.extend(self.globals, &extension_method);
+        log::info!("StackGraphProcessor is_done_with {}", path_str.display());
     }
 }
 
@@ -120,5 +122,6 @@ fn command_line() {
 }
 
 fn main() {
+    log4rs::init_file("assets/log4rs.yml", Default::default()).unwrap();
     command_line();
 }

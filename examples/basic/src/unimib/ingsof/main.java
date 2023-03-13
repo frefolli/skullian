@@ -14,7 +14,7 @@ class Xi {
 
 interface Socialism {
   // more comments
-  public void cry();
+  public void cry(int some);
 }
 
 interface Communism extends Socialism {
@@ -41,7 +41,7 @@ public class BingChilling extends Xi implements Communism, Socialism {
     // implementation of Communism.starve
   }
 
-  public void cry() {
+  public void cry(int some) {
     // implementation of Socialism.cry
   }
 };
