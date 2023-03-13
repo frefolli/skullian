@@ -14,7 +14,7 @@
 /// * must return Some when syntax is invalid
 pub fn from_file_name_and_language_name(
     file_path: &std::path::Path,
-    language_name: String
+    language_name: &str
 ) -> Option<tree_sitter::Tree> {
     let grammar = crate::language::grammar::from_language_name(language_name);
     if grammar.is_none() {
@@ -88,7 +88,7 @@ pub fn from_file_name(
 /// * must return Some when syntax is invalid
 pub fn from_text_and_language_name(
     text: String,
-    language_name: String
+    language_name: &str
 ) -> Option<tree_sitter::Tree> {
     let grammar = crate::language::grammar::from_language_name(language_name);
     if grammar.is_none() {

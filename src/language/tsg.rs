@@ -7,12 +7,12 @@
 /// # Examples
 /// 
 /// ```
-/// let tsg_path = skullian::language::tsg::from_language_name("java".to_string());
+/// let tsg_path = skullian::language::tsg::from_language_name("java");
 /// ```
 pub fn from_language_name(
-    language_name: String
+    language_name: &str
 ) -> Option<Box<std::path::Path>> {
-    match language_name.as_str() {
+    match language_name {
         "java" => return Some(std::path::Path::new("assets/tsg/java.tsg").into()),
         &_ => return None
     }

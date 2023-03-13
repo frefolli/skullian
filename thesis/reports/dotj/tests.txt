@@ -1,0 +1,54 @@
+2023-03-13T22:26:46.850933800+01:00 INFO skullian - StackGraph is_done_with loading sgl for java
+2023-03-13T22:26:46.863285400+01:00 INFO skullian - StackGraphProcessor is_done_with ..\..\Github\dotj\src\test\java\system\beans\PackageBeanTest.java
+2023-03-13T22:26:46.872057600+01:00 INFO skullian - StackGraphProcessor is_done_with ..\..\Github\dotj\src\test\java\system\beans\PackageMetadataBeanTest.java
+2023-03-13T22:26:46.878733100+01:00 INFO skullian - StackGraphProcessor is_done_with ..\..\Github\dotj\src\test\java\system\beans\RepositoryBeanTest.java
+2023-03-13T22:26:46.884986800+01:00 INFO skullian - StackGraphProcessor is_done_with ..\..\Github\dotj\src\test\java\system\beans\SoftwareAliasesBeanTest.java
+2023-03-13T22:26:46.901245100+01:00 INFO skullian - StackGraphProcessor is_done_with ..\..\Github\dotj\src\test\java\system\config\PackageBeanTest.java
+2023-03-13T22:26:46.915963600+01:00 INFO skullian - StackGraphProcessor is_done_with ..\..\Github\dotj\src\test\java\system\config\PackageMetadataBeanTest.java
+2023-03-13T22:26:46.931086300+01:00 INFO skullian - StackGraphProcessor is_done_with ..\..\Github\dotj\src\test\java\system\config\RepositoryBeanTest.java
+2023-03-13T22:26:46.943099500+01:00 INFO skullian - StackGraphProcessor is_done_with ..\..\Github\dotj\src\test\java\system\config\SoftwareAliasesBeanTest.java
+2023-03-13T22:26:46.950765300+01:00 INFO skullian - StackGraphProcessor is_done_with ..\..\Github\dotj\src\test\java\system\json\ExceptionTest.java
+2023-03-13T22:26:46.961227600+01:00 INFO skullian - StackGraphProcessor is_done_with ..\..\Github\dotj\src\test\java\system\json\JsonObjectMapperTest.java
+2023-03-13T22:26:46.966979+01:00 INFO skullian - StackGraphProcessor is_done_with ..\..\Github\dotj\src\test\java\system\main\CommandLineInterfaceTest.java
+2023-03-13T22:26:46.973345300+01:00 INFO skullian - StackGraphProcessor is_done_with ..\..\Github\dotj\src\test\java\system\main\InstallPackagesJobTest.java
+2023-03-13T22:26:46.977481800+01:00 INFO skullian - StackGraphProcessor is_done_with ..\..\Github\dotj\src\test\java\system\main\JobQueueTest.java
+2023-03-13T22:26:46.981429400+01:00 INFO skullian - StackGraphProcessor is_done_with ..\..\Github\dotj\src\test\java\system\main\JobTest.java
+2023-03-13T22:26:46.986864600+01:00 INFO skullian - StackGraphProcessor is_done_with ..\..\Github\dotj\src\test\java\system\main\MainTest.java
+2023-03-13T22:26:46.993019100+01:00 INFO skullian - StackGraphProcessor is_done_with ..\..\Github\dotj\src\test\java\system\main\SearchPackageJobTest.java
+2023-03-13T22:26:46.997361700+01:00 INFO skullian - StackGraphProcessor is_done_with ..\..\Github\dotj\src\test\java\system\main\UninstallPackagesJobTest.java
+2023-03-13T22:26:47.001908+01:00 INFO skullian - StackGraphProcessor is_done_with ..\..\Github\dotj\src\test\java\system\main\UpdatePackageIndexTest.java
+2023-03-13T22:26:47.005963+01:00 INFO skullian - StackGraphProcessor is_done_with ..\..\Github\dotj\src\test\java\system\main\UpdatePackagesTest.java
+2023-03-13T22:26:47.013895200+01:00 INFO skullian - StackGraphProcessor is_done_with ..\..\Github\dotj\src\test\java\system\packaging\PackageMetadataTest.java
+2023-03-13T22:26:47.022886400+01:00 INFO skullian - StackGraphProcessor is_done_with ..\..\Github\dotj\src\test\java\system\packaging\PackageTest.java
+2023-03-13T22:26:47.029658900+01:00 INFO skullian - StackGraphProcessor is_done_with ..\..\Github\dotj\src\test\java\system\repository\HTTPRepositoryTest.java
+2023-03-13T22:26:47.035554900+01:00 INFO skullian - StackGraphProcessor is_done_with ..\..\Github\dotj\src\test\java\system\repository\LocalRepositoryTest.java
+2023-03-13T22:26:47.041940600+01:00 INFO skullian - StackGraphProcessor is_done_with ..\..\Github\dotj\src\test\java\system\repository\RemoteRepositoryFactoryTest.java
+2023-03-13T22:26:47.047661600+01:00 INFO skullian - StackGraphProcessor is_done_with ..\..\Github\dotj\src\test\java\system\repository\RemoteRepositoryTest.java
+2023-03-13T22:26:47.053987+01:00 INFO skullian - StackGraphProcessor is_done_with ..\..\Github\dotj\src\test\java\system\repository\RepositoryTest.java
+2023-03-13T22:26:47.061682700+01:00 INFO skullian - StackGraphProcessor is_done_with ..\..\Github\dotj\src\test\java\system\repository\SSHRepositoryTest.java
+2023-03-13T22:26:47.068198400+01:00 INFO skullian - StackGraphProcessor is_done_with ..\..\Github\dotj\src\test\java\system\temp\TemporaryDirectoryTest.java
+2023-03-13T22:26:47.077544300+01:00 INFO skullian - StackGraphProcessor is_done_with ..\..\Github\dotj\src\test\java\system\temp\TemporaryFactoryTest.java
+2023-03-13T22:26:47.083555+01:00 INFO skullian - StackGraphProcessor is_done_with ..\..\Github\dotj\src\test\java\system\temp\TemporaryFileTest.java
+2023-03-13T22:26:47.094742200+01:00 INFO skullian - StackGraphProcessor is_done_with ..\..\Github\dotj\src\test\java\system\terminal\DirectoryManagerTest.java
+2023-03-13T22:26:47.104268300+01:00 INFO skullian - StackGraphProcessor is_done_with ..\..\Github\dotj\src\test\java\system\terminal\FileManagerTest.java
+2023-03-13T22:26:47.112854500+01:00 INFO skullian - StackGraphProcessor is_done_with ..\..\Github\dotj\src\test\java\system\terminal\SoftwareAliasesTest.java
+2023-03-13T22:26:47.118376400+01:00 INFO skullian - StackGraphProcessor is_done_with ..\..\Github\dotj\src\test\java\system\terminal\SoftwareManagerTest.java
+2023-03-13T22:26:47.133092900+01:00 INFO skullian - StackGraphProcessor is_done_with ..\..\Github\dotj\src\test\java\system\terminal\TerminalTest.java
+2023-03-13T22:26:47.141564400+01:00 INFO skullian - StackGraphProcessor is_done_with ..\..\Github\dotj\src\test\java\system\yaml\ExceptionTest.java
+2023-03-13T22:26:47.152864100+01:00 INFO skullian - StackGraphProcessor is_done_with ..\..\Github\dotj\src\test\java\system\yaml\YamlObjectMapperTest.java
+2023-03-13T22:26:47.153006800+01:00 INFO skullian::graph::dg - finding references
+2023-03-13T22:26:47.153218200+01:00 INFO skullian::graph::dg - found 0 references
+2023-03-13T22:26:47.154600600+01:00 INFO skullian::graph::dg - found 0 bindings
+2023-03-13T22:26:47.154630300+01:00 INFO skullian::graph::dg - Explorer is_done_with resolving_paths
+2023-03-13T22:26:47.155078200+01:00 INFO skullian::graph::dg - Explorer is_done_with exploring graph
+2023-03-13T22:26:47.157987600+01:00 INFO skullian::graph::dg - Explorer is_done_with saving_graph_to_json
+2023-03-13T22:26:47.158021600+01:00 INFO skullian::graph::dg - found 37 classes
+2023-03-13T22:26:47.158026700+01:00 INFO skullian::graph::dg - found 0 interfaces
+2023-03-13T22:26:47.158030200+01:00 INFO skullian::graph::dg - found 36 functions
+2023-03-13T22:26:47.158033700+01:00 INFO skullian::graph::dg - found 338 other nodes
+2023-03-13T22:26:47.158036900+01:00 INFO skullian::graph::dg - total: 411 nodes
+2023-03-13T22:26:47.158043900+01:00 INFO skullian::graph::dg - found 36 definedBy
+2023-03-13T22:26:47.158049900+01:00 INFO skullian::graph::dg - found 0 isImplementationOf
+2023-03-13T22:26:47.158060800+01:00 INFO skullian::graph::dg - found 0 isChildOf
+2023-03-13T22:26:47.158064600+01:00 INFO skullian::graph::dg - found 0 nestedTo
+2023-03-13T22:26:47.158068500+01:00 INFO skullian::graph::dg - total: 36 edges

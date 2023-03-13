@@ -1,0 +1,42 @@
+2023-03-13T22:06:18.930332500+01:00 INFO skullian - StackGraph is_done_with loading sgl for java
+2023-03-13T22:06:18.932215900+01:00 INFO skullian - StackGraphProcessor is_done_with ..\junit5\junit-platform-suite-api\src\main\java\org\junit\platform\suite\api\ConfigurationParameter.java
+2023-03-13T22:06:18.933142400+01:00 INFO skullian - StackGraphProcessor is_done_with ..\junit5\junit-platform-suite-api\src\main\java\org\junit\platform\suite\api\ConfigurationParameters.java
+2023-03-13T22:06:18.933976300+01:00 INFO skullian - StackGraphProcessor is_done_with ..\junit5\junit-platform-suite-api\src\main\java\org\junit\platform\suite\api\DisableParentConfigurationParameters.java
+2023-03-13T22:06:18.935070300+01:00 INFO skullian - StackGraphProcessor is_done_with ..\junit5\junit-platform-suite-api\src\main\java\org\junit\platform\suite\api\ExcludeClassNamePatterns.java
+2023-03-13T22:06:18.936637900+01:00 INFO skullian - StackGraphProcessor is_done_with ..\junit5\junit-platform-suite-api\src\main\java\org\junit\platform\suite\api\ExcludeEngines.java
+2023-03-13T22:06:18.937931500+01:00 INFO skullian - StackGraphProcessor is_done_with ..\junit5\junit-platform-suite-api\src\main\java\org\junit\platform\suite\api\ExcludePackages.java
+2023-03-13T22:06:18.939036700+01:00 INFO skullian - StackGraphProcessor is_done_with ..\junit5\junit-platform-suite-api\src\main\java\org\junit\platform\suite\api\ExcludeTags.java
+2023-03-13T22:06:18.940107300+01:00 INFO skullian - StackGraphProcessor is_done_with ..\junit5\junit-platform-suite-api\src\main\java\org\junit\platform\suite\api\IncludeClassNamePatterns.java
+2023-03-13T22:06:18.941117500+01:00 INFO skullian - StackGraphProcessor is_done_with ..\junit5\junit-platform-suite-api\src\main\java\org\junit\platform\suite\api\IncludeEngines.java
+2023-03-13T22:06:18.942213500+01:00 INFO skullian - StackGraphProcessor is_done_with ..\junit5\junit-platform-suite-api\src\main\java\org\junit\platform\suite\api\IncludePackages.java
+2023-03-13T22:06:18.943283900+01:00 INFO skullian - StackGraphProcessor is_done_with ..\junit5\junit-platform-suite-api\src\main\java\org\junit\platform\suite\api\IncludeTags.java
+2023-03-13T22:06:18.943437400+01:00 INFO skullian - StackGraphProcessor is_done_with ..\junit5\junit-platform-suite-api\src\main\java\org\junit\platform\suite\api\package-info.java
+2023-03-13T22:06:18.944301800+01:00 INFO skullian - StackGraphProcessor is_done_with ..\junit5\junit-platform-suite-api\src\main\java\org\junit\platform\suite\api\SelectClasses.java
+2023-03-13T22:06:18.945309200+01:00 INFO skullian - StackGraphProcessor is_done_with ..\junit5\junit-platform-suite-api\src\main\java\org\junit\platform\suite\api\SelectClasspathResource.java
+2023-03-13T22:06:18.946598400+01:00 INFO skullian - StackGraphProcessor is_done_with ..\junit5\junit-platform-suite-api\src\main\java\org\junit\platform\suite\api\SelectClasspathResources.java
+2023-03-13T22:06:18.947737300+01:00 INFO skullian - StackGraphProcessor is_done_with ..\junit5\junit-platform-suite-api\src\main\java\org\junit\platform\suite\api\SelectDirectories.java
+2023-03-13T22:06:18.949124800+01:00 INFO skullian - StackGraphProcessor is_done_with ..\junit5\junit-platform-suite-api\src\main\java\org\junit\platform\suite\api\SelectFile.java
+2023-03-13T22:06:18.950088600+01:00 INFO skullian - StackGraphProcessor is_done_with ..\junit5\junit-platform-suite-api\src\main\java\org\junit\platform\suite\api\SelectFiles.java
+2023-03-13T22:06:18.951046600+01:00 INFO skullian - StackGraphProcessor is_done_with ..\junit5\junit-platform-suite-api\src\main\java\org\junit\platform\suite\api\SelectModules.java
+2023-03-13T22:06:18.952225600+01:00 INFO skullian - StackGraphProcessor is_done_with ..\junit5\junit-platform-suite-api\src\main\java\org\junit\platform\suite\api\SelectPackages.java
+2023-03-13T22:06:18.953146+01:00 INFO skullian - StackGraphProcessor is_done_with ..\junit5\junit-platform-suite-api\src\main\java\org\junit\platform\suite\api\SelectUris.java
+2023-03-13T22:06:18.954139400+01:00 INFO skullian - StackGraphProcessor is_done_with ..\junit5\junit-platform-suite-api\src\main\java\org\junit\platform\suite\api\Suite.java
+2023-03-13T22:06:18.954945900+01:00 INFO skullian - StackGraphProcessor is_done_with ..\junit5\junit-platform-suite-api\src\main\java\org\junit\platform\suite\api\SuiteDisplayName.java
+2023-03-13T22:06:18.955886300+01:00 INFO skullian - StackGraphProcessor is_done_with ..\junit5\junit-platform-suite-api\src\main\java\org\junit\platform\suite\api\UseTechnicalNames.java
+2023-03-13T22:06:18.956372700+01:00 INFO skullian - StackGraphProcessor is_done_with ..\junit5\junit-platform-suite-api\src\module\org.junit.platform.suite.api\module-info.java
+2023-03-13T22:06:18.956505200+01:00 INFO skullian::graph::dg - finding references
+2023-03-13T22:06:18.956610600+01:00 INFO skullian::graph::dg - found 0 references
+2023-03-13T22:06:18.957482100+01:00 INFO skullian::graph::dg - found 0 bindings
+2023-03-13T22:06:18.957502+01:00 INFO skullian::graph::dg - Explorer is_done_with resolving_paths
+2023-03-13T22:06:18.957836800+01:00 INFO skullian::graph::dg - Explorer is_done_with exploring graph
+2023-03-13T22:06:18.959644300+01:00 INFO skullian::graph::dg - Explorer is_done_with saving_graph_to_json
+2023-03-13T22:06:18.959662400+01:00 INFO skullian::graph::dg - found 0 classes
+2023-03-13T22:06:18.959668400+01:00 INFO skullian::graph::dg - found 0 interfaces
+2023-03-13T22:06:18.959673400+01:00 INFO skullian::graph::dg - found 0 functions
+2023-03-13T22:06:18.959678200+01:00 INFO skullian::graph::dg - found 399 other nodes
+2023-03-13T22:06:18.959683800+01:00 INFO skullian::graph::dg - total: 399 nodes
+2023-03-13T22:06:18.959689900+01:00 INFO skullian::graph::dg - found 0 definedBy
+2023-03-13T22:06:18.959694600+01:00 INFO skullian::graph::dg - found 0 isImplementationOf
+2023-03-13T22:06:18.959699300+01:00 INFO skullian::graph::dg - found 0 isChildOf
+2023-03-13T22:06:18.959703900+01:00 INFO skullian::graph::dg - found 0 nestedTo
+2023-03-13T22:06:18.959708500+01:00 INFO skullian::graph::dg - total: 0 edges

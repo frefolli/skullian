@@ -30,6 +30,7 @@ impl Debug for CLIAction {
 }
 
 pub struct CLIConfig {
+    pub file_extension: String,
     pub language_name: String,
     pub action: CLIAction,
     pub targets: Vec<String>,
@@ -46,6 +47,7 @@ impl Debug for CLIConfig {
 
 impl CLIConfig {
     pub fn new(
+        file_extension: String,
         language_name: String,
         action: CLIAction,
         targets: Vec<String>,
@@ -54,6 +56,7 @@ impl CLIConfig {
         perform_debug: bool
     ) -> CLIConfig {
         return CLIConfig {
+            file_extension: file_extension,
             language_name: language_name,
             action: action,
             targets: targets,
@@ -65,6 +68,7 @@ impl CLIConfig {
 
     pub fn new_empty() -> CLIConfig {
         return CLIConfig::new(
+            String::from(""),
             String::from(""),
             CLIAction::Nothing(),
             [String::from(".")].to_vec(),
@@ -89,6 +93,11 @@ pub fn parse_args(config: &mut CLIConfig) {
     let mut argument_parser = argparse::ArgumentParser::new();
 
     argument_parser.set_description("Arcan DepGraph Generator with TS and SG");
+    argument_parser
+        .refer(&mut config.file_extension)
+        .add_option(&["-f", "--extension"],
+                    argparse::Parse,
+                    "filter files by extension");
     argument_parser
         .refer(&mut config.language_name)
         .add_option(&["-l", "--language"],

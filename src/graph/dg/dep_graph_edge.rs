@@ -31,6 +31,10 @@ impl DepGraphEdge {
         self.sink
     }
 
+    pub fn get_label(&self) -> EdgeLabel {
+        self.label.clone()
+    }
+
     pub fn to_string(&self, graph: &DepGraph) -> String {
         let source = graph.get_node(self.source).unwrap().get_qualified_name();
         let target = graph.get_node(self.sink).unwrap().get_qualified_name();

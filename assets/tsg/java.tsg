@@ -1178,6 +1178,7 @@ attribute node_symbol = node            => symbol = (source-text node), source_n
   node @line_comment.lexical_defs
   node @line_comment.lexical_scope
   node @line_comment.defs
+  node @line_comment.ref
 
   edge @line_comment.after_scope -> @line_comment.before_scope
 }
@@ -1187,6 +1188,14 @@ attribute node_symbol = node            => symbol = (source-text node), source_n
   node @block_comment.after_scope
   node @block_comment.defs
   node @block_comment.lexical_scope
+  node @block_comment.ref
 
   edge @block_comment.after_scope -> @block_comment.before_scope
+}
+
+;; experimental
+
+(static_initializer (block)@block)@static_initializer {
+  node @static_initializer.defs
+  node @static_initializer.lexical_scope
 }

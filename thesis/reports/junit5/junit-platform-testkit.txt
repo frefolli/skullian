@@ -1,0 +1,33 @@
+2023-03-13T22:06:20.380294300+01:00 INFO skullian - StackGraph is_done_with loading sgl for java
+2023-03-13T22:06:20.386282200+01:00 INFO skullian - StackGraphProcessor is_done_with ..\junit5\junit-platform-testkit\src\main\java\org\junit\platform\testkit\engine\Assertions.java
+2023-03-13T22:06:20.389951900+01:00 INFO skullian - StackGraphProcessor is_done_with ..\junit5\junit-platform-testkit\src\main\java\org\junit\platform\testkit\engine\EngineExecutionResults.java
+2023-03-13T22:06:20.402601700+01:00 INFO skullian - StackGraphProcessor is_done_with ..\junit5\junit-platform-testkit\src\main\java\org\junit\platform\testkit\engine\EngineTestKit.java
+2023-03-13T22:06:20.410864100+01:00 INFO skullian - StackGraphProcessor is_done_with ..\junit5\junit-platform-testkit\src\main\java\org\junit\platform\testkit\engine\Event.java
+2023-03-13T22:06:20.429178100+01:00 INFO skullian - StackGraphProcessor is_done_with ..\junit5\junit-platform-testkit\src\main\java\org\junit\platform\testkit\engine\EventConditions.java
+2023-03-13T22:06:20.450538800+01:00 INFO skullian - StackGraphProcessor is_done_with ..\junit5\junit-platform-testkit\src\main\java\org\junit\platform\testkit\engine\Events.java
+2023-03-13T22:06:20.455734100+01:00 INFO skullian - StackGraphProcessor is_done_with ..\junit5\junit-platform-testkit\src\main\java\org\junit\platform\testkit\engine\EventStatistics.java
+2023-03-13T22:06:20.456689400+01:00 INFO skullian - StackGraphProcessor is_done_with ..\junit5\junit-platform-testkit\src\main\java\org\junit\platform\testkit\engine\EventType.java
+2023-03-13T22:06:20.461567900+01:00 INFO skullian - StackGraphProcessor is_done_with ..\junit5\junit-platform-testkit\src\main\java\org\junit\platform\testkit\engine\Execution.java
+2023-03-13T22:06:20.464556400+01:00 INFO skullian - StackGraphProcessor is_done_with ..\junit5\junit-platform-testkit\src\main\java\org\junit\platform\testkit\engine\ExecutionRecorder.java
+2023-03-13T22:06:20.477937400+01:00 INFO skullian - StackGraphProcessor is_done_with ..\junit5\junit-platform-testkit\src\main\java\org\junit\platform\testkit\engine\Executions.java
+2023-03-13T22:06:20.478267500+01:00 INFO skullian - StackGraphProcessor is_done_with ..\junit5\junit-platform-testkit\src\main\java\org\junit\platform\testkit\engine\package-info.java
+2023-03-13T22:06:20.482132500+01:00 INFO skullian - StackGraphProcessor is_done_with ..\junit5\junit-platform-testkit\src\main\java\org\junit\platform\testkit\engine\TerminationInfo.java
+2023-03-13T22:06:20.490193500+01:00 INFO skullian - StackGraphProcessor is_done_with ..\junit5\junit-platform-testkit\src\main\java\org\junit\platform\testkit\engine\TestExecutionResultConditions.java
+2023-03-13T22:06:20.490481600+01:00 INFO skullian - StackGraphProcessor is_done_with ..\junit5\junit-platform-testkit\src\main\java\org\junit\platform\testkit\package-info.java
+2023-03-13T22:06:20.490850+01:00 INFO skullian - StackGraphProcessor is_done_with ..\junit5\junit-platform-testkit\src\module\org.junit.platform.testkit\module-info.java
+2023-03-13T22:06:20.490912400+01:00 INFO skullian::graph::dg - finding references
+2023-03-13T22:06:20.491175+01:00 INFO skullian::graph::dg - found 1 references
+2023-03-13T22:06:20.493162600+01:00 INFO skullian::graph::dg - found 1 bindings
+2023-03-13T22:06:20.493188600+01:00 INFO skullian::graph::dg - Explorer is_done_with resolving_paths
+2023-03-13T22:06:20.494309800+01:00 INFO skullian::graph::dg - Explorer is_done_with exploring graph
+2023-03-13T22:06:20.500890800+01:00 INFO skullian::graph::dg - Explorer is_done_with saving_graph_to_json
+2023-03-13T22:06:20.500932900+01:00 INFO skullian::graph::dg - found 13 classes
+2023-03-13T22:06:20.500941900+01:00 INFO skullian::graph::dg - found 1 interfaces
+2023-03-13T22:06:20.500952100+01:00 INFO skullian::graph::dg - found 168 functions
+2023-03-13T22:06:20.500961800+01:00 INFO skullian::graph::dg - found 533 other nodes
+2023-03-13T22:06:20.500975300+01:00 INFO skullian::graph::dg - total: 715 nodes
+2023-03-13T22:06:20.500996700+01:00 INFO skullian::graph::dg - found 305 definedBy
+2023-03-13T22:06:20.501046800+01:00 INFO skullian::graph::dg - found 1 isImplementationOf
+2023-03-13T22:06:20.501057700+01:00 INFO skullian::graph::dg - found 0 isChildOf
+2023-03-13T22:06:20.501065200+01:00 INFO skullian::graph::dg - found 33 nestedTo
+2023-03-13T22:06:20.501072700+01:00 INFO skullian::graph::dg - total: 339 edges

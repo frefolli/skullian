@@ -1,0 +1,21 @@
+2023-03-13T22:06:19.379845+01:00 INFO skullian - StackGraph is_done_with loading sgl for java
+2023-03-13T22:06:19.388817400+01:00 INFO skullian - StackGraphProcessor is_done_with ..\junit5\junit-platform-suite-commons\src\main\java\org\junit\platform\suite\commons\AdditionalDiscoverySelectors.java
+2023-03-13T22:06:19.389159800+01:00 INFO skullian - StackGraphProcessor is_done_with ..\junit5\junit-platform-suite-commons\src\main\java\org\junit\platform\suite\commons\package-info.java
+2023-03-13T22:06:19.407254100+01:00 INFO skullian - StackGraphProcessor is_done_with ..\junit5\junit-platform-suite-commons\src\main\java\org\junit\platform\suite\commons\SuiteLauncherDiscoveryRequestBuilder.java
+2023-03-13T22:06:19.407983800+01:00 INFO skullian - StackGraphProcessor is_done_with ..\junit5\junit-platform-suite-commons\src\module\org.junit.platform.suite.commons\module-info.java
+2023-03-13T22:06:19.408091200+01:00 INFO skullian::graph::dg - finding references
+2023-03-13T22:06:19.408193400+01:00 INFO skullian::graph::dg - found 0 references
+2023-03-13T22:06:19.409553900+01:00 INFO skullian::graph::dg - found 0 bindings
+2023-03-13T22:06:19.409590200+01:00 INFO skullian::graph::dg - Explorer is_done_with resolving_paths
+2023-03-13T22:06:19.409829400+01:00 INFO skullian::graph::dg - Explorer is_done_with exploring graph
+2023-03-13T22:06:19.411158900+01:00 INFO skullian::graph::dg - Explorer is_done_with saving_graph_to_json
+2023-03-13T22:06:19.411174+01:00 INFO skullian::graph::dg - found 2 classes
+2023-03-13T22:06:19.411179300+01:00 INFO skullian::graph::dg - found 0 interfaces
+2023-03-13T22:06:19.411184300+01:00 INFO skullian::graph::dg - found 23 functions
+2023-03-13T22:06:19.411189100+01:00 INFO skullian::graph::dg - found 147 other nodes
+2023-03-13T22:06:19.411193600+01:00 INFO skullian::graph::dg - total: 172 nodes
+2023-03-13T22:06:19.411200300+01:00 INFO skullian::graph::dg - found 41 definedBy
+2023-03-13T22:06:19.411204900+01:00 INFO skullian::graph::dg - found 0 isImplementationOf
+2023-03-13T22:06:19.411209500+01:00 INFO skullian::graph::dg - found 0 isChildOf
+2023-03-13T22:06:19.411214+01:00 INFO skullian::graph::dg - found 7 nestedTo
+2023-03-13T22:06:19.411218400+01:00 INFO skullian::graph::dg - total: 48 edges

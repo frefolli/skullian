@@ -10,12 +10,12 @@ use tree_sitter::Language;
 /// # Examples
 /// 
 /// ```
-/// let language_grammar = skullian::language::grammar::from_language_name("cpp".to_string());
+/// let language_grammar = skullian::language::grammar::from_language_name("cpp");
 /// ```
 pub fn from_language_name(
-    language_name: String
+    language_name: &str
 ) -> Option<Language> {
-    match language_name.as_str() {
+    match language_name {
         "java" => return Some(tree_sitter_java::language()),
         "c" => return Some(tree_sitter_c::language()),
         "cpp" => return Some(tree_sitter_cpp::language()),

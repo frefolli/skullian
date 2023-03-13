@@ -1,0 +1,18 @@
+2023-03-13T22:06:18.502166300+01:00 INFO skullian - StackGraph is_done_with loading sgl for java
+2023-03-13T22:06:18.503139900+01:00 INFO skullian - StackGraphProcessor is_done_with ..\junit5\junit-platform-suite\src\module\org.junit.platform.suite\module-info.java
+2023-03-13T22:06:18.503226400+01:00 INFO skullian::graph::dg - finding references
+2023-03-13T22:06:18.503233+01:00 INFO skullian::graph::dg - found 0 references
+2023-03-13T22:06:18.504735400+01:00 INFO skullian::graph::dg - found 0 bindings
+2023-03-13T22:06:18.504760700+01:00 INFO skullian::graph::dg - Explorer is_done_with resolving_paths
+2023-03-13T22:06:18.504776500+01:00 INFO skullian::graph::dg - Explorer is_done_with exploring graph
+2023-03-13T22:06:18.505082800+01:00 INFO skullian::graph::dg - Explorer is_done_with saving_graph_to_json
+2023-03-13T22:06:18.505096200+01:00 INFO skullian::graph::dg - found 0 classes
+2023-03-13T22:06:18.505102700+01:00 INFO skullian::graph::dg - found 0 interfaces
+2023-03-13T22:06:18.505110300+01:00 INFO skullian::graph::dg - found 0 functions
+2023-03-13T22:06:18.505116800+01:00 INFO skullian::graph::dg - found 0 other nodes
+2023-03-13T22:06:18.505122900+01:00 INFO skullian::graph::dg - total: 0 nodes
+2023-03-13T22:06:18.505129300+01:00 INFO skullian::graph::dg - found 0 definedBy
+2023-03-13T22:06:18.505135500+01:00 INFO skullian::graph::dg - found 0 isImplementationOf
+2023-03-13T22:06:18.505141500+01:00 INFO skullian::graph::dg - found 0 isChildOf
+2023-03-13T22:06:18.505147600+01:00 INFO skullian::graph::dg - found 0 nestedTo
+2023-03-13T22:06:18.505153800+01:00 INFO skullian::graph::dg - total: 0 edges

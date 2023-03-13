@@ -13,14 +13,14 @@
 /// ```
 pub fn from_file_name(
     file_name: &std::path::Path
-) -> Option<String> {
+) -> Option<&str> {
     let extension = std::path::Path::new(file_name).extension().unwrap_or_default().to_str().unwrap();
     match extension {
-        "java" => return Some("java".to_string()),
-        "c" => return Some("c".to_string()),
-        "cpp" => return Some("cpp".to_string()),
-        "cc" => return Some("cpp".to_string()),
-        "rs" => return Some("rust".to_string()),
+        "java" => return Some("java"),
+        "c" => return Some("c"),
+        "cpp" => return Some("cpp"),
+        "cc" => return Some("cpp"),
+        "rs" => return Some("rust"),
         &_ => return None
     }
 }

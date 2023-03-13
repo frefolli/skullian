@@ -4,19 +4,19 @@ pub mod test_name_from_file_name {
     #[test]
     pub fn test_with_supported_languages() {
         assert_eq!(
-            Some("java".to_string()),
+            Some("java"),
             from_file_name(std::path::Path::new("main.java")));
         assert_eq!(
-            Some("c".to_string()),
+            Some("c"),
             from_file_name(std::path::Path::new("main.c")));
         assert_eq!(
-            Some("cpp".to_string()),
+            Some("cpp"),
             from_file_name(std::path::Path::new("main.cpp")));
         assert_eq!(
-            Some("cpp".to_string()),
+            Some("cpp"),
             from_file_name(std::path::Path::new("main.cc")));
         assert_eq!(
-            Some("rust".to_string()),
+            Some("rust"),
             from_file_name(std::path::Path::new("main.rs")));
     }
     

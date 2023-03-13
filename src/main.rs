@@ -1,12 +1,29 @@
 use core::panic;
-use std::path::Path;
-use skullian::{cli::CLIConfig, graph::sg::{ExtensionMethod, ExtendableWithTSGrammar}};
+use std::{path::Path, collections::HashMap};
+use skullian::{cli::CLIConfig, graph::sg::ExtendableWithTSGrammar};
+use stack_graphs::graph::StackGraph;
+use tree_sitter_stack_graphs::{StackGraphLanguage, Variables};
 
-trait PathProcessor : Sized {
-    fn process(&mut self, path_str : &std::path::Path);
+fn tree_sitter_process(config: &CLIConfig, path_str : &std::path::Path) {
+    let tree: Option<tree_sitter::Tree>;
+    if config.language_name.is_empty() {
+        tree = skullian::graph::ts::from_file_name(path_str);
+    } else {
+        tree = skullian::graph::ts::from_file_name_and_language_name(
+            path_str,
+            &config.language_name);
+    }
+    if tree.is_none() {
+        panic!("error while parsing file {}", path_str.display())
+    } else {
+        // log::info!("# --- {} --- #", path_str.display());
+        // log::info!("{}", skullian::graph::ts::tree_to_sexp(&tree.unwrap()));
+        // log::info!("# --- {} --- #", path_str.display());
+    }
+    log::info!("TreeSitterProcessor is_done_with {}", path_str.display());
 }
 
-fn map_target_files<P : PathProcessor>(config: &CLIConfig, processor: &mut P) {
+fn job_tree_sitter(config: &CLIConfig) {
     for target in &config.targets {
         let target_path = Path::new(target);
         if !target_path.exists() {
@@ -14,97 +31,104 @@ fn map_target_files<P : PathProcessor>(config: &CLIConfig, processor: &mut P) {
         }
         for direntry in walkdir::WalkDir::new(target_path) {
             let entry = direntry.unwrap();
+            let extension = entry.path().extension().unwrap_or_default().to_str().unwrap().to_string();
             if entry.file_type().is_file() {
-                processor.process(entry.path());
+                if
+                    config.file_extension.is_empty() ||
+                    (extension.len() != 0 &&
+                    config.file_extension == extension)
+                {
+                    tree_sitter_process(config, entry.path());
+                }
             }
         }
     }
 }
 
-struct TreeSitterProcessor<'a> {
-    config: &'a CLIConfig
-}
-
-impl <'a> PathProcessor for TreeSitterProcessor<'a> {
-    fn process(&mut self, path_str : &std::path::Path) {
-        let tree: Option<tree_sitter::Tree>;
-        if self.config.language_name.is_empty() {
-            tree = skullian::graph::ts::from_file_name(path_str);
-        } else {
-            tree = skullian::graph::ts::from_file_name_and_language_name(
-                path_str,
-                self.config.language_name.clone());
-        }
-        if tree.is_none() {
-            panic!("error while parsing file {}", path_str.display())
-        } else {
-            //println!("# --- {} --- #", path_str.display());
-            //println!("{}",
-            //    skullian::graph::ts::tree_to_sexp(&tree.unwrap()));
-            //println!("# --- {} --- #", path_str.display());
-        }
-        log::info!("TreeSitterProcessor is_done_with {}", path_str.display());
+fn stack_graph_process(
+    sgl_cache: &mut HashMap<String, StackGraphLanguage>,
+    stack_graph: &mut stack_graphs::graph::StackGraph,
+    globals: &mut tree_sitter_stack_graphs::Variables,
+    language_name: &str,
+    path_str : &std::path::Path
+) {
+    let mut language_name = language_name;
+    if language_name.is_empty() {
+        language_name = skullian::language::name::from_file_name(path_str).unwrap();
     }
-}
-
-impl <'a> TreeSitterProcessor<'a> {
-    pub fn new(config: &CLIConfig) -> TreeSitterProcessor {
-        TreeSitterProcessor {
-            config: config
-        }
+    if sgl_cache.get(&language_name.to_string()).is_none() {
+        let tsg_path = skullian::language::tsg::from_language_name(&language_name).unwrap();
+        let grammar = skullian::language::grammar::from_language_name(&language_name).expect("unable to load language_grammar");
+        let ts_rules = std::fs::read_to_string(tsg_path).expect("stack graph rules not issued");
+        sgl_cache.insert(language_name.to_string(), StackGraphLanguage::from_str(grammar, ts_rules.as_str()).unwrap());
+        log::info!("StackGraph is_done_with loading sgl for {}", &language_name);
     }
-}
 
-struct StackGraphProcessor<'a> {
-    config: &'a CLIConfig,
-    stack_graph: &'a mut stack_graphs::graph::StackGraph,
-    globals: &'a mut tree_sitter_stack_graphs::Variables<'a>
-}
-
-impl <'a> StackGraphProcessor<'a> {
-    pub fn new(config: &'a CLIConfig,
-               stack_graph: &'a mut stack_graphs::graph::StackGraph,
-               globals: &'a mut tree_sitter_stack_graphs::Variables<'a>) -> StackGraphProcessor<'a> {
-        StackGraphProcessor {
-            config,
-            stack_graph: stack_graph,
-            globals: globals
-        }
-    }
-}
-
-impl <'a> PathProcessor for StackGraphProcessor<'a> {
-    fn process(&mut self, path_str : &std::path::Path) {
-        let extension_method : ExtensionMethod;
-        if self.config.language_name.is_empty() {
-            extension_method = ExtensionMethod::from_file_path(path_str);
-        } else {
-            extension_method = ExtensionMethod::from_file_path_and_language_name(
-                path_str, self.config.language_name.clone());
-        }
-        self.stack_graph.extend(self.globals, &extension_method);
-        log::info!("StackGraphProcessor is_done_with {}", path_str.display());
-    }
+    let sgl = sgl_cache.get(&language_name.to_string()).unwrap();
+    stack_graph.extend(globals, path_str, sgl);
+    log::info!("StackGraphProcessor is_done_with {}", path_str.display());
 }
 
 fn job_stack_graph(config: &CLIConfig) {
-    let mut stack_graph = stack_graphs::graph::StackGraph::new();
-    let mut globals = tree_sitter_stack_graphs::Variables::new();
-    let mut processor = StackGraphProcessor::new(config, &mut stack_graph, &mut globals);
-    map_target_files(config, &mut processor);
-}
-
-
-fn job_tree_sitter(config: &CLIConfig) {
-    let mut processor = TreeSitterProcessor::new(config);
-    map_target_files(config, &mut processor);
+    let mut stack_graph = StackGraph::new();
+    let mut globals = Variables::new();
+    let mut sgl_cache = HashMap::<String, StackGraphLanguage>::new();
+    for target in &config.targets {
+        let target_path = Path::new(target);
+        if !target_path.exists() {
+            panic!("target {} doesn't exists", target_path.display());
+        }
+        for direntry in walkdir::WalkDir::new(target_path) {
+            let entry = direntry.unwrap();
+            let extension = entry.path().extension().unwrap_or_default().to_str().unwrap().to_string();
+            if entry.file_type().is_file() {
+                if
+                    config.file_extension.is_empty() ||
+                    (extension.len() != 0 &&
+                    config.file_extension == extension)
+                {
+                stack_graph_process(
+                    &mut sgl_cache,
+                    &mut stack_graph,
+                    &mut globals,
+                    &config.language_name,
+                    entry.path()
+                );
+                }
+            }
+        }
+    }
 }
 
 fn job_todo(config: &CLIConfig) {
-    let mut stack_graph = stack_graphs::graph::StackGraph::new();
-    let mut globals = tree_sitter_stack_graphs::Variables::new();
-    let mut processor = StackGraphProcessor::new(config, &mut stack_graph, &mut globals);
-    map_target_files(config, &mut processor);
+    let mut stack_graph = StackGraph::new();
+    let mut globals = Variables::new();
+    let mut sgl_cache = HashMap::<String, StackGraphLanguage>::new();
+    for target in &config.targets {
+        let target_path = Path::new(target);
+        if !target_path.exists() {
+            panic!("target {} doesn't exists", target_path.display());
+        }
+        for direntry in walkdir::WalkDir::new(target_path) {
+            let entry = direntry.unwrap();
+            let extension = entry.path().extension().unwrap_or_default().to_str().unwrap().to_string();
+            if entry.file_type().is_file() {
+                if
+                    config.file_extension.is_empty() ||
+                    (extension.len() != 0 &&
+                    config.file_extension == extension)
+                {
+                    stack_graph_process(
+                        &mut sgl_cache,
+                        &mut stack_graph,
+                        &mut globals,
+                        &config.language_name,
+                        entry.path()
+                    );
+                }
+            }
+        }
+    }
     skullian::graph::dg::todo(&stack_graph);
 }
 
