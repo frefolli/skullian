@@ -1,3 +1,0 @@
-- define a Arena inside skullian::arena
-- define a SupplementalArena inside skullian::arena
-- use SupplementalArena to represent relationships

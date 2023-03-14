@@ -198,7 +198,7 @@ fn walk_step(
 
 pub fn save_to_data_json(dep_graph: &DepGraph) {
     std::fs::write(
-        "./public/public/js/data.json",
+        "data.json",
         dep_graph.to_json().to_string()
     ).unwrap();
 }
