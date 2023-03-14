@@ -1,10 +1,13 @@
-\documentclass[a4paper,12pt]{report}
+\documentclass[a4paper,12pt,oneside]{book}
 \usepackage{graphicx}
 \usepackage{hyperref}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage{setspace}
 \usepackage[paper=a4paper,margin=1in]{geometry}
+\usepackage{imakeidx}
+
+\makeindex
 
 \begin{document}
     
@@ -59,5 +62,8 @@
         \restoregeometry
         
     \end{titlepage}
+
+    \printindex
     
+    \include{chapters/tree-sitter}
 \end{document}

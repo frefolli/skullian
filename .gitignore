@@ -1,2 +1,9 @@
 /target
 /public/node_modules
+*.aux
+*.log
+*.idx
+*.out
+*.ilg
+*.ind
+*.pdf
