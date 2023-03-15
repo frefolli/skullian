@@ -1,4 +1,4 @@
-/// Returns tsg_path: Option<String> from language name
+/// Returns tsg_path: `Option<String>` from language name
 /// 
 /// # Arguments
 /// 
@@ -18,7 +18,7 @@ pub fn from_language_name(
     }
 }
 
-/// Returns tsg_path: Option<String> from file name
+/// Returns tsg_path: `Option<String>` from file name
 /// 
 /// # Arguments
 /// 

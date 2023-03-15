@@ -1,5 +1,5 @@
-#[doc = include_str!("../docs/README.md")]
-
+#![doc = include_str!("../docs/README.md")]
+//!
 // module with abstraction for languages
 pub mod language;
 
