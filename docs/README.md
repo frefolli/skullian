@@ -26,7 +26,7 @@ Where `arguments` is the list of args you want to pass.
 
 With `cargo run -r -- -h`:
 
-```
+```txt
 Usage:
   target\release\skullian.exe [OPTIONS] [TARGETS ...]
 
@@ -48,12 +48,11 @@ Optional arguments:
   -W,--workflow         perform workflow action
   -T,--tree-sitter      perform tree sitter action
   -v,--verbose          if verbose LogLevel = INFO, else LogLevel = WARN
-```
 
 - If LANGUAGE is not issued, it is inferred from TARGET file extension.
 - If TARGETS is not issued it's defaulted to current directory.
 - If a TARGET is a directory all of its content is recursively added as TARGET.
-
+```
 
 ## Tree Sitter Action
 
