@@ -1,5 +1,13 @@
 # Skullian Documentation
 
+Index:
+
+- [building](#building)
+- [running](#running)
+- [testing](#testing)
+- [packaging](#packaging)
+- [state of art](#state-of-art)
+
 # Building
 
 run either:
@@ -39,6 +47,7 @@ Optional arguments:
   -D,--debug            perform debug action
   -W,--workflow         perform workflow action
   -T,--tree-sitter      perform tree sitter action
+  -v,--verbose          if verbose LogLevel = INFO, else LogLevel = WARN
 ```
 
 - If LANGUAGE is not issued, it is inferred from TARGET file extension.
@@ -57,7 +66,9 @@ This action is thought for testing a .tsg file against Stack Graph generation wi
 
 ## Debug Action
 
-This action is thought for testing a .tsg file against Dep Graph generation with Tree Sitter and Stack Graph.
+This action is thought for testing a .tsg file against Dep Graph generation with Tree Sitter and Stack Graph. Currently i'm rewriting the java tsg using this action.
+
+`cargo run -r -- -D tests/graph/tsg/java` ensures features get detected correctly.
 
 ## Workflow Action
 
@@ -81,3 +92,31 @@ Will perform unit tests and doctests
 ## Debian
 
 Using `cargo-deb` crate (install it with `cargo install cargo-deb`), use `cargo deb` from root folder. It'll create a deb package inside `target/`.
+
+# State of Art
+
+## Java
+
+### Categories
+
+| category | note | status |
+| --- | --- | --- |
+| package |  | &check; |
+| class |  | &check; |
+| interface |  | &check; |
+| method |  | &cross; |
+| parameter |  | &cross; |
+| attribute |  | &cross; |
+
+### Relationships
+
+| relationship | note | status |
+| --- | --- | --- |
+| definedBy |  | &check; |
+| nestedTo |  | &check; |
+| isChildOf |  | &check; |
+| isImplementationOf |  | &check; |
+| belongsTo |  | &cross; |
+| calls |  | &cross; |
+| accessTo |  | &cross; |
+| dependsOn |  | &cross; |

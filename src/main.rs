@@ -1,5 +1,7 @@
 use core::panic;
 use std::{path::Path, collections::HashMap};
+use log::LevelFilter;
+use log4rs::{append::console::ConsoleAppender, Config, config::{Appender, Root}};
 use skullian::{cli::CLIConfig, graph::{sg::ExtendableWithTSGrammar, dg::{testing::TestCase, dep_graph::DepGraph}}};
 use stack_graphs::graph::StackGraph;
 use tree_sitter_stack_graphs::{StackGraphLanguage, Variables};
@@ -172,21 +174,42 @@ fn job_debug(config: &CLIConfig) {
     }
 }
 
+fn get_log_level_from_config(config: &CLIConfig) -> LevelFilter {
+    match config.verbose {
+        true => LevelFilter::Info,
+        false => LevelFilter::Warn
+    }
+}
+
+fn setup_logger(config: &CLIConfig) {
+    let stdout = ConsoleAppender::builder().build();
+    let logger_config = Config::builder()
+        .appender(
+            Appender::builder()
+                .build("stdout", Box::new(stdout)))
+        .build(
+            Root::builder()
+            .appender("stdout")
+            .build(get_log_level_from_config(config)))
+        .unwrap();
+    log4rs::init_config(logger_config).unwrap();
+}
+
 fn command_line() {
     let mut config = skullian::cli::CLIConfig::new_empty();
     skullian::cli::parse_args(&mut config);
     config.derive_action();
+    setup_logger(&config);
     
     match config.action {
-        skullian::cli::CLIAction::TreeSitter() => job_tree_sitter(&config),
-        skullian::cli::CLIAction::StackGraph() => job_stack_graph(&config),
-        skullian::cli::CLIAction::Debug() => job_debug(&config),
-        skullian::cli::CLIAction::Workflow() => job_workflow(&config),
+        skullian::cli::CLIAction::TreeSitter => job_tree_sitter(&config),
+        skullian::cli::CLIAction::StackGraph => job_stack_graph(&config),
+        skullian::cli::CLIAction::Debug => job_debug(&config),
+        skullian::cli::CLIAction::Workflow => job_workflow(&config),
         _ => ()
     }
 }
 
 fn main() {
-    log4rs::init_file("assets/log4rs.yml", Default::default()).unwrap();
     command_line();
 }

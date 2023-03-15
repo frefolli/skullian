@@ -320,6 +320,8 @@ fn fun_facts_about_nodes(dep_graph: &DepGraph) {
     let mut classes = 0;
     let mut interfaces = 0;
     let mut functions = 0;
+    let mut parameters = 0;
+    let mut attributes = 0;
     let mut others = 0;
 
     for (_node, _data) in dep_graph.iter_nodes() {
@@ -328,15 +330,23 @@ fn fun_facts_about_nodes(dep_graph: &DepGraph) {
             Defkind::Class => classes += 1,
             Defkind::Interface => interfaces += 1,
             Defkind::Function => functions += 1,
+            Defkind::Parameter => parameters += 1,
+            Defkind::Attribute => attributes += 1,
             Defkind::Nothing => others += 1,
         }
     }
 
-    let total = packages + classes + interfaces + functions + others;
+    let total =
+        packages + classes +
+        interfaces + functions +
+        parameters + attributes +
+        others;
     log::info!("found {} packages", packages);
     log::info!("found {} classes", classes);
     log::info!("found {} interfaces", interfaces);
     log::info!("found {} functions", functions);
+    log::info!("found {} parameters", parameters);
+    log::info!("found {} attributes", attributes);
     log::info!("found {} other nodes", others);
     log::info!("total: {} nodes", total);
 }

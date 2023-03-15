@@ -89,7 +89,8 @@ attribute refkind = kind                => debug_refkind = kind
   superclass: (superclass (scoped_type_identifier)@superclass)
 )@class {
   attr (@superclass.top)
-    refkind = "extends"
+    refkind = "extends",
+    is_reference
 
   edge @superclass.bottom -> @class.scope
   edge @class.central -> @superclass.bottom
@@ -111,7 +112,8 @@ attribute refkind = kind                => debug_refkind = kind
   interfaces: (super_interfaces (type_list (scoped_type_identifier)@superinterface))
 )@class {
   attr (@superinterface.top)
-    refkind = "implements"
+    refkind = "implements",
+    is_reference
 
   edge @superinterface.bottom -> @class.scope
   edge @class.central -> @superinterface.bottom
@@ -136,14 +138,37 @@ attribute refkind = kind                => debug_refkind = kind
   node @interface.defs
   edge @interface.scope -> @interface.defs
 
-  node def
-  attr (def)
+  node @interface.central
+  attr (@interface.central)
     node_definition = @id,
     defkind = "interface"
-  edge @interface.defs -> def
+  edge @interface.defs -> @interface.central
 
   edge @body.scope -> @interface.scope
-  edge def -> @body.defs
+  edge @interface.central -> @body.defs
+}
+
+(interface_declaration
+  (extends_interfaces (type_list (type_identifier)@superinterface))
+)@interface {
+  node ref
+  attr (ref)
+    node_reference = @superinterface,
+    refkind = "extends"
+
+  edge ref -> @interface.scope
+  edge @interface.central -> ref
+}
+
+(interface_declaration
+  (extends_interfaces (type_list (scoped_type_identifier)@superinterface))
+)@interface {
+  attr (@superinterface.top)
+    refkind = "extends",
+    is_reference
+
+  edge @superinterface.bottom -> @interface.scope
+  edge @interface.central -> @superinterface.bottom
 }
 
 (interface_body)@body {
@@ -163,11 +188,11 @@ attribute refkind = kind                => debug_refkind = kind
 )@scoped {
   node scope
   attr (scope)
-    node_reference = @scope
+    push_node = @scope
   
   node name
   attr (name)
-    node_reference = @name
+    push_node = @name
 
   edge name -> scope
   edge scope -> name
@@ -181,7 +206,7 @@ attribute refkind = kind                => debug_refkind = kind
 )@scoped {
   node name
   attr (name)
-    node_reference = @name
+    push_node = @name
 
   edge name -> @scope.top
   edge @scope.top -> name

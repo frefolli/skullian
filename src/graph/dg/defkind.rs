@@ -10,6 +10,8 @@ pub enum Defkind {
     Class,
     Interface,
     Function,
+    Parameter,
+    Attribute,
     Nothing
 }
 
@@ -20,6 +22,8 @@ impl Defkind {
             "class" => Self::Class,
             "interface" => Self::Interface,
             "function" => Self::Function,
+            "parameter" => Self::Parameter,
+            "attribute" => Self::Attribute,
             _ => Self::Nothing
         }
     }
@@ -31,6 +35,8 @@ impl Defkind {
                 Self::Class => "hexagon",
                 Self::Function => "rectangle",
                 Self::Interface => "parallelogram",
+                Self::Parameter => "parameter",
+                Self::Attribute => "attribute",
                 Self::Nothing => "ellipse"
             },
             "background-color": match self {
@@ -38,6 +44,8 @@ impl Defkind {
                 Self::Class => "blue",
                 Self::Function => "red",
                 Self::Interface => "yellow",
+                Self::Parameter => "red",
+                Self::Attribute => "yellow",
                 Self::Nothing => "green"
             }
         })
@@ -51,6 +59,8 @@ impl Display for Defkind {
             Self::Class => write!(f, "class"),
             Self::Function => write!(f, "function"),
             Self::Interface => write!(f, "interface"),
+            Self::Parameter => write!(f, "parameter"),
+            Self::Attribute => write!(f, "attribute"),
             Self::Nothing => write!(f, "nothing")
         }
     }

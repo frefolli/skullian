@@ -1,21 +1,21 @@
 use std::fmt::Debug;
 
 pub enum CLIAction {
-    TreeSitter(),
-    StackGraph(),
-    Debug(),
-    Workflow(),
-    Nothing()
+    TreeSitter,
+    StackGraph,
+    Debug,
+    Workflow,
+    Nothing
 }
 
 impl Clone for CLIAction {
     fn clone(&self) -> Self {
         match self {
-            Self::TreeSitter() => Self::TreeSitter(),
-            Self::StackGraph() => Self::StackGraph(),
-            Self::Debug() => Self::Debug(),
-            Self::Workflow() => Self::Workflow(),
-            Self::Nothing() => Self::Nothing(),
+            Self::TreeSitter => Self::TreeSitter,
+            Self::StackGraph => Self::StackGraph,
+            Self::Debug => Self::Debug,
+            Self::Workflow => Self::Workflow,
+            Self::Nothing => Self::Nothing,
         }
     }
 }
@@ -23,11 +23,11 @@ impl Clone for CLIAction {
 impl Debug for CLIAction {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
-            Self::TreeSitter() => f.debug_tuple("TreeSitter").finish(),
-            Self::StackGraph() => f.debug_tuple("StackGraph").finish(),
-            Self::Debug() => f.debug_tuple("Debug").finish(),
-            Self::Workflow() => f.debug_tuple("Workflow").finish(),
-            Self::Nothing() => f.debug_tuple("Nothing").finish(),
+            Self::TreeSitter => f.debug_tuple("TreeSitter").finish(),
+            Self::StackGraph => f.debug_tuple("StackGraph").finish(),
+            Self::Debug => f.debug_tuple("Debug").finish(),
+            Self::Workflow => f.debug_tuple("Workflow").finish(),
+            Self::Nothing => f.debug_tuple("Nothing").finish(),
         }
     }
 }
@@ -41,7 +41,8 @@ pub struct CLIConfig {
     pub perform_tree_sitter: bool,
     pub perform_stack_graph: bool,
     pub perform_debug: bool,
-    pub perform_workflow: bool
+    pub perform_workflow: bool,
+    pub verbose: bool
 }
 
 impl Debug for CLIConfig {
@@ -64,18 +65,20 @@ impl CLIConfig {
         perform_tree_sitter: bool,
         perform_stack_graph: bool,
         perform_debug: bool,
-        perform_workflow: bool
+        perform_workflow: bool,
+        verbose: bool
     ) -> CLIConfig {
         return CLIConfig {
-            file_extension: file_extension,
-            language_name: language_name,
-            output_file: output_file,
-            action: action,
-            targets: targets,
-            perform_tree_sitter: perform_tree_sitter,
-            perform_stack_graph: perform_stack_graph,
-            perform_debug: perform_debug,
-            perform_workflow: perform_workflow
+            file_extension,
+            language_name,
+            output_file,
+            action,
+            targets,
+            perform_tree_sitter,
+            perform_stack_graph,
+            perform_debug,
+            perform_workflow,
+            verbose,
         }
     }
 
@@ -84,8 +87,9 @@ impl CLIConfig {
             String::from(""),
             String::from(""),
             String::from("./data.json"),
-            CLIAction::Nothing(),
+            CLIAction::Nothing,
             [String::from(".")].to_vec(),
+            false,
             false,
             false,
             false,
@@ -95,13 +99,13 @@ impl CLIConfig {
 
     pub fn derive_action(&mut self) {
         if self.perform_tree_sitter {
-            self.action = CLIAction::TreeSitter();
+            self.action = CLIAction::TreeSitter;
         } else if self.perform_stack_graph {
-            self.action = CLIAction::StackGraph();
+            self.action = CLIAction::StackGraph;
         } else if self.perform_debug {
-            self.action = CLIAction::Debug();
+            self.action = CLIAction::Debug;
         } else if self.perform_workflow {
-            self.action = CLIAction::Workflow();
+            self.action = CLIAction::Workflow;
         }
     }
 }
@@ -150,5 +154,10 @@ pub fn parse_args(config: &mut CLIConfig) {
         .add_argument("targets",
                       argparse::Collect,
                       "target files or directories");
+    argument_parser
+        .refer(&mut config.verbose)
+        .add_option(&["-v", "--verbose"],
+                    argparse::StoreTrue,
+                    "if verbose LogLevel = INFO, else LogLevel = WARN");
     argument_parser.parse_args_or_exit();
 }
