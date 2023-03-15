@@ -1,0 +1,17 @@
+filepath: main.java
+nodes:
+  - name: com
+    kind: package
+  - name: com.A
+    kind: class
+  - name: com.A.B
+    kind: class
+  - name: com.A.B.C
+    kind: class
+edges:
+  - source: com.A.B
+    sink: com.A
+    kind: nestedTo
+  - source: com.A.B.C
+    sink: com.A.B
+    kind: nestedTo

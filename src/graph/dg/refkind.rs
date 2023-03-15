@@ -1,17 +1,20 @@
 use std::fmt::Display;
 
+use serde::{Serialize, Deserialize};
+
+#[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
 pub enum Refkind {
-    Extends(),
-    Implements(),
-    Nothing()
+    Extends,
+    Implements,
+    Nothing
 }
 
 impl Refkind {
     pub fn from(refkind: String) -> Refkind {
         match refkind.as_str() {
-            "extends" => Self::Extends(),
-            "implements" => Self::Implements(),
-            _ => Self::Nothing()
+            "extends" => Self::Extends,
+            "implements" => Self::Implements,
+            _ => Self::Nothing
         }
     }
 }
@@ -19,19 +22,9 @@ impl Refkind {
 impl Display for Refkind {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         match self {
-            Self::Extends() => write!(f, "extends"),
-            Self::Implements() => write!(f, "implements"),
-            Self::Nothing() => write!(f, "nothing")
-        }
-    }
-}
-
-impl Clone for Refkind {
-    fn clone(&self) -> Self {
-        match self {
-            Self::Extends() => Self::Extends(),
-            Self::Implements() => Self::Implements(),
-            Self::Nothing() => Self::Nothing(),
+            Self::Extends => write!(f, "extends"),
+            Self::Implements => write!(f, "implements"),
+            Self::Nothing => write!(f, "nothing")
         }
     }
 }

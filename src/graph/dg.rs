@@ -12,6 +12,7 @@ pub mod refkind;
 pub mod dep_graph;
 pub mod dep_graph_node;
 pub mod dep_graph_edge;
+pub mod testing;
 use std::{collections::{HashMap, VecDeque}, ops::Index};
 use stack_graphs::{graph::{StackGraph, Node}, arena::Handle, NoCancellation, cycles::CycleDetector, CancellationFlag, paths::{Path, Paths}};
 use dep_graph::DepGraph;
@@ -120,21 +121,21 @@ fn walk_step(
                     )
                 ));
             if current_parent.is_some() {
-                let current_defkind = dep_graph.get_node(current_node).unwrap().get_defkind();
-                let parent_defkind = dep_graph.get_node(current_parent.unwrap()).unwrap().get_defkind();
+                let current_defkind = dep_graph.get_node(&current_node).unwrap().get_defkind();
+                let parent_defkind = dep_graph.get_node(&current_parent.unwrap()).unwrap().get_defkind();
                 if current_defkind == parent_defkind {
                     dep_graph.add_edge(
                         DepGraphEdge::new(
                             current_node,
                             current_parent.unwrap(),
-                            EdgeLabel::NestedTo()
+                            EdgeLabel::NestedTo
                         ));
                 } else {
                     dep_graph.add_edge(
                         DepGraphEdge::new(
                             current_node,
                             current_parent.unwrap(),
-                            EdgeLabel::DefinedBy()
+                            EdgeLabel::DefinedBy
                         ));
                 }
             }
@@ -145,29 +146,29 @@ fn walk_step(
                 "refkind".to_string()
             ).unwrap_or_default());
             match refkind {
-                Refkind::Extends() => {
+                Refkind::Extends => {
                     let sink = explorer.get_name_binding(current_node);
                     if sink.is_some() {
                         dep_graph.add_edge(
                             DepGraphEdge::new(
                                 current_parent.unwrap(),
                                 *sink.unwrap(),
-                                EdgeLabel::IsChildOf()
+                                EdgeLabel::IsChildOf
                             ));
                     }
                 },
-                Refkind::Implements() => {
+                Refkind::Implements => {
                     let sink = explorer.get_name_binding(current_node);
                     if sink.is_some() {
                         dep_graph.add_edge(
                             DepGraphEdge::new(
                                 current_parent.unwrap(),
                                 *sink.unwrap(),
-                                EdgeLabel::IsImplementationOf()
+                                EdgeLabel::IsImplementationOf
                             ));
                     }
                 },
-                Refkind::Nothing() => ()
+                Refkind::Nothing => ()
             }
         }
 
@@ -234,10 +235,10 @@ pub fn resolve_all_paths_only_of_references(
                 "refkind".to_string()
             ).unwrap_or_default());
             match refkind {
-                Refkind::Implements() | Refkind::Extends() => {
+                Refkind::Implements | Refkind::Extends => {
                     references.push(node_handle);
                 },
-                Refkind::Nothing() => (),
+                Refkind::Nothing => (),
             }
         }
     }
@@ -276,10 +277,10 @@ pub fn resolve_all_paths_manual_extension(
                 "refkind".to_string()
             ).unwrap_or_default());
             match refkind {
-                Refkind::Implements() | Refkind::Extends() => {
+                Refkind::Implements | Refkind::Extends => {
                     references.push(node_handle);
                 },
-                Refkind::Nothing() => (),
+                Refkind::Nothing => (),
             }
         }
     }
@@ -315,6 +316,7 @@ pub fn resolve_all_paths_manual_extension(
 }
 
 fn fun_facts_about_nodes(dep_graph: &DepGraph) {
+    let mut packages = 0;
     let mut classes = 0;
     let mut interfaces = 0;
     let mut functions = 0;
@@ -322,14 +324,16 @@ fn fun_facts_about_nodes(dep_graph: &DepGraph) {
 
     for (_node, _data) in dep_graph.iter_nodes() {
         match _data.get_defkind() {
-            Defkind::Class() => classes += 1,
-            Defkind::Interface() => interfaces += 1,
-            Defkind::Function() => functions += 1,
-            Defkind::Nothing() => others += 1,
+            Defkind::Package => packages += 1,
+            Defkind::Class => classes += 1,
+            Defkind::Interface => interfaces += 1,
+            Defkind::Function => functions += 1,
+            Defkind::Nothing => others += 1,
         }
     }
 
-    let total = classes + interfaces + functions + others;
+    let total = packages + classes + interfaces + functions + others;
+    log::info!("found {} packages", packages);
     log::info!("found {} classes", classes);
     log::info!("found {} interfaces", interfaces);
     log::info!("found {} functions", functions);
@@ -346,10 +350,10 @@ pub fn fun_facts_about_edges(dep_graph: &DepGraph) {
     for (_node, _edges) in dep_graph.iter_edges() {
         for edge in _edges.iter() {
             match edge.get_label() {
-                EdgeLabel::DefinedBy() => defined_by += 1,
-                EdgeLabel::IsImplementationOf() => is_implementation_of += 1,
-                EdgeLabel::IsChildOf() => is_child_of += 1,
-                EdgeLabel::NestedTo() => nested_to += 1,
+                EdgeLabel::DefinedBy => defined_by += 1,
+                EdgeLabel::IsImplementationOf => is_implementation_of += 1,
+                EdgeLabel::IsChildOf => is_child_of += 1,
+                EdgeLabel::NestedTo => nested_to += 1,
             }
         }
     }
@@ -367,15 +371,18 @@ fn fun_facts(dep_graph: &DepGraph) {
     fun_facts_about_edges(dep_graph);
 }
 
-pub fn build_dep_graph(output_file: &std::path::Path, stack_graph: &StackGraph) {
+pub fn build_dep_graph(
+    dep_graph: &mut DepGraph,
+    output_file: &std::path::Path,
+    stack_graph: &StackGraph
+) {
     let mut explorer = SynchroExplorer::new();
-    let mut dep_graph = DepGraph::new();
     explorer.set_current_node(Some(stack_graphs::graph::StackGraph::root_node()));
     resolve_all_paths_manual_extension(&mut explorer, stack_graph);
     log::info!("Explorer is_done_with resolving_paths");
-    walk_step(&mut explorer, &mut dep_graph, stack_graph);
+    walk_step(&mut explorer, dep_graph, stack_graph);
     log::info!("Explorer is_done_with exploring graph");
-    save_to_data_json(output_file, &dep_graph);
+    save_to_data_json(output_file, dep_graph);
     log::info!("Explorer is_done_with saving_graph_to_json");
     fun_facts(&dep_graph);
     // log::info!("{}", dep_graph);

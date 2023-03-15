@@ -1,6 +1,6 @@
 use core::panic;
 use std::{path::Path, collections::HashMap};
-use skullian::{cli::CLIConfig, graph::sg::ExtendableWithTSGrammar};
+use skullian::{cli::CLIConfig, graph::{sg::ExtendableWithTSGrammar, dg::{testing::TestCase, dep_graph::DepGraph}}};
 use stack_graphs::graph::StackGraph;
 use tree_sitter_stack_graphs::{StackGraphLanguage, Variables};
 
@@ -16,9 +16,9 @@ fn tree_sitter_process(config: &CLIConfig, path_str : &std::path::Path) {
     if tree.is_none() {
         panic!("error while parsing file {}", path_str.display())
     } else {
-        // log::info!("# --- {} --- #", path_str.display());
-        // log::info!("{}", skullian::graph::ts::tree_to_sexp(&tree.unwrap()));
-        // log::info!("# --- {} --- #", path_str.display());
+        log::info!("# --- {} --- #", path_str.display());
+        log::info!("{}", skullian::graph::ts::tree_to_sexp(&tree.unwrap()));
+        log::info!("# --- {} --- #", path_str.display());
     }
     log::info!("TreeSitterProcessor is_done_with {}", path_str.display());
 }
@@ -129,11 +129,47 @@ fn job_workflow(config: &CLIConfig) {
             }
         }
     }
-    skullian::graph::dg::build_dep_graph(Path::new(&config.output_file), &stack_graph);
+    let mut dep_graph = DepGraph::new();
+    skullian::graph::dg::build_dep_graph(&mut dep_graph, Path::new(&config.output_file), &stack_graph);
 }
 
 fn job_debug(config: &CLIConfig) {
-    log::info!("{:?}", config);
+    let mut sgl_cache = HashMap::<String, StackGraphLanguage>::new();
+    for target in &config.targets {
+        let target_path = Path::new(target);
+        if !target_path.exists() {
+            panic!("target {} doesn't exists", target_path.display());
+        }
+        for direntry in walkdir::WalkDir::new(target_path) {
+            let entry = direntry.unwrap();
+            if entry.file_type().is_file() {
+                if
+                    entry.path().extension().unwrap_or_default().to_str().unwrap() == "yml"
+                {
+                    let yaml = std::fs::read_to_string(entry.path()).unwrap();
+                    let test : TestCase = serde_yaml::from_str(&yaml).unwrap();
+                    let filepath = entry.path().with_file_name(test.filepath.as_os_str());
+
+                    let mut dep_graph = DepGraph::new();
+                    let mut stack_graph = StackGraph::new();
+                    let mut globals = Variables::new();
+                    
+                    stack_graph_process(
+                        &mut sgl_cache,
+                        &mut stack_graph,
+                        &mut globals,
+                        &config.language_name,
+                        &filepath
+                    );
+                    skullian::graph::dg::build_dep_graph(&mut dep_graph, Path::new(&config.output_file), &stack_graph);
+                    match test.verify(&dep_graph) {
+                        Ok(()) => println!("{:?} ok", entry.path()),
+                        Err(err) => println!("{:?} err: {:?}", entry.path(), err),
+                    }
+                }
+            }
+        }
+    }
 }
 
 fn command_line() {

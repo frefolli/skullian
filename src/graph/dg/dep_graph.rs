@@ -17,12 +17,12 @@ impl DepGraph {
         }
     }
 
-    pub fn get_node(&self, node_handle: Handle<Node>) -> Option<&DepGraphNode> {
-        self.nodes.get(&node_handle)
+    pub fn get_node(&self, node_handle: &Handle<Node>) -> Option<&DepGraphNode> {
+        self.nodes.get(node_handle)
     }
 
-    pub fn get_edges(&self, node_handle: Handle<Node>) -> Option<&Vec<DepGraphEdge>> {
-        self.edges.get(&node_handle)
+    pub fn get_edges(&self, node_handle: &Handle<Node>) -> Option<&Vec<DepGraphEdge>> {
+        self.edges.get(node_handle)
     }
 
     pub fn add_node(&mut self, node_handle: Handle<Node>, data: DepGraphNode) {
@@ -94,6 +94,15 @@ impl DepGraph {
         let mut edges_data = self.edges_to_json();
         nodes_data.append(&mut edges_data);
         serde_json::json!(nodes_data)
+    }
+
+    pub fn get_node_by_name(&self, name: &String) -> Option<&Handle<Node>> {
+        for (node_handle, data) in self.iter_nodes() {
+            if name.as_str() == data.get_qualified_name().as_str() {
+                return Some(node_handle)
+            }
+        }
+        None
     }
 }
 

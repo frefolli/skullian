@@ -1,0 +1,12 @@
+filepath: main.java
+nodes:
+  - name: com
+    kind: package
+  - name: com.A
+    kind: interface
+  - name: com.B
+    kind: interface
+edges:
+  - source: com.B
+    sink: com.A
+    kind: isChildOf

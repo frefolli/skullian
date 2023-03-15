@@ -3,6 +3,6 @@ appenders:
   stdout:
     kind: console
 root:
-  level: info #warn
+  level: warn
   appenders:
     - stdout
