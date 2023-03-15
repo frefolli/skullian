@@ -100,7 +100,7 @@ fn job_stack_graph(config: &CLIConfig) {
     }
 }
 
-fn job_todo(config: &CLIConfig) {
+fn job_workflow(config: &CLIConfig) {
     let mut stack_graph = StackGraph::new();
     let mut globals = Variables::new();
     let mut sgl_cache = HashMap::<String, StackGraphLanguage>::new();
@@ -129,7 +129,11 @@ fn job_todo(config: &CLIConfig) {
             }
         }
     }
-    skullian::graph::dg::todo(&stack_graph);
+    skullian::graph::dg::build_dep_graph(Path::new(&config.output_file), &stack_graph);
+}
+
+fn job_debug(config: &CLIConfig) {
+    log::info!("{:?}", config);
 }
 
 fn command_line() {
@@ -140,7 +144,8 @@ fn command_line() {
     match config.action {
         skullian::cli::CLIAction::TreeSitter() => job_tree_sitter(&config),
         skullian::cli::CLIAction::StackGraph() => job_stack_graph(&config),
-        skullian::cli::CLIAction::Debug() => job_todo(&config),
+        skullian::cli::CLIAction::Debug() => job_debug(&config),
+        skullian::cli::CLIAction::Workflow() => job_workflow(&config),
         _ => ()
     }
 }

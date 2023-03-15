@@ -1,5 +1,5 @@
 use stack_graphs::graph::StackGraph;
-use tree_sitter_stack_graphs::{LanguageError, StackGraphLanguage};
+use tree_sitter_stack_graphs::StackGraphLanguage;
 
 pub trait ExtendableWithTSGrammar {
     fn extend(

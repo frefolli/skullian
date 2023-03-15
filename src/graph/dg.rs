@@ -13,7 +13,6 @@ pub mod dep_graph;
 pub mod dep_graph_node;
 pub mod dep_graph_edge;
 use std::{collections::{HashMap, VecDeque}, ops::Index};
-use indicatif::ProgressIterator;
 use stack_graphs::{graph::{StackGraph, Node}, arena::Handle, NoCancellation, cycles::CycleDetector, CancellationFlag, paths::{Path, Paths}};
 use dep_graph::DepGraph;
 
@@ -196,9 +195,9 @@ fn walk_step(
     }
 }
 
-pub fn save_to_data_json(dep_graph: &DepGraph) {
+pub fn save_to_data_json(output_file: &std::path::Path, dep_graph: &DepGraph) {
     std::fs::write(
-        "data.json",
+        output_file,
         dep_graph.to_json().to_string()
     ).unwrap();
 }
@@ -368,7 +367,7 @@ fn fun_facts(dep_graph: &DepGraph) {
     fun_facts_about_edges(dep_graph);
 }
 
-pub fn todo(stack_graph: &StackGraph) {
+pub fn build_dep_graph(output_file: &std::path::Path, stack_graph: &StackGraph) {
     let mut explorer = SynchroExplorer::new();
     let mut dep_graph = DepGraph::new();
     explorer.set_current_node(Some(stack_graphs::graph::StackGraph::root_node()));
@@ -376,7 +375,7 @@ pub fn todo(stack_graph: &StackGraph) {
     log::info!("Explorer is_done_with resolving_paths");
     walk_step(&mut explorer, &mut dep_graph, stack_graph);
     log::info!("Explorer is_done_with exploring graph");
-    save_to_data_json(&dep_graph);
+    save_to_data_json(output_file, &dep_graph);
     log::info!("Explorer is_done_with saving_graph_to_json");
     fun_facts(&dep_graph);
     // log::info!("{}", dep_graph);

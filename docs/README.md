@@ -33,8 +33,11 @@ Optional arguments:
                         filter files by extension
   -l,--language LANGUAGE
                         issue the language of targets
+  -o,--output-file OUTPUT_FILE
+                        issue the path of output file (default = ./data.json)
   -S,--stack-graph      perform stack graph action
   -D,--debug            perform debug action
+  -W,--workflow         perform workflow action
   -T,--tree-sitter      perform tree sitter action
 ```
 
@@ -53,6 +56,10 @@ Doesn't fail if a syntax error happen (tree sitter reports it in the tree).
 This action is thought for testing a .tsg file against Stack Graph generation with Tree Sitter.
 
 ## Debug Action
+
+This action is thought for testing a .tsg file against Dep Graph generation with Tree Sitter and Stack Graph.
+
+## Workflow Action
 
 This is the action that contains the proof-of-concept workflow of skullian tool:
 
