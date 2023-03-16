@@ -213,3 +213,81 @@ attribute refkind = kind                => debug_refkind = kind
   let @scoped.top = name
   let @scoped.bottom = @scope.bottom
 }
+
+;; method declaration
+(method_declaration
+  name: (_)@name
+)@method {
+  node @method.scope
+  node @method.defs
+  node @method.central
+
+  attr (@method.central)
+    node_definition = @name,
+    defkind = "function"
+  
+  edge @method.scope -> @method.defs
+  edge @method.defs -> @method.central
+}
+
+(method_declaration
+  parameters: (formal_parameters (_)@parameter)
+)@method {
+  edge @method.central -> @parameter.defs
+  edge @parameter.scope -> @method.scope
+}
+
+(method_declaration
+  body: (block (_)@instruction)
+)@method {
+  edge @method.central -> @instruction.defs
+  edge @instruction.scope -> @method.scope
+}
+
+;; local variable declaration
+(local_variable_declaration
+  declarator: (_)@declarator
+)@variable {
+  node @variable.scope
+  node @variable.defs
+  node @variable.central
+
+  attr (@variable.central)
+    node_definition = @declarator,
+    defkind = "attribute"
+  
+  edge @variable.scope -> @variable.defs
+  edge @variable.defs -> @variable.central
+}
+
+;; field declaration
+(field_declaration
+  declarator: (_)@declarator
+)@field {
+  node @field.scope
+  node @field.defs
+  node @field.central
+
+  attr (@field.central)
+    node_definition = @declarator,
+    defkind = "attribute"
+  
+  edge @field.scope -> @field.defs
+  edge @field.defs -> @field.central
+}
+
+;; formal parameter
+(formal_parameter
+  name: (_)@name
+)@parameter {
+  node @parameter.scope
+  node @parameter.defs
+  node @parameter.central
+
+  attr (@parameter.central)
+    node_definition = @name,
+    defkind = "parameter"
+  
+  edge @parameter.scope -> @parameter.defs
+  edge @parameter.defs -> @parameter.central
+}

@@ -103,9 +103,9 @@ Using `cargo-deb` crate (install it with `cargo install cargo-deb`), use `cargo 
 | package |  | &check; |
 | class |  | &check; |
 | interface |  | &check; |
-| method |  | &cross; |
-| parameter |  | &cross; |
-| attribute |  | &cross; |
+| method |  | &check; |
+| parameter |  | &check; |
+| attribute |  | &check; |
 
 ### Relationships
 
