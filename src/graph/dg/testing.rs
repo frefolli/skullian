@@ -115,19 +115,19 @@ impl EdgeTest {
 
 #[derive(Serialize, Deserialize, PartialEq, Debug)]
 pub struct TestCase {
-    pub filepath: Box<std::path::Path>,
+    pub filepaths: Vec<Box<std::path::Path>>,
     pub nodes: Vec<NodeTest>,
     pub edges: Vec<EdgeTest>
 }
 
 impl TestCase {
     pub fn new(
-        filepath: Box<std::path::Path>,
+        filepaths: Vec<Box<std::path::Path>>,
         nodes: Vec<NodeTest>,
         edges: Vec<EdgeTest>
     ) -> TestCase {
         TestCase {
-            filepath,
+            filepaths,
             nodes,
             edges,
         }

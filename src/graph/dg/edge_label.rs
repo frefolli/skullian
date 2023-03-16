@@ -8,6 +8,7 @@ pub enum EdgeLabel {
     DefinedBy,
     IsImplementationOf,
     IsChildOf,
+    Includes,
     NestedTo
 }
 
@@ -17,6 +18,7 @@ impl EdgeLabel {
             Self::DefinedBy => "definedBy".to_string(),
             Self::IsImplementationOf => "isImplementationOf".to_string(),
             Self::IsChildOf => "isChildOf".to_string(),
+            Self::Includes => "includes".to_string(),
             Self::NestedTo => "nestedTo".to_string()
         }
     }

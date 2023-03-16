@@ -100,6 +100,7 @@ Using `cargo-deb` crate (install it with `cargo install cargo-deb`), use `cargo 
 
 | category | note | status |
 | --- | --- | --- |
+| import |  | &check; |
 | package |  | &check; |
 | class |  | &check; |
 | interface |  | &check; |
@@ -115,6 +116,7 @@ Using `cargo-deb` crate (install it with `cargo install cargo-deb`), use `cargo 
 | nestedTo |  | &check; |
 | isChildOf |  | &check; |
 | isImplementationOf |  | &check; |
+| includes |  | &check; |
 | belongsTo |  | &cross; |
 | calls |  | &cross; |
 | accessTo |  | &cross; |

@@ -37,21 +37,58 @@ attribute refkind = kind                => debug_refkind = kind
   edge @program.scope -> @program.defs
 }
 
-(program (package_declaration (_)@id))@program {
+(program (_)@statement)@program {
+  edge @program.defs -> @statement.defs
+  edge @statement.scope -> @program.scope
+}
+
+(program (package_declaration (identifier)@id))@program {
   attr (@program.central)
     node_definition = @id,
     defkind = "package"
+}
+
+(program (package_declaration (scoped_identifier)@id))@program {
+  attr (@program.central)
+    node_definition = @id,
+    defkind = "package"
+
+  edge ROOT_NODE -> @id.pop_bottom
+  edge @id.pop_top -> @program.scope
+}
+
+;; imports
+(import_declaration
+ (identifier)@thing
+)@import {
+  node @import.scope
+  node @import.defs
+  node ref
+  attr (ref)
+    node_reference = @thing,
+    refkind = "includes"
+
+  edge ref -> @import.scope
+  edge @import.defs -> ref
+}
+
+(import_declaration
+ (scoped_identifier)@thing
+)@import {
+  node @import.scope
+  node @import.defs
+  attr (@thing.push_top)
+    refkind = "includes",
+    is_reference
+
+  edge @thing.push_bottom -> @import.scope
+  edge @import.defs -> @thing.push_bottom
 }
 
 ;; packages
 (package_declaration)@package {
   node @package.scope
   node @package.defs
-}
-
-(program (_)@statement)@program {
-  edge @program.defs -> @statement.defs
-  edge @statement.scope -> @program.scope
 }
 
 ;; classes
@@ -119,6 +156,7 @@ attribute refkind = kind                => debug_refkind = kind
   edge @class.central -> @superinterface.bottom
 }
 
+;; class body
 (class_body)@body {
   node @body.scope
   node @body.defs
@@ -171,6 +209,7 @@ attribute refkind = kind                => debug_refkind = kind
   edge @interface.central -> @superinterface.bottom
 }
 
+;; interface body
 (interface_body)@body {
   node @body.scope
   node @body.defs
@@ -214,6 +253,61 @@ attribute refkind = kind                => debug_refkind = kind
   let @scoped.bottom = @scope.bottom
 }
 
+;; scoped identifier
+(scoped_identifier
+  (identifier)@scope
+  (identifier)@name
+)@scoped {
+  node push_scope
+  attr (push_scope)
+    push_node = @scope
+  
+  node push_name
+  attr (push_name)
+    push_node = @name
+
+  edge push_name -> push_scope
+  edge push_scope -> push_name
+  let @scoped.push_top = push_name
+  let @scoped.push_bottom = push_scope
+
+  node pop_scope
+  attr (pop_scope)
+    pop_node = @scope
+  
+  node pop_name
+  attr (pop_name)
+    pop_node = @name
+
+  edge pop_name -> pop_scope
+  edge pop_scope -> pop_name
+  let @scoped.pop_top = pop_name
+  let @scoped.pop_bottom = pop_scope
+}
+
+(scoped_identifier
+  (scoped_identifier)@scope
+  (identifier)@name
+)@scoped {
+  node push_name
+  attr (push_name)
+    push_node = @name
+
+  edge push_name -> @scope.push_top
+  edge @scope.push_top -> push_name
+  let @scoped.push_top = push_name
+  let @scoped.push_bottom = @scope.push_bottom
+  
+  node pop_name
+  attr (pop_name)
+    pop_node = @name
+
+  edge pop_name -> @scope.pop_top
+  edge @scope.pop_top -> pop_name
+  let @scoped.pop_top = pop_name
+  let @scoped.pop_bottom = @scope.pop_bottom
+}
+
 ;; method declaration
 (method_declaration
   name: (_)@name
@@ -238,10 +332,10 @@ attribute refkind = kind                => debug_refkind = kind
 }
 
 (method_declaration
-  body: (block (_)@instruction)
+  body: (_)@body
 )@method {
-  edge @method.central -> @instruction.defs
-  edge @instruction.scope -> @method.scope
+  edge @body.scope -> @method.scope
+  edge @method.central -> @body.defs
 }
 
 ;; local variable declaration
@@ -290,4 +384,15 @@ attribute refkind = kind                => debug_refkind = kind
   
   edge @parameter.scope -> @parameter.defs
   edge @parameter.defs -> @parameter.central
+}
+
+;; block
+(block)@block {
+  node @block.scope
+  node @block.defs
+}
+
+(block (_)@statement)@block {
+  edge @statement.scope -> @block.scope
+  edge @block.defs -> @statement.defs
 }

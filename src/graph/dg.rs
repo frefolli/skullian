@@ -168,6 +168,17 @@ fn walk_step(
                             ));
                     }
                 },
+                Refkind::Includes => {
+                    let sink = explorer.get_name_binding(current_node);
+                    if sink.is_some() {
+                        dep_graph.add_edge(
+                            DepGraphEdge::new(
+                                current_parent.unwrap(),
+                                *sink.unwrap(),
+                                EdgeLabel::Includes
+                            ));
+                    }
+                },
                 Refkind::Nothing => ()
             }
         }
@@ -235,7 +246,7 @@ pub fn resolve_all_paths_only_of_references(
                 "refkind".to_string()
             ).unwrap_or_default());
             match refkind {
-                Refkind::Implements | Refkind::Extends => {
+                Refkind::Implements | Refkind::Extends | Refkind::Includes => {
                     references.push(node_handle);
                 },
                 Refkind::Nothing => (),
@@ -277,7 +288,7 @@ pub fn resolve_all_paths_manual_extension(
                 "refkind".to_string()
             ).unwrap_or_default());
             match refkind {
-                Refkind::Implements | Refkind::Extends => {
+                Refkind::Implements | Refkind::Extends | Refkind::Includes => {
                     references.push(node_handle);
                 },
                 Refkind::Nothing => (),
@@ -356,6 +367,7 @@ pub fn fun_facts_about_edges(dep_graph: &DepGraph) {
     let mut is_implementation_of = 0;
     let mut is_child_of = 0;
     let mut nested_to = 0;
+    let mut includes = 0;
 
     for (_node, _edges) in dep_graph.iter_edges() {
         for edge in _edges.iter() {
@@ -364,15 +376,17 @@ pub fn fun_facts_about_edges(dep_graph: &DepGraph) {
                 EdgeLabel::IsImplementationOf => is_implementation_of += 1,
                 EdgeLabel::IsChildOf => is_child_of += 1,
                 EdgeLabel::NestedTo => nested_to += 1,
+                EdgeLabel::Includes => includes += 1
             }
         }
     }
 
-    let total = defined_by + is_implementation_of + is_child_of + nested_to;
+    let total = defined_by + is_implementation_of + is_child_of + nested_to + includes;
     log::info!("found {} definedBy", defined_by);
     log::info!("found {} isImplementationOf", is_implementation_of);
     log::info!("found {} isChildOf", is_child_of);
     log::info!("found {} nestedTo", nested_to);
+    log::info!("found: {} includes", includes);
     log::info!("total: {} edges", total);
 }
 

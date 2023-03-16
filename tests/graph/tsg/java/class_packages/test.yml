@@ -1,0 +1,24 @@
+filepaths:
+  - Main.java
+  - Foo.java
+  - sub/Bar.java
+nodes:
+  - name: com.Main
+    kind: class
+  - name: com.Foo
+    kind: class
+  - name: com.sub.Bar
+    kind: class
+edges:
+  - source: com.Main
+    sink: com
+    kind: definedBy
+  - source: com.Foo
+    sink: com
+    kind: definedBy
+  - source: com.sub.Bar
+    sink: com.sub
+    kind: definedBy
+  - source: com
+    sink: com.sub.Bar
+    kind: includes

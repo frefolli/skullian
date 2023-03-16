@@ -150,19 +150,23 @@ fn job_debug(config: &CLIConfig) {
                 {
                     let yaml = std::fs::read_to_string(entry.path()).unwrap();
                     let test : TestCase = serde_yaml::from_str(&yaml).unwrap();
-                    let filepath = entry.path().with_file_name(test.filepath.as_os_str());
 
                     let mut dep_graph = DepGraph::new();
                     let mut stack_graph = StackGraph::new();
                     let mut globals = Variables::new();
+
+                    for path in test.filepaths.iter() {
+                        let filepath = entry.path().with_file_name(path.as_os_str());
                     
-                    stack_graph_process(
-                        &mut sgl_cache,
-                        &mut stack_graph,
-                        &mut globals,
-                        &config.language_name,
-                        &filepath
-                    );
+                        stack_graph_process(
+                            &mut sgl_cache,
+                            &mut stack_graph,
+                            &mut globals,
+                            &config.language_name,
+                            &filepath
+                        );
+                    }
+                    
                     skullian::graph::dg::build_dep_graph(&mut dep_graph, Path::new(&config.output_file), &stack_graph);
                     match test.verify(&dep_graph) {
                         Ok(()) => println!("{:?} ok", entry.path()),

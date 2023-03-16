@@ -6,6 +6,7 @@ use serde::{Serialize, Deserialize};
 pub enum Refkind {
     Extends,
     Implements,
+    Includes,
     Nothing
 }
 
@@ -14,6 +15,7 @@ impl Refkind {
         match refkind.as_str() {
             "extends" => Self::Extends,
             "implements" => Self::Implements,
+            "includes" => Self::Includes,
             _ => Self::Nothing
         }
     }
@@ -24,6 +26,7 @@ impl Display for Refkind {
         match self {
             Self::Extends => write!(f, "extends"),
             Self::Implements => write!(f, "implements"),
+            Self::Includes => write!(f, "includes"),
             Self::Nothing => write!(f, "nothing")
         }
     }

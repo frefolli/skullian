@@ -1,4 +1,5 @@
-filepath: main.java
+filepaths:
+  - main.java
 nodes:
   - name: com
     kind: package
