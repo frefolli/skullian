@@ -1,0 +1,26 @@
+filepaths:
+  - main.java
+nodes:
+  - name: com
+    kind: package
+  - name: com.Main
+    kind: class
+  - name: com.Main.Main
+    kind: function
+  - name: com.Main.Main.a
+    kind: parameter
+  - name: com.Main.Main.b
+    kind: attribute
+edges:
+  - source: com.Main
+    sink: com
+    kind: definedBy
+  - source: com.Main.Main
+    sink: com.Main
+    kind: definedBy
+  - source: com.Main.Main.a
+    sink: com.Main.Main
+    kind: definedBy
+  - source: com.Main.Main.b
+    sink: com.Main.Main
+    kind: definedBy

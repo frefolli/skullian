@@ -338,6 +338,36 @@ attribute refkind = kind                => debug_refkind = kind
   edge @method.central -> @body.defs
 }
 
+;; constructor declaration
+(constructor_declaration
+  name: (_)@name
+)@constructor {
+  node @constructor.scope
+  node @constructor.defs
+  node @constructor.central
+
+  attr (@constructor.central)
+    node_definition = @name,
+    defkind = "function"
+  
+  edge @constructor.scope -> @constructor.defs
+  edge @constructor.defs -> @constructor.central
+}
+
+(constructor_declaration
+  parameters: (formal_parameters (_)@parameter)
+)@constructor {
+  edge @constructor.central -> @parameter.defs
+  edge @parameter.scope -> @constructor.scope
+}
+
+(constructor_declaration
+  body: (_)@body
+)@constructor {
+  edge @body.scope -> @constructor.scope
+  edge @constructor.central -> @body.defs
+}
+
 ;; local variable declaration
 (local_variable_declaration
   declarator: (_)@declarator
@@ -395,4 +425,15 @@ attribute refkind = kind                => debug_refkind = kind
 (block (_)@statement)@block {
   edge @statement.scope -> @block.scope
   edge @block.defs -> @statement.defs
+}
+
+;; constructor body
+(constructor_body)@body {
+  node @body.scope
+  node @body.defs
+}
+
+(constructor_body (_)@statement)@body {
+  edge @statement.scope -> @body.scope
+  edge @body.defs -> @statement.defs
 }
