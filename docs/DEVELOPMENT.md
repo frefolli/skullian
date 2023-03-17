@@ -8,6 +8,6 @@ nodes:
       kind: defkind
 edges:
     - source: fully qualified name of source
-    - sink: fully qualified name of sink
+      sink: fully qualified name of sink
       kind: edge_label
 ```
