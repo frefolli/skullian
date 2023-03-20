@@ -100,6 +100,7 @@ fn walk_step(
 ) {
     let current_node = explorer.get_current_node().unwrap();
     let current_parent = explorer.get_parent_node();
+    let mut next_parent = explorer.get_parent_node();
     let scope_prefix = explorer.get_scope_prefix();
     if explorer.is_not_visited(current_node) {
         // MARK PHASE
@@ -108,32 +109,46 @@ fn walk_step(
         if concrete_node.is_definition() {
             let symbol = stack_graph.index(concrete_node.symbol().unwrap()).to_string();
             let qualified_name = format!("{}{}", scope_prefix, symbol);
-            dep_graph.add_node(
-                current_node,
-                DepGraphNode::new(
-                    qualified_name,
-                    Defkind::from(
-                        find_debug_info(
-                            stack_graph,
-                            current_node,
-                            "defkind".to_string()
-                        ).unwrap_or_default()
-                    )
-                ));
+
+            // check if definition is a justified duplicated (ex: package declaration at top level)
+            let mut defnode = dep_graph.get_node_by_name(&qualified_name);
+            let node_data : &DepGraphNode;
+            if defnode.is_some() {
+                next_parent = defnode.copied();
+                node_data = dep_graph.get_node(&defnode.unwrap()).unwrap();
+            } else {
+                dep_graph.add_node(
+                    current_node,
+                    DepGraphNode::new(
+                        qualified_name.clone(),
+                        Defkind::from(
+                            find_debug_info(
+                                stack_graph,
+                                current_node,
+                                "defkind".to_string()
+                            ).unwrap_or_default()
+                        )
+                    ));
+                dep_graph.add_name(current_node, qualified_name);
+                node_data = dep_graph.get_node(&current_node).unwrap();
+                next_parent = Some(current_node);
+                defnode = Some(&current_node);
+            }
+
             if current_parent.is_some() {
-                let current_defkind = dep_graph.get_node(&current_node).unwrap().get_defkind();
+                let current_defkind = node_data.get_defkind();
                 let parent_defkind = dep_graph.get_node(&current_parent.unwrap()).unwrap().get_defkind();
                 if current_defkind == parent_defkind {
                     dep_graph.add_edge(
                         DepGraphEdge::new(
-                            current_node,
+                            *defnode.unwrap(),
                             current_parent.unwrap(),
                             EdgeLabel::NestedTo
                         ));
                 } else {
                     dep_graph.add_edge(
                         DepGraphEdge::new(
-                            current_node,
+                            *defnode.unwrap(),
                             current_parent.unwrap(),
                             EdgeLabel::DefinedBy
                         ));
@@ -187,7 +202,7 @@ fn walk_step(
         if concrete_node.is_definition() {
             let symbol = stack_graph.index(concrete_node.symbol().unwrap()).to_string();
             explorer.set_scope_prefix(format!("{}{}.", scope_prefix, symbol));
-            explorer.set_parent_node(Some(current_node));
+            explorer.set_parent_node(next_parent);
         }
         
         // RECURSIVE PHASE
@@ -409,5 +424,5 @@ pub fn build_dep_graph(
     save_to_data_json(output_file, dep_graph);
     log::info!("Explorer is_done_with saving_graph_to_json");
     fun_facts(&dep_graph);
-    // log::info!("{}", dep_graph);
+    log::info!("{}", dep_graph);
 }

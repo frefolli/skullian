@@ -5,6 +5,7 @@ use super::dep_graph_node::DepGraphNode;
 use super::dep_graph_edge::DepGraphEdge;
 
 pub struct DepGraph {
+    names: HashMap<String, Handle<Node>>,
     nodes: HashMap<Handle<Node>, DepGraphNode>,
     edges: HashMap<Handle<Node>, Vec<DepGraphEdge>>
 }
@@ -12,6 +13,7 @@ pub struct DepGraph {
 impl DepGraph {
     pub fn new() -> DepGraph {
         DepGraph {
+            names: HashMap::<String, Handle<Node>>::new(),
             nodes: HashMap::<Handle<Node>, DepGraphNode>::new(),
             edges: HashMap::<Handle<Node>, Vec<DepGraphEdge>>::new()
         }
@@ -32,6 +34,10 @@ impl DepGraph {
 
     pub fn add_edge(&mut self, edge: DepGraphEdge) {
         self.edges.get_mut(&edge.get_source()).unwrap().push(edge);
+    }
+
+    pub fn add_name(&mut self, node_handle: Handle<Node>, qualified_name: String) {
+        self.names.insert(qualified_name, node_handle);
     }
 
     pub fn iter_nodes(&self) -> std::collections::hash_map::Iter<Handle<Node>, DepGraphNode> {
@@ -97,12 +103,7 @@ impl DepGraph {
     }
 
     pub fn get_node_by_name(&self, name: &String) -> Option<&Handle<Node>> {
-        for (node_handle, data) in self.iter_nodes() {
-            if name.as_str() == data.get_qualified_name().as_str() {
-                return Some(node_handle)
-            }
-        }
-        None
+        self.names.get(name)
     }
 }
 
