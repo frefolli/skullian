@@ -338,6 +338,29 @@ attribute refkind = kind                => debug_refkind = kind
   edge @method.central -> @body.defs
 }
 
+(method_declaration
+  type: (type_identifier)@type
+)@method {
+  node ref
+  attr (ref)
+    node_reference = @type,
+    refkind = "usesType"
+
+  edge ref -> @method.scope
+  edge @method.central -> ref
+}
+
+(method_declaration
+  type: (scoped_type_identifier)@type
+)@method {
+  attr (@type.top)
+    refkind = "usesType",
+    is_reference
+
+  edge @type.bottom -> @method.scope
+  edge @method.central -> @type.bottom
+}
+
 ;; constructor declaration
 (constructor_declaration
   name: (_)@name
@@ -384,6 +407,29 @@ attribute refkind = kind                => debug_refkind = kind
   edge @variable.defs -> @variable.central
 }
 
+(local_variable_declaration
+  type: (type_identifier)@type
+)@variable {
+  node ref
+  attr (ref)
+    node_reference = @type,
+    refkind = "usesType"
+
+  edge ref -> @variable.scope
+  edge @variable.central -> ref
+}
+
+(local_variable_declaration
+  type: (scoped_type_identifier)@type
+)@variable {
+  attr (@type.top)
+    refkind = "usesType",
+    is_reference
+
+  edge @type.bottom -> @variable.scope
+  edge @variable.central -> @type.bottom
+}
+
 ;; field declaration
 (field_declaration
   declarator: (_)@declarator
@@ -400,6 +446,29 @@ attribute refkind = kind                => debug_refkind = kind
   edge @field.defs -> @field.central
 }
 
+(field_declaration
+  type: (type_identifier)@type
+)@field {
+  node ref
+  attr (ref)
+    node_reference = @type,
+    refkind = "usesType"
+
+  edge ref -> @field.scope
+  edge @field.central -> ref
+}
+
+(field_declaration
+  type: (scoped_type_identifier)@type
+)@field {
+  attr (@type.top)
+    refkind = "usesType",
+    is_reference
+
+  edge @type.bottom -> @field.scope
+  edge @field.central -> @type.bottom
+}
+
 ;; formal parameter
 (formal_parameter
   name: (_)@name
@@ -414,6 +483,29 @@ attribute refkind = kind                => debug_refkind = kind
   
   edge @parameter.scope -> @parameter.defs
   edge @parameter.defs -> @parameter.central
+}
+
+(formal_parameter
+  type: (type_identifier)@type
+)@parameter {
+  node ref
+  attr (ref)
+    node_reference = @type,
+    refkind = "usesType"
+
+  edge ref -> @parameter.scope
+  edge @parameter.central -> ref
+}
+
+(formal_parameter
+  type: (scoped_type_identifier)@type
+)@parameter {
+  attr (@type.top)
+    refkind = "usesType",
+    is_reference
+
+  edge @type.bottom -> @parameter.scope
+  edge @parameter.central -> @type.bottom
 }
 
 ;; block
@@ -436,4 +528,15 @@ attribute refkind = kind                => debug_refkind = kind
 (constructor_body (_)@statement)@body {
   edge @statement.scope -> @body.scope
   edge @body.defs -> @statement.defs
+}
+
+;; comments
+(line_comment)@line_comment {
+  node @line_comment.defs
+  node @line_comment.scope
+}
+
+(block_comment)@block_comment {
+  node @block_comment.defs
+  node @block_comment.scope
 }

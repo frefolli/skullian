@@ -194,6 +194,17 @@ fn walk_step(
                             ));
                     }
                 },
+                Refkind::UsesType => {
+                    let sink = explorer.get_name_binding(current_node);
+                    if sink.is_some() {
+                        dep_graph.add_edge(
+                            DepGraphEdge::new(
+                                current_parent.unwrap(),
+                                *sink.unwrap(),
+                                EdgeLabel::UsesType
+                            ));
+                    }
+                },
                 Refkind::Nothing => ()
             }
         }
@@ -261,7 +272,7 @@ pub fn resolve_all_paths_only_of_references(
                 "refkind".to_string()
             ).unwrap_or_default());
             match refkind {
-                Refkind::Implements | Refkind::Extends | Refkind::Includes => {
+                Refkind::Implements | Refkind::Extends | Refkind::Includes | Refkind::UsesType => {
                     references.push(node_handle);
                 },
                 Refkind::Nothing => (),
@@ -303,7 +314,7 @@ pub fn resolve_all_paths_manual_extension(
                 "refkind".to_string()
             ).unwrap_or_default());
             match refkind {
-                Refkind::Implements | Refkind::Extends | Refkind::Includes => {
+                Refkind::Implements | Refkind::Extends | Refkind::Includes | Refkind::UsesType => {
                     references.push(node_handle);
                 },
                 Refkind::Nothing => (),
@@ -362,11 +373,10 @@ fn fun_facts_about_nodes(dep_graph: &DepGraph) {
         }
     }
 
-    let total =
-        packages + classes +
-        interfaces + functions +
-        parameters + attributes +
-        others;
+    let total = packages + classes +
+                     interfaces + functions +
+                     parameters + attributes +
+                     others;
     log::info!("found {} packages", packages);
     log::info!("found {} classes", classes);
     log::info!("found {} interfaces", interfaces);
@@ -383,6 +393,7 @@ pub fn fun_facts_about_edges(dep_graph: &DepGraph) {
     let mut is_child_of = 0;
     let mut nested_to = 0;
     let mut includes = 0;
+    let mut uses_type = 0;
 
     for (_node, _edges) in dep_graph.iter_edges() {
         for edge in _edges.iter() {
@@ -391,17 +402,21 @@ pub fn fun_facts_about_edges(dep_graph: &DepGraph) {
                 EdgeLabel::IsImplementationOf => is_implementation_of += 1,
                 EdgeLabel::IsChildOf => is_child_of += 1,
                 EdgeLabel::NestedTo => nested_to += 1,
-                EdgeLabel::Includes => includes += 1
+                EdgeLabel::Includes => includes += 1,
+                EdgeLabel::UsesType => uses_type += 1
             }
         }
     }
 
-    let total = defined_by + is_implementation_of + is_child_of + nested_to + includes;
+    let total = defined_by + is_implementation_of +
+                     is_child_of + nested_to +
+                     includes + uses_type;
     log::info!("found {} definedBy", defined_by);
     log::info!("found {} isImplementationOf", is_implementation_of);
     log::info!("found {} isChildOf", is_child_of);
     log::info!("found {} nestedTo", nested_to);
     log::info!("found: {} includes", includes);
+    log::info!("found: {} type_used_by", uses_type);
     log::info!("total: {} edges", total);
 }
 

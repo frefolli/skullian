@@ -7,6 +7,7 @@ pub enum Refkind {
     Extends,
     Implements,
     Includes,
+    UsesType,
     Nothing
 }
 
@@ -16,6 +17,7 @@ impl Refkind {
             "extends" => Self::Extends,
             "implements" => Self::Implements,
             "includes" => Self::Includes,
+            "usesType" => Self::UsesType,
             _ => Self::Nothing
         }
     }
@@ -27,6 +29,7 @@ impl Display for Refkind {
             Self::Extends => write!(f, "extends"),
             Self::Implements => write!(f, "implements"),
             Self::Includes => write!(f, "includes"),
+            Self::UsesType => write!(f, "usesType"),
             Self::Nothing => write!(f, "nothing")
         }
     }
