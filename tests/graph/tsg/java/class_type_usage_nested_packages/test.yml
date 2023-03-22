@@ -1,0 +1,30 @@
+filepaths:
+  - Main.java
+  - Foo.java
+nodes:
+  - name: com.net.Main
+    kind: class
+  - name: com.net.Foo
+    kind: class
+edges:
+  - source: com.net.Main
+    sink: com.net
+    kind: definedBy
+  - source: com.net.Foo
+    sink: com.net
+    kind: definedBy
+  - source: com.net.Main.main
+    sink: com.net.Main
+    kind: definedBy
+  - source: com.net.Main.bar
+    sink: com.net.Main
+    kind: definedBy
+  - source: com.net.Main.bing
+    sink: com.net.Foo
+    kind: usesType
+  - source: com.net.Main.main.obj1
+    sink: com.net.Foo
+    kind: usesType
+  - source: com.net.Main.bar
+    sink: com.net.Foo
+    kind: usesType

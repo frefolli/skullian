@@ -1,13 +1,13 @@
-package com;
+package com.net;
 
 public class Main {
     private Foo bing;
 
     public void main() {
-        com.Foo obj1;
+        com.net.Foo obj1;
     }
 
-    public com.Foo bar() {
+    public com.net.Foo bar() {
         // some
     }
 }
