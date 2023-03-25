@@ -10,6 +10,7 @@ pub enum EdgeLabel {
     IsChildOf,
     Includes,
     UsesType,
+    AccessField,
     NestedTo
 }
 
@@ -21,6 +22,7 @@ impl EdgeLabel {
             Self::IsChildOf => "isChildOf".to_string(),
             Self::Includes => "includes".to_string(),
             Self::UsesType => "usesType".to_string(),
+            Self::AccessField => "accessField".to_string(),
             Self::NestedTo => "nestedTo".to_string()
         }
     }

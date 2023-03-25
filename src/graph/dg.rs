@@ -205,6 +205,17 @@ fn walk_step(
                             ));
                     }
                 },
+                Refkind::AccessField => {
+                    let sink = explorer.get_name_binding(current_node);
+                    if sink.is_some() {
+                        dep_graph.add_edge(
+                            DepGraphEdge::new(
+                                current_parent.unwrap(),
+                                *sink.unwrap(),
+                                EdgeLabel::AccessField
+                            ));
+                    }
+                },
                 Refkind::Nothing => ()
             }
         }
@@ -272,7 +283,7 @@ pub fn resolve_all_paths_only_of_references(
                 "refkind".to_string()
             ).unwrap_or_default());
             match refkind {
-                Refkind::Implements | Refkind::Extends | Refkind::Includes | Refkind::UsesType => {
+                Refkind::Implements | Refkind::Extends | Refkind::Includes | Refkind::UsesType | Refkind::AccessField => {
                     references.push(node_handle);
                 },
                 Refkind::Nothing => (),
@@ -314,7 +325,7 @@ pub fn resolve_all_paths_manual_extension(
                 "refkind".to_string()
             ).unwrap_or_default());
             match refkind {
-                Refkind::Implements | Refkind::Extends | Refkind::Includes | Refkind::UsesType => {
+                Refkind::Implements | Refkind::Extends | Refkind::Includes | Refkind::UsesType | Refkind::AccessField => {
                     references.push(node_handle);
                 },
                 Refkind::Nothing => (),
@@ -394,6 +405,7 @@ pub fn fun_facts_about_edges(dep_graph: &DepGraph) {
     let mut nested_to = 0;
     let mut includes = 0;
     let mut uses_type = 0;
+    let mut access_field = 0;
 
     for (_node, _edges) in dep_graph.iter_edges() {
         for edge in _edges.iter() {
@@ -403,20 +415,22 @@ pub fn fun_facts_about_edges(dep_graph: &DepGraph) {
                 EdgeLabel::IsChildOf => is_child_of += 1,
                 EdgeLabel::NestedTo => nested_to += 1,
                 EdgeLabel::Includes => includes += 1,
-                EdgeLabel::UsesType => uses_type += 1
+                EdgeLabel::UsesType => uses_type += 1,
+                EdgeLabel::AccessField => access_field += 1
             }
         }
     }
 
     let total = defined_by + is_implementation_of +
                      is_child_of + nested_to +
-                     includes + uses_type;
+                     includes + uses_type + access_field;
     log::info!("found {} definedBy", defined_by);
     log::info!("found {} isImplementationOf", is_implementation_of);
     log::info!("found {} isChildOf", is_child_of);
     log::info!("found {} nestedTo", nested_to);
     log::info!("found: {} includes", includes);
-    log::info!("found: {} type_used_by", uses_type);
+    log::info!("found: {} uses_type", uses_type);
+    log::info!("found: {} access_field", access_field);
     log::info!("total: {} edges", total);
 }
 
