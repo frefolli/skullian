@@ -296,6 +296,78 @@ attribute refkind = kind                => debug_refkind = kind
   let @scoped.pop_bottom = @scope.pop_bottom
 }
 
+;; field access
+(field_access)@access {
+  node @access.scope
+  node @access.defs
+  edge @access.push_bottom -> @access.scope
+  edge @access.defs -> @access.push_bottom
+  edge @access.defs -> @access.push_top
+}
+
+[
+  (field_access
+    object: (identifier)@object
+    field: (identifier)@field
+  )@access
+]
+{
+  node push_scope
+  attr (push_scope)
+    push_node = @object
+  
+  node push_name
+  attr (push_name)
+    push_node = @field,
+    is_reference,
+    debug_refkind = "accessField"
+
+  edge push_name -> push_scope
+  edge push_scope -> push_name
+  let @access.push_top = push_name
+  let @access.push_bottom = push_scope
+
+  node pop_scope
+  attr (pop_scope)
+    pop_node = @object
+  
+  node pop_name
+  attr (pop_name)
+    pop_node = @field
+
+  edge pop_name -> pop_scope
+  edge pop_scope -> pop_name
+  let @access.pop_top = pop_name
+  let @access.pop_bottom = pop_scope
+}
+
+[
+  (field_access
+    object: (field_access)@object
+    field: (identifier)@field
+  )@access
+] {
+  node push_name
+  attr (push_name)
+    push_node = @field,
+    is_reference,
+    debug_refkind = "accessField"
+
+  edge push_name -> @object.push_top
+  edge @object.push_top -> push_name
+  let @access.push_top = push_name
+  let @access.push_bottom = @object.push_bottom
+  
+  node pop_name
+  attr (pop_name)
+    pop_node = @field
+
+  edge pop_name -> @object.pop_top
+  edge @object.pop_top -> pop_name
+  let @access.pop_top = pop_name
+  let @access.pop_bottom = @object.pop_bottom
+}
+
 ;; method declaration
 (method_declaration
   name: (_)@name
@@ -518,13 +590,91 @@ attribute refkind = kind                => debug_refkind = kind
   edge @body.defs -> @statement.defs
 }
 
-;; comments
-(line_comment)@line_comment {
-  node @line_comment.defs
-  node @line_comment.scope
+;; expression statements
+(expression_statement)@statement {
+  node @statement.scope
+  node @statement.defs
 }
 
-(block_comment)@block_comment {
-  node @block_comment.defs
-  node @block_comment.scope
+(expression_statement (_)@child)@statement {
+  edge @child.scope -> @statement.scope
+  edge @statement.defs -> @child.defs
+}
+
+;; statements
+[
+  (binary_expression)@expression
+  (assignment_expression)@expression
+] {
+  node @expression.scope
+  node @expression.defs
+}
+
+[
+  (binary_expression (_)@child)@expression
+  (assignment_expression (_)@child)@expression
+] {
+  edge @child.scope -> @expression.scope
+  edge @expression.defs -> @child.defs
+}
+
+;; comments
+[
+  (line_comment)@comment
+  (block_comment)@comment
+] {
+  node @comment.defs
+  node @comment.scope
+}
+
+;; primitives
+[
+  (decimal_integer_literal)@literal
+  (string_literal)@literal
+] {
+  node @literal.defs
+  node @literal.scope
+}
+
+;;
+
+(method_invocation
+    name: (identifier)@name
+)@call {
+    node @call.scope
+    node @call.defs
+    node @name.central
+    attr (@name.central)
+        push_node = @name,
+        is_reference,
+        debug_refkind = "methodCall"
+}
+
+(method_invocation
+    object: (identifier)@object
+)@call {
+    node @object.scope
+    node @object.defs
+    node @object.central
+    attr (@object.central)
+        push_node = @object,
+        is_reference,
+        debug_refkind = "accessField"
+    edge @object.defs -> @object.central
+    edge @object.central -> @object.scope
+}
+
+(method_invocation
+    object: (_)? @object
+    name: (_)@name
+)@call {
+    if some @object {
+      edge @call.defs -> @object.defs
+      edge @object.defs -> @name.central
+      edge @name.central -> @object.defs
+      edge @object.scope -> @call.scope
+    } else {
+      edge @call.defs -> @name.central
+      edge @name.central -> @call.scope
+    }
 }

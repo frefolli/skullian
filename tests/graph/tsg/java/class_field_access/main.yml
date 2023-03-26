@@ -1,0 +1,18 @@
+filepaths:
+  - main.java
+nodes:
+  - name: com
+    kind: package
+  - name: com.Main
+    kind: class
+  - name: com.A
+    kind: class
+  - name: com.A.B
+    kind: class
+edges:
+  - source: com.Main.main
+    sink: com.A.B.method
+    kind: accessField
+  - source: com.Main.main
+    sink: com.A.B.field
+    kind: accessField
