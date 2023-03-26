@@ -11,6 +11,7 @@ pub enum EdgeLabel {
     Includes,
     UsesType,
     AccessField,
+    MethodCall,
     NestedTo
 }
 
@@ -23,6 +24,7 @@ impl EdgeLabel {
             Self::Includes => "includes".to_string(),
             Self::UsesType => "usesType".to_string(),
             Self::AccessField => "accessField".to_string(),
+            Self::MethodCall => "methodCall".to_string(),
             Self::NestedTo => "nestedTo".to_string()
         }
     }

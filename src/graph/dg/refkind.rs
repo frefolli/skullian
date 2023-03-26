@@ -9,6 +9,7 @@ pub enum Refkind {
     Includes,
     UsesType,
     AccessField,
+    MethodCall,
     Nothing
 }
 
@@ -20,6 +21,7 @@ impl Refkind {
             "includes" => Self::Includes,
             "usesType" => Self::UsesType,
             "accessField" => Self::AccessField,
+            "methodCall" => Self::MethodCall,
             _ => Self::Nothing
         }
     }
@@ -33,6 +35,7 @@ impl Display for Refkind {
             Self::Includes => write!(f, "includes"),
             Self::UsesType => write!(f, "usesType"),
             Self::AccessField => write!(f, "accessField"),
+            Self::MethodCall => write!(f, "methodCall"),
             Self::Nothing => write!(f, "nothing")
         }
     }
