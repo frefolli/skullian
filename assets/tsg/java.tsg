@@ -302,6 +302,7 @@ attribute refkind = kind                => debug_refkind = kind
   node @access.defs
   edge @access.push_bottom -> @access.scope
   edge @access.defs -> @access.push_bottom
+  edge @access.defs -> @access.push_top
 }
 
 [

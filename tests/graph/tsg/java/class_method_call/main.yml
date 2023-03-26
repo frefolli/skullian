@@ -10,9 +10,9 @@ nodes:
   - name: com.A.B
     kind: class
 edges:
-  - source: com.Main
+  - source: com.Main.main
     sink: com.A.B.method
     kind: methodCall
-    sink: com.A.B.method
+  - source: com.A.B.method
     sink: com.A.B.method
     kind: methodCall
