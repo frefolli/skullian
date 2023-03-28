@@ -348,6 +348,9 @@ pub fn resolve_all_paths_manual_extension(
     let mut bindings = 0;
     let progress_bar = indicatif::ProgressBar::new(references.len().try_into().unwrap());
     for node_handle in references {
+        let mut binding_found = node_handle.clone();
+        let mut binding_length = 0;
+        
         let mut paths = Paths::new();
         let mut cycle_detector = CycleDetector::new();
         let mut queue = [node_handle].iter()
@@ -361,12 +364,18 @@ pub fn resolve_all_paths_manual_extension(
             }
             path.extend(stack_graph, &mut paths, &mut queue);
             if path.is_complete(stack_graph) {
-                if explorer.name_bindings.get(&path.start_node).is_none() {
-                    bindings += 1;
-                    progress_bar.inc(1);
-                    explorer.set_name_binding(path.start_node, path.end_node);
-                    break;
+                if (path.edges.len() >= binding_length) {
+                    binding_found = path.end_node;
+                    binding_length = path.edges.len();
                 }
+            }
+        }
+        if binding_found != node_handle {
+            if explorer.name_bindings.get(&node_handle).is_none() {
+                bindings += 1;
+                progress_bar.inc(1);
+                explorer.set_name_binding(node_handle, binding_found);
+                break;
             }
         }
     }
@@ -381,6 +390,7 @@ fn fun_facts_about_nodes(dep_graph: &DepGraph) {
     let mut functions = 0;
     let mut parameters = 0;
     let mut attributes = 0;
+    let mut enums = 0;
     let mut others = 0;
 
     for (_node, _data) in dep_graph.iter_nodes() {
@@ -391,6 +401,7 @@ fn fun_facts_about_nodes(dep_graph: &DepGraph) {
             Defkind::Function => functions += 1,
             Defkind::Parameter => parameters += 1,
             Defkind::Attribute => attributes += 1,
+            Defkind::Enum => enums += 1,
             Defkind::Nothing => others += 1,
         }
     }
@@ -398,13 +409,14 @@ fn fun_facts_about_nodes(dep_graph: &DepGraph) {
     let total = packages + classes +
                      interfaces + functions +
                      parameters + attributes +
-                     others;
+                     enums + others;
     log::info!("found {} packages", packages);
     log::info!("found {} classes", classes);
     log::info!("found {} interfaces", interfaces);
     log::info!("found {} functions", functions);
     log::info!("found {} parameters", parameters);
     log::info!("found {} attributes", attributes);
+    log::info!("found {} enums", enums);
     log::info!("found {} other nodes", others);
     log::info!("total: {} nodes", total);
 }

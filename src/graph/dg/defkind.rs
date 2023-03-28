@@ -12,6 +12,7 @@ pub enum Defkind {
     Function,
     Parameter,
     Attribute,
+    Enum,
     Nothing
 }
 
@@ -24,6 +25,7 @@ impl Defkind {
             "function" => Self::Function,
             "parameter" => Self::Parameter,
             "attribute" => Self::Attribute,
+            "enum" => Self::Enum,
             _ => Self::Nothing
         }
     }
@@ -37,6 +39,7 @@ impl Defkind {
                 Self::Interface => "parallelogram",
                 Self::Parameter => "parameter",
                 Self::Attribute => "attribute",
+                Self::Enum => "enum",
                 Self::Nothing => "ellipse"
             },
             "background-color": match self {
@@ -46,6 +49,7 @@ impl Defkind {
                 Self::Interface => "yellow",
                 Self::Parameter => "red",
                 Self::Attribute => "yellow",
+                Self::Enum => "blue",
                 Self::Nothing => "green"
             }
         })
@@ -61,6 +65,7 @@ impl Display for Defkind {
             Self::Interface => write!(f, "interface"),
             Self::Parameter => write!(f, "parameter"),
             Self::Attribute => write!(f, "attribute"),
+            Self::Enum => write!(f, "enum"),
             Self::Nothing => write!(f, "nothing")
         }
     }

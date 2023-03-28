@@ -1,0 +1,243 @@
+;;;;;;;;;;;;;;;;;;;
+;; Global Variables
+
+global FILE_PATH
+global ROOT_NODE
+global JUMP_TO_SCOPE_NODE
+
+;;;;;;;;;;;;;;;;;;;;;;;
+;; Attribute Shorthands
+
+attribute node_definition = node        => type = "pop_symbol", node_symbol = node, is_definition
+attribute node_reference = node         => type = "push_symbol", node_symbol = node, is_reference
+attribute pop_node = node               => type = "pop_symbol", node_symbol = node
+attribute pop_scoped_node = node        => type = "pop_scoped_symbol", node_symbol = node
+attribute pop_scoped_symbol = symbol    => type = "pop_scoped_symbol", symbol = symbol
+attribute pop_symbol = symbol           => type = "pop_symbol", symbol = symbol
+attribute push_node = node              => type = "push_symbol", node_symbol = node
+attribute push_scoped_node = node       => type = "push_scoped_symbol", node_symbol = node
+attribute push_scoped_symbol = symbol   => type = "push_scoped_symbol", symbol = symbol
+attribute push_symbol = symbol          => type = "push_symbol", symbol = symbol
+attribute scoped_node_definition = node => type = "pop_scoped_symbol", node_symbol = node, is_definition
+attribute scoped_node_reference = node  => type = "push_scoped_symbol", node_symbol = node, is_reference
+attribute symbol_definition = symbol    => type = "pop_symbol", symbol = symbol, is_definition
+attribute symbol_reference = symbol     => type = "push_symbol", symbol = symbol, is_reference
+attribute node_symbol = node            => symbol = (source-text node), source_node = node
+attribute defkind = kind                => debug_defkind = kind
+attribute refkind = kind                => debug_refkind = kind
+
+;;; Unit
+;;
+;; a generic unit has
+;;
+;; - node.push_start: the entry point for push sequence
+;; - node.push_end: the last point for push sequence
+;; - node.pop_start: the entry point for pop sequence
+;; - node.pop_end: the last point for pop sequence
+;; - node.scope: the gateway of the unit
+;;
+;; these could be concrete nodes or variables which point to nodes
+;; in case of a symbol unit push and pops are garanteed to be push and pops nodes
+
+;; generics
+[
+  (program)@this
+  (identifier)@this
+  ;; (import_declaration)@this
+  (enum_declaration)@this
+  (class_declaration)@this
+  (interface_declaration)@this
+  (method_declaration)@this
+  (constructor_declaration)@this
+  (field_declaration)@this
+  (local_variable_declaration)@this
+  (formal_parameter)@this
+  (class_body)@this
+  (interface_body)@this
+  (enum_body)@this
+  (block)@this
+  (constructor_body)@this
+  (formal_parameters)@this
+  (enum_body_declarations)@this
+] {
+  node @this.scope
+  node @this.pop_start
+  node @this.push_start
+  edge @this.scope -> @this.pop_start
+}
+
+[
+  (enum_declaration name: (_)@name body: (_)@body)@this
+  (class_declaration name: (_)@name body: (_)@body)@this
+  (interface_declaration name: (_)@name body: (_)@body)@this
+  (method_declaration name: (_)@name body: (_)@body)@this
+  (constructor_declaration name: (_)@name body: (_)@body)@this
+] {
+  edge @name.scope -> @this.scope
+  edge @this.pop_start -> @name.pop_start
+  edge @body.scope -> @this.scope
+  edge @name.pop_end -> @body.pop_start
+}
+
+[
+  (field_declaration declarator: (variable_declarator name: (_)@name))@this
+  (local_variable_declaration declarator: (variable_declarator name: (_)@name))@this
+  (formal_parameter name: (_)@name)@this
+  (package_declaration (_)@name)@this
+] {
+  edge @name.scope -> @this.scope
+  edge @this.pop_start -> @name.pop_start
+}
+
+[
+  (program (_)@child)@this
+  (class_body (_)@child)@this
+  (interface_body (_)@child)@this
+  (enum_body (_)@child)@this
+  (block (_)@child)@this
+  (constructor_body (_)@child)@this
+  (formal_parameters (_)@child)@this
+  (enum_body_declarations (_)@child)@this
+] {
+  edge @child.scope -> @this.scope
+  edge @this.pop_start -> @child.pop_start
+}
+
+[
+  (method_declaration name: (_)@name parameters: (_)@parameters)@this
+  (constructor_declaration name: (_)@name parameters: (_)@parameters)@this
+] {
+  edge @parameters.scope -> @this.scope
+  edge @name.pop_end -> @parameters.pop_start
+}
+
+;; identifiers
+(identifier)@this {
+  attr (@this.pop_start)
+    node_definition = @this
+  let @this.pop_end = @this.pop_start
+
+  ;; TODO: add is_reference
+  attr (@this.push_start)
+    push_node = @this
+  let @this.push_end = @this.push_start
+  edge @this.push_end -> @this.scope
+}
+
+;; scoped_identifier
+(scoped_identifier
+  scope: (_)@scope
+  name: (_)@name
+)@this {
+  node @this.scope
+  edge @scope.pop_end -> @name.pop_start
+  edge @name.push_end -> @scope.push_start
+  let @this.pop_start = @scope.pop_start
+  let @this.pop_end = @name.pop_end
+  let @this.push_start = @name.push_start
+  let @this.push_end = @scope.push_end
+  edge @this.scope -> @this.pop_start
+  edge @this.push_end -> @this.scope
+}
+
+;; packages
+(package_declaration
+  (_)@name
+)@this {
+  node @this.scope
+  attr (@name.pop_end) defkind = "package"
+  let @this.pop_start = @name.pop_start
+  let @this.pop_end = @name.pop_end
+  let @this.push_start = @name.push_start
+  let @this.push_end = @name.push_end
+  edge @this.scope -> @this.pop_start
+  edge @this.push_end -> @this.scope
+}
+
+;; imports
+(import_declaration
+  (_)@name
+)@this {
+  node @this.scope
+  attr (@name.push_start) is_reference, refkind = "includes"
+  let @this.pop_start = (node)
+  let @this.pop_end = (node)
+  let @this.push_start = (node)
+  let @this.push_end = (node) 
+
+  edge @this.pop_start -> @name.pop_end
+  edge @this.pop_start -> @name.push_start
+  edge @name.push_end -> @this.scope
+  edge @this.scope -> @this.pop_start
+}
+
+(program
+  (package_declaration)? @package
+)@this {
+  if some @package {
+    edge ROOT_NODE -> @package.pop_start
+    edge @package.pop_end -> @this.scope
+    edge @this.scope -> @package.push_start
+    edge @package.push_end -> ROOT_NODE
+    edge @this.scope -> ROOT_NODE
+  } else {
+    edge ROOT_NODE -> @this.scope
+    edge @this.scope -> ROOT_NODE
+  }
+}
+
+;; classes
+(class_declaration
+  name: (_)@name
+)@this {
+  attr (@name.pop_end) defkind = "class"
+}
+
+;; interfaces
+(interface_declaration
+  name: (_)@name
+)@this {
+  attr (@name.pop_end) defkind = "interface"
+}
+
+;; enums
+(enum_declaration
+  name: (_)@name
+)@this {
+  attr (@name.pop_end) defkind = "enum"
+}
+
+;; methods
+(method_declaration
+  name: (_)@name
+)@this {
+  attr (@name.pop_end) defkind = "function"
+}
+
+;; constructor
+(constructor_declaration
+  name: (_)@name
+)@this {
+  attr (@name.pop_end) defkind = "function"
+}
+
+;; fields
+(field_declaration
+  declarator: (variable_declarator name: (_)@name)
+)@this {
+  attr (@name.pop_end) defkind = "attribute"
+}
+
+;; parameters
+(formal_parameter
+  name: (_)@name
+)@this {
+  attr (@name.pop_end) defkind = "parameter"
+}
+
+;; local_variable_declaration
+(local_variable_declaration
+  declarator: (variable_declarator name: (_)@name)
+)@this {
+  attr (@name.pop_end) defkind = "attribute"
+}

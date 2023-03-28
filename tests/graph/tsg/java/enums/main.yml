@@ -1,0 +1,11 @@
+filepaths:
+  - main.java
+nodes:
+  - name: Enum
+    kind: enum
+  - name: Enum.toString
+    kind: function
+edges:
+  - source: Enum.toString
+    sink: Enum
+    kind: definedBy
