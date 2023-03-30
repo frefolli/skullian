@@ -43,7 +43,7 @@ attribute refkind = kind                => debug_refkind = kind
 [
   (program)@this
   (identifier)@this
-  ;; (import_declaration)@this
+  (type_identifier)@this
   (enum_declaration)@this
   (class_declaration)@this
   (interface_declaration)@this
@@ -75,6 +75,7 @@ attribute refkind = kind                => debug_refkind = kind
 ] {
   edge @name.scope -> @this.scope
   edge @this.pop_start -> @name.pop_start
+  let @this.pop_end = @name.pop_end
   edge @body.scope -> @this.scope
   edge @name.pop_end -> @body.pop_start
 }
@@ -111,8 +112,30 @@ attribute refkind = kind                => debug_refkind = kind
   edge @name.pop_end -> @parameters.pop_start
 }
 
+[
+  (class_declaration superclass: (superclass (_)@super))@this
+  (interface_declaration (extends_interfaces (type_list (_)@super)))@this
+] {
+  attr (@super.push_start)
+    is_reference, refkind = "extends"
+  edge @this.pop_end -> @super.push_start
+  edge @super.push_end -> @this.scope
+}
+
+[
+  (class_declaration interfaces: (super_interfaces (type_list (_)@super)))@this
+] {
+  attr (@super.push_start)
+    is_reference, refkind = "implements"
+  edge @this.pop_end -> @super.push_start
+  edge @super.push_end -> @this.scope
+}
+
 ;; identifiers
-(identifier)@this {
+[
+  (identifier)@this
+  (type_identifier)@this
+] {
   attr (@this.pop_start)
     node_definition = @this
   let @this.pop_end = @this.pop_start
@@ -125,10 +148,10 @@ attribute refkind = kind                => debug_refkind = kind
 }
 
 ;; scoped_identifier
-(scoped_identifier
-  scope: (_)@scope
-  name: (_)@name
-)@this {
+[
+  (scoped_identifier scope: (_)@scope name: (_)@name)@this
+  (scoped_type_identifier (_)@scope (_)@name)@this
+] {
   node @this.scope
   edge @scope.pop_end -> @name.pop_start
   edge @name.push_end -> @scope.push_start
