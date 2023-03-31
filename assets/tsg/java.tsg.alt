@@ -90,10 +90,22 @@ attribute refkind = kind                => debug_refkind = kind
 }
 
 [
+  (enum_declaration name: (_)@name body: (_)@body)@this
+  (class_declaration name: (_)@name body: (_)@body)@this
+] {
+  node @this.this
+  attr (@this.this)
+    pop_symbol = "this"
+  edge @name.pop_end -> @this.this
+  edge @this.this -> @body.pop_start
+}
+
+[
   (field_declaration declarator: (variable_declarator name: (_)@name))@this
   (local_variable_declaration declarator: (variable_declarator name: (_)@name))@this
   (formal_parameter name: (_)@name)@this
   (package_declaration (_)@name)@this
+  (enum_constant name: (_)@name)@this
 ] {
   edge @name.scope -> @this.scope
   edge @this.pop_start -> @name.pop_start
@@ -313,4 +325,15 @@ attribute refkind = kind                => debug_refkind = kind
   name: (_)@name
 )@this {
   attr (@name.pop_end) defkind = "variant"
+}
+
+;; field access against identifier
+[
+  (binary_expression left: (identifier)@child)@this
+  (assignment_expression left: (identifier)@child)@this
+  (binary_expression right: (identifier)@child)@this
+  (assignment_expression right: (identifier)@child)@this
+] {
+  attr (@child.push_start)
+    is_reference, refkind = "accessField"
 }

@@ -46,8 +46,9 @@ impl DepGraphEdge {
     pub fn to_json(&self, graph: &DepGraph) -> serde_json::value::Value {
         let label = self.label.to_string();
         let source = graph.get_node(&self.source).unwrap().get_qualified_name();
-        println!("{} {}", source, label);
+        print!("{} {}", source, label);
         let target = graph.get_node(&self.sink).unwrap().get_qualified_name();
+        println!("{}", target);
         let id = format!("{} -> {}", source, target);
         serde_json::json!({
             "data": {
