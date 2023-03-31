@@ -43,6 +43,7 @@ attribute refkind = kind                => debug_refkind = kind
 [
   (program)@this
   (identifier)@this
+  (this)@this
   (type_identifier)@this
   (enum_declaration)@this
   (class_declaration)@this
@@ -59,6 +60,14 @@ attribute refkind = kind                => debug_refkind = kind
   (constructor_body)@this
   (formal_parameters)@this
   (enum_body_declarations)@this
+  (enum_constant)@this
+  (expression_statement)@this
+  (return_statement)@this
+  (binary_expression)@this
+  (assignment_expression)@this
+  (decimal_integer_literal)@this
+  (string_literal)@this
+  (null_literal)@this
 ] {
   node @this.scope
   node @this.pop_start
@@ -99,6 +108,12 @@ attribute refkind = kind                => debug_refkind = kind
   (constructor_body (_)@child)@this
   (formal_parameters (_)@child)@this
   (enum_body_declarations (_)@child)@this
+  (expression_statement (_)@child)@this
+  (return_statement (_)@child)@this
+  (binary_expression left: (_)@child)@this
+  (assignment_expression left: (_)@child)@this
+  (binary_expression right: (_)@child)@this
+  (assignment_expression right: (_)@child)@this
 ] {
   edge @child.scope -> @this.scope
   edge @this.pop_start -> @child.pop_start
@@ -140,7 +155,20 @@ attribute refkind = kind                => debug_refkind = kind
     node_definition = @this
   let @this.pop_end = @this.pop_start
 
-  ;; TODO: add is_reference
+  attr (@this.push_start)
+    push_node = @this
+  let @this.push_end = @this.push_start
+  edge @this.push_end -> @this.scope
+}
+
+;; this
+[
+  (this)@this
+] {
+  attr (@this.pop_start)
+    node_definition = @this
+  let @this.pop_end = @this.pop_start
+
   attr (@this.push_start)
     push_node = @this
   let @this.push_end = @this.push_start
@@ -161,6 +189,21 @@ attribute refkind = kind                => debug_refkind = kind
   let @this.push_end = @scope.push_end
   edge @this.scope -> @this.pop_start
   edge @this.push_end -> @this.scope
+}
+
+;; field access
+(field_access object: (_)@object field: (_)@field)@this {
+  node @this.scope
+  node @this.pop_start
+  node @this.pop_end
+  edge @field.push_end -> @object.push_start
+  let @this.push_start = @field.push_start
+  let @this.push_end = @object.push_end
+  edge @this.push_end -> @this.scope
+  edge @this.scope -> @this.pop_start
+  edge @this.pop_start -> @this.push_start
+  attr (@field.push_start)
+    is_reference, refkind = "accessField"
 }
 
 ;; packages
@@ -263,4 +306,11 @@ attribute refkind = kind                => debug_refkind = kind
   declarator: (variable_declarator name: (_)@name)
 )@this {
   attr (@name.pop_end) defkind = "attribute"
+}
+
+;; enum_constant
+(enum_constant
+  name: (_)@name
+)@this {
+  attr (@name.pop_end) defkind = "variant"
 }

@@ -36,18 +36,19 @@ impl DepGraphEdge {
     }
 
     pub fn to_string(&self, graph: &DepGraph) -> String {
+        let label = self.label.to_string();
         let source = graph.get_node(&self.source).unwrap().get_qualified_name();
         let target = graph.get_node(&self.sink).unwrap().get_qualified_name();
-        let label = self.label.to_string();
         format!("(edge {} {} {})",
             source, label, target)
     }
 
     pub fn to_json(&self, graph: &DepGraph) -> serde_json::value::Value {
+        let label = self.label.to_string();
         let source = graph.get_node(&self.source).unwrap().get_qualified_name();
+        println!("{} {}", source, label);
         let target = graph.get_node(&self.sink).unwrap().get_qualified_name();
         let id = format!("{} -> {}", source, target);
-        let label = self.label.to_string();
         serde_json::json!({
             "data": {
                 "id": id,
