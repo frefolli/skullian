@@ -13,6 +13,7 @@ pub enum Defkind {
     Parameter,
     Attribute,
     Enum,
+    Variant,
     Nothing
 }
 
@@ -26,6 +27,7 @@ impl Defkind {
             "parameter" => Self::Parameter,
             "attribute" => Self::Attribute,
             "enum" => Self::Enum,
+            "variant" => Self::Variant,
             _ => Self::Nothing
         }
     }
@@ -40,6 +42,7 @@ impl Defkind {
                 Self::Parameter => "parameter",
                 Self::Attribute => "attribute",
                 Self::Enum => "enum",
+                Self::Variant => "variant",
                 Self::Nothing => "ellipse"
             },
             "background-color": match self {
@@ -50,6 +53,7 @@ impl Defkind {
                 Self::Parameter => "red",
                 Self::Attribute => "yellow",
                 Self::Enum => "blue",
+                Self::Variant => "variant",
                 Self::Nothing => "green"
             }
         })
@@ -66,6 +70,7 @@ impl Display for Defkind {
             Self::Parameter => write!(f, "parameter"),
             Self::Attribute => write!(f, "attribute"),
             Self::Enum => write!(f, "enum"),
+            Self::Variant => write!(f, "variant"),
             Self::Nothing => write!(f, "nothing")
         }
     }

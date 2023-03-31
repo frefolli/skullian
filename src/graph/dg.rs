@@ -364,7 +364,7 @@ pub fn resolve_all_paths_manual_extension(
             }
             path.extend(stack_graph, &mut paths, &mut queue);
             if path.is_complete(stack_graph) {
-                if (path.edges.len() >= binding_length) {
+                if path.edges.len() >= binding_length {
                     binding_found = path.end_node;
                     binding_length = path.edges.len();
                 }
@@ -391,6 +391,7 @@ fn fun_facts_about_nodes(dep_graph: &DepGraph) {
     let mut parameters = 0;
     let mut attributes = 0;
     let mut enums = 0;
+    let mut variants = 0;
     let mut others = 0;
 
     for (_node, _data) in dep_graph.iter_nodes() {
@@ -402,6 +403,7 @@ fn fun_facts_about_nodes(dep_graph: &DepGraph) {
             Defkind::Parameter => parameters += 1,
             Defkind::Attribute => attributes += 1,
             Defkind::Enum => enums += 1,
+            Defkind::Variant => variants += 1,
             Defkind::Nothing => others += 1,
         }
     }
@@ -409,7 +411,7 @@ fn fun_facts_about_nodes(dep_graph: &DepGraph) {
     let total = packages + classes +
                      interfaces + functions +
                      parameters + attributes +
-                     enums + others;
+                     enums + variants + others;
     log::info!("found {} packages", packages);
     log::info!("found {} classes", classes);
     log::info!("found {} interfaces", interfaces);
@@ -417,6 +419,7 @@ fn fun_facts_about_nodes(dep_graph: &DepGraph) {
     log::info!("found {} parameters", parameters);
     log::info!("found {} attributes", attributes);
     log::info!("found {} enums", enums);
+    log::info!("found {} variants", variants);
     log::info!("found {} other nodes", others);
     log::info!("total: {} nodes", total);
 }

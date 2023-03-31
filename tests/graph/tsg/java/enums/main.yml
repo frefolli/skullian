@@ -5,7 +5,19 @@ nodes:
     kind: enum
   - name: Enum.toString
     kind: function
+  - name: Enum.A
+    kind: variant
+  - name: Enum.B
+    kind: variant
+  - name: Enum.C
+    kind: variant
 edges:
+  - source: Enum.Enum
+    sink: Enum
+    kind: definedBy
   - source: Enum.toString
+    sink: Enum
+    kind: definedBy
+  - source: Enum.A
     sink: Enum
     kind: definedBy
