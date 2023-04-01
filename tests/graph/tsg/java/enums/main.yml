@@ -21,3 +21,12 @@ edges:
   - source: Enum.A
     sink: Enum
     kind: definedBy
+  - source: Enum.Enum
+    sink: Enum.i
+    kind: accessField
+  - source: Enum.assign
+    sink: Enum.i
+    kind: accessField
+  - source: Enum.Enum
+    sink: Enum.Enum.j
+    kind: accessField

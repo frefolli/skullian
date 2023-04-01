@@ -90,14 +90,20 @@ attribute refkind = kind                => debug_refkind = kind
 }
 
 [
-  (enum_declaration name: (_)@name body: (_)@body)@this
-  (class_declaration name: (_)@name body: (_)@body)@this
+  (class_body)@this
+  (enum_body_declarations)@this
 ] {
   node @this.this
   attr (@this.this)
     pop_symbol = "this"
-  edge @name.pop_end -> @this.this
-  edge @this.this -> @body.pop_start
+  edge @this.pop_start -> @this.this
+}
+
+[
+  (class_body (_)@child)@this
+  (enum_body_declarations (_)@child)@this
+] {
+  edge @this.this -> @child.pop_start
 }
 
 [
@@ -137,6 +143,7 @@ attribute refkind = kind                => debug_refkind = kind
 ] {
   edge @parameters.scope -> @this.scope
   edge @name.pop_end -> @parameters.pop_start
+  edge @name.scope -> @parameters.pop_start
 }
 
 [
@@ -177,12 +184,10 @@ attribute refkind = kind                => debug_refkind = kind
 [
   (this)@this
 ] {
-  attr (@this.pop_start)
-    node_definition = @this
   let @this.pop_end = @this.pop_start
 
   attr (@this.push_start)
-    push_node = @this
+    push_symbol = "this"
   let @this.push_end = @this.push_start
   edge @this.push_end -> @this.scope
 }
@@ -212,7 +217,6 @@ attribute refkind = kind                => debug_refkind = kind
   let @this.push_start = @field.push_start
   let @this.push_end = @object.push_end
   edge @this.push_end -> @this.scope
-  edge @this.scope -> @this.pop_start
   edge @this.pop_start -> @this.push_start
   attr (@field.push_start)
     is_reference, refkind = "accessField"

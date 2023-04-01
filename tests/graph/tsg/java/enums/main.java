@@ -6,6 +6,10 @@ enum Enum {
     i = j;
   }
 
+  void assign(int j) {
+    this.i = j;
+  }
+
   String toString() {
     return "Enum(" + i + ")";
   }

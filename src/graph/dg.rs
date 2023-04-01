@@ -310,10 +310,21 @@ pub fn resolve_all_paths_only_of_references(
         &NoCancellation,
         |sg,_ps,p| {
             if p.is_complete(sg) {
-                if explorer.name_bindings.get(&p.start_node).is_none() {
-                    bindings += 1;
-                    progress_bar.inc(1);
-                    explorer.set_name_binding(p.start_node, p.end_node);
+                match Defkind::from(
+                    find_debug_info(
+                        stack_graph,
+                        p.end_node,
+                        "defkind".to_string()
+                    ).unwrap_or_default()
+                ).is_nothing() {
+                    true => {},
+                    false => {
+                        if explorer.name_bindings.get(&p.start_node).is_none() {
+                            bindings += 1;
+                            progress_bar.inc(1);
+                            explorer.set_name_binding(p.start_node, p.end_node);
+                        }
+                    }
                 }
             }
         }
@@ -339,7 +350,7 @@ pub fn resolve_all_paths_manual_extension(
                 Refkind::Implements | Refkind::Extends | Refkind::Includes | Refkind::UsesType | Refkind::AccessField | Refkind::MethodCall => {
                     references.push(node_handle);
                 },
-                Refkind::Nothing => (),
+                Refkind::Nothing => ()
             }
         }
     }
@@ -476,7 +487,8 @@ pub fn build_dep_graph(
 ) {
     let mut explorer = SynchroExplorer::new();
     explorer.set_current_node(Some(stack_graphs::graph::StackGraph::root_node()));
-    resolve_all_paths_manual_extension(&mut explorer, stack_graph);
+    resolve_all_paths_only_of_references(&mut explorer, stack_graph);
+    // resolve_all_paths_manual_extension(&mut explorer, stack_graph);
     log::info!("Explorer is_done_with resolving_paths");
     walk_step(&mut explorer, dep_graph, stack_graph);
     log::info!("Explorer is_done_with exploring graph");

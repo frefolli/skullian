@@ -18,6 +18,10 @@ pub enum Defkind {
 }
 
 impl Defkind {
+    pub fn is_nothing(&self) -> bool {
+        self == &Defkind::Nothing
+    }
+
     pub fn from(defkind: String) -> Defkind {
         match defkind.as_str() {
             "package" => Self::Package,

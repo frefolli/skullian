@@ -1,5 +1,5 @@
 use core::panic;
-use std::{path::Path, collections::HashMap};
+use std::{path::Path, collections::HashMap, ops::Index};
 use log::LevelFilter;
 use log4rs::{append::console::ConsoleAppender, Config, config::{Appender, Root}};
 use skullian::{cli::CLIConfig, graph::{sg::ExtendableWithTSGrammar, dg::{testing::TestCase, dep_graph::DepGraph}}};
@@ -100,6 +100,35 @@ fn job_stack_graph(config: &CLIConfig) {
             }
         }
     }
+    println!("[");
+    for node in stack_graph.iter_nodes() {
+        let details = std::ops::Index::index(&stack_graph, node);
+        let mut color = "blue";
+        if details.is_root() {
+            color = "green";
+        }
+        if details.is_definition() {
+            color = "red";
+        }
+        if details.is_reference() {
+            color = "yellow";
+        }
+        
+        match details.symbol() {
+            Some(symbol) => {
+                println!("{{ \"data\": {{\"id\": \"{}\", \"label\": \"{}\"}}, \"style\": {{\"background-color\": \"{}\"}}}},", node.as_u32(), stack_graph.index(symbol), color);
+            },
+            None => {
+                println!("{{ \"data\": {{\"id\": \"{}\"}}, \"style\": {{\"background-color\": \"{}\"}}}},", node.as_u32(), color);
+            }
+        }
+        let edges = stack_graph.outgoing_edges(node);
+        for edge in edges {
+            println!("{{ \"data\": {{\"id\": \"{} -> {}\", \"source\": \"{}\", \"target\": \"{}\"}}}},",
+                edge.source.as_u32(), edge.sink.as_u32(), edge.source.as_u32(), edge.sink.as_u32());
+        }
+    }
+    println!("]");
 }
 
 fn job_workflow(config: &CLIConfig) {
