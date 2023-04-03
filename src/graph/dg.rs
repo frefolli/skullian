@@ -402,9 +402,10 @@ fn fun_facts_about_nodes(dep_graph: &DepGraph) {
     let mut parameters = 0;
     let mut attributes = 0;
     let mut enums = 0;
-    let mut variants = 0;
+    let mut enum_variants = 0;
     let mut constants = 0;
     let mut annotations = 0;
+    let mut annotation_elements = 0;
     let mut others = 0;
 
     for (_node, _data) in dep_graph.iter_nodes() {
@@ -416,19 +417,20 @@ fn fun_facts_about_nodes(dep_graph: &DepGraph) {
             Defkind::Parameter => parameters += 1,
             Defkind::Attribute => attributes += 1,
             Defkind::Enum => enums += 1,
-            Defkind::Variant => variants += 1,
+            Defkind::EnumVariant => enum_variants += 1,
             Defkind::Nothing => others += 1,
             Defkind::Constant => constants += 1,
-            Defkind::Annotation => annotations += 1
+            Defkind::Annotation => annotations += 1,
+            Defkind::AnnotationElement => annotation_elements += 1
         }
     }
 
     let total = packages + classes +
                      interfaces + functions +
                      parameters + attributes +
-                     enums + variants +
+                     enums + enum_variants +
                      constants + annotations +
-                     others;
+                     annotation_elements + others;
     log::info!("found {} packages", packages);
     log::info!("found {} classes", classes);
     log::info!("found {} interfaces", interfaces);
@@ -436,9 +438,10 @@ fn fun_facts_about_nodes(dep_graph: &DepGraph) {
     log::info!("found {} parameters", parameters);
     log::info!("found {} attributes", attributes);
     log::info!("found {} enums", enums);
-    log::info!("found {} variants", variants);
+    log::info!("found {} enum_variants", enum_variants);
     log::info!("found {} constants", constants);
     log::info!("found {} annotations", annotations);
+    log::info!("found {} annotation_elements", annotation_elements);
     log::info!("found {} other nodes", others);
     log::info!("total: {} nodes", total);
 }

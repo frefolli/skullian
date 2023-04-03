@@ -13,9 +13,10 @@ pub enum Defkind {
     Parameter,
     Attribute,
     Enum,
-    Variant,
+    EnumVariant,
     Constant,
     Annotation,
+    AnnotationElement,
     Nothing
 }
 
@@ -33,9 +34,10 @@ impl Defkind {
             "parameter" => Self::Parameter,
             "attribute" => Self::Attribute,
             "enum" => Self::Enum,
-            "variant" => Self::Variant,
+            "enumVariant" => Self::EnumVariant,
             "constant" => Self::Constant,
             "annotation" => Self::Annotation,
+            "annotationElement" => Self::AnnotationElement,
             _ => Self::Nothing
         }
     }
@@ -50,9 +52,10 @@ impl Defkind {
                 Self::Parameter => "parameter",
                 Self::Attribute => "attribute",
                 Self::Enum => "enum",
-                Self::Variant => "variant",
+                Self::EnumVariant => "enumVariant",
                 Self::Constant => "constant",
                 Self::Annotation => "annotation",
+                Self::AnnotationElement => "annotation",
                 Self::Nothing => "ellipse"
             },
             "background-color": match self {
@@ -63,9 +66,10 @@ impl Defkind {
                 Self::Parameter => "red",
                 Self::Attribute => "yellow",
                 Self::Enum => "blue",
-                Self::Variant => "variant",
+                Self::EnumVariant => "enumVariant",
                 Self::Constant => "constant",
                 Self::Annotation => "annotation",
+                Self::AnnotationElement => "annotation",
                 Self::Nothing => "green"
             }
         })
@@ -82,9 +86,10 @@ impl Display for Defkind {
             Self::Parameter => write!(f, "parameter"),
             Self::Attribute => write!(f, "attribute"),
             Self::Enum => write!(f, "enum"),
-            Self::Variant => write!(f, "variant"),
+            Self::EnumVariant => write!(f, "enumVariant"),
             Self::Constant => write!(f, "constant"),
             Self::Annotation => write!(f, "annotation"),
+            Self::AnnotationElement => write!(f, "annotationElement"),
             Self::Nothing => write!(f, "nothing")
         }
     }

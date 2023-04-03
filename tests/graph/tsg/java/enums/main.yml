@@ -6,11 +6,11 @@ nodes:
   - name: Enum.toString
     kind: function
   - name: Enum.A
-    kind: variant
+    kind: enumVariant
   - name: Enum.B
-    kind: variant
+    kind: enumVariant
   - name: Enum.C
-    kind: variant
+    kind: enumVariant
 edges:
   - source: Enum.Enum
     sink: Enum

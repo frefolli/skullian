@@ -45,6 +45,7 @@ attribute refkind = kind                => debug_refkind = kind
   (identifier)@this
   (this)@this
   (type_identifier)@this
+  (annotation_type_declaration)@this
   (enum_declaration)@this
   (class_declaration)@this
   (interface_declaration)@this
@@ -53,10 +54,12 @@ attribute refkind = kind                => debug_refkind = kind
   (field_declaration)@this
   (constant_declaration)@this
   (local_variable_declaration)@this
+  (annotation_type_element_declaration)@this
   (formal_parameter)@this
   (class_body)@this
   (interface_body)@this
   (enum_body)@this
+  (annotation_type_body)@this
   (block)@this
   (constructor_body)@this
   (formal_parameters)@this
@@ -88,6 +91,9 @@ attribute refkind = kind                => debug_refkind = kind
   (update_expression)@this
   (array_access)@this
   (while_statement)@this
+  (explicit_constructor_invocation)@this
+  (super)@this
+  (argument_list)@this
 ] {
   node @this.scope
   node @this.pop_start
@@ -108,6 +114,7 @@ attribute refkind = kind                => debug_refkind = kind
   (enum_declaration name: (_)@name body: (_)@body)@this
   (class_declaration name: (_)@name body: (_)@body)@this
   (interface_declaration name: (_)@name body: (_)@body)@this
+  (annotation_type_declaration name: (_)@name body: (_)@body)@this
   (method_declaration name: (_)@name body: (_)@body)@this
   (constructor_declaration name: (_)@name body: (_)@body)@this
 ] {
@@ -140,6 +147,7 @@ attribute refkind = kind                => debug_refkind = kind
   (constant_declaration declarator: (variable_declarator name: (_)@name))@this
   (local_variable_declaration declarator: (variable_declarator name: (_)@name))@this
   (formal_parameter name: (_)@name)@this
+  (annotation_type_element_declaration name: (_)@name)@this
   (package_declaration (_)@name)@this
   (enum_constant name: (_)@name)@this
 ] {
@@ -150,6 +158,7 @@ attribute refkind = kind                => debug_refkind = kind
 [
   (program (_)@child)@this
   (class_body (_)@child)@this
+  (annotation_type_body (_)@child)@this
   (interface_body (_)@child)@this
   (enum_body (_)@child)@this
   (block (_)@child)@this
@@ -179,6 +188,8 @@ attribute refkind = kind                => debug_refkind = kind
   (array_access index: (_)@child)@this
   (while_statement condition: (_)@child)@this
   (while_statement body: (_)@child)@this
+  (explicit_constructor_invocation (_)@child)@this
+  (argument_list (_)@child)@this
 ] {
   edge @child.scope -> @this.scope
   edge @this.pop_start -> @child.pop_start
@@ -225,6 +236,7 @@ attribute refkind = kind                => debug_refkind = kind
   (constant_declaration type: (_)@type declarator: (variable_declarator name: (_)@name))@this
   (local_variable_declaration type: (_)@type declarator: (variable_declarator name: (_)@name))@this
   (formal_parameter type: (_)@type name: (_)@name)@this
+  (annotation_type_element_declaration type: (_)@type name: (_)@name)@this
 ] {
   attr (@type.push_start)
     is_reference, refkind = "usesType"
@@ -369,6 +381,13 @@ attribute refkind = kind                => debug_refkind = kind
   attr (@name.pop_end) defkind = "enum"
 }
 
+;; annotations
+(annotation_type_declaration
+  name: (_)@name
+)@this {
+  attr (@name.pop_end) defkind = "annotation"
+}
+
 ;; methods
 (method_declaration
   name: (_)@name
@@ -397,6 +416,13 @@ attribute refkind = kind                => debug_refkind = kind
   attr (@name.pop_end) defkind = "constant"
 }
 
+;; annotation_elements
+(annotation_type_element_declaration
+  name: (_)@name
+)@this {
+  attr (@name.pop_end) defkind = "annotationElement"
+}
+
 ;; parameters
 (formal_parameter
   name: (_)@name
@@ -415,7 +441,7 @@ attribute refkind = kind                => debug_refkind = kind
 (enum_constant
   name: (_)@name
 )@this {
-  attr (@name.pop_end) defkind = "variant"
+  attr (@name.pop_end) defkind = "enumVariant"
 }
 
 ;; method_invocation
@@ -445,6 +471,7 @@ attribute refkind = kind                => debug_refkind = kind
   (binary_expression right: (identifier)@child)@this
   (assignment_expression right: (identifier)@child)@this
   (array_access array: (identifier)@child)@this
+  (argument_list (identifier)@child)@this
 ] {
   attr (@child.push_start)
     is_reference, refkind = "accessField"
