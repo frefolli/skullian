@@ -66,10 +66,20 @@ impl DepGraph {
         let mut strings = Vec::<String>::new();
         for (_, edges) in self.iter_edges() {
             for edge in edges {
-                if ! self.get_node(&edge.get_source()).unwrap().get_defkind().is_nothing() {
-                    if ! self.get_node(&edge.get_sink()).unwrap().get_defkind().is_nothing() {
-                        strings.push(edge.to_string(self));
+                match self.get_node(&edge.get_source()) {
+                    Some(source_node) => {
+                        match self.get_node(&edge.get_sink()) {
+                            Some(sink_node) => {
+                                if ! source_node.get_defkind().is_nothing() {
+                                    if ! sink_node.get_defkind().is_nothing() {
+                                        strings.push(edge.to_string(self));
+                                    }
+                                }
+                            },
+                            None => ()
+                        }
                     }
+                    None => ()
                 }
             }
         }
@@ -93,10 +103,20 @@ impl DepGraph {
         let mut jsons = Vec::<serde_json::value::Value>::new();
         for (_, edges) in self.iter_edges() {
             for edge in edges {
-                if ! self.get_node(&edge.get_source()).unwrap().get_defkind().is_nothing() {
-                    if ! self.get_node(&edge.get_sink()).unwrap().get_defkind().is_nothing() {
-                        jsons.push(edge.to_json(self));
+                match self.get_node(&edge.get_source()) {
+                    Some(source_node) => {
+                        match self.get_node(&edge.get_sink()) {
+                            Some(sink_node) => {
+                                if ! source_node.get_defkind().is_nothing() {
+                                    if ! sink_node.get_defkind().is_nothing() {
+                                        jsons.push(edge.to_json(self));
+                                    }
+                                }
+                            },
+                            None => ()
+                        }
                     }
+                    None => ()
                 }
             }
         }
