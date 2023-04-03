@@ -647,7 +647,7 @@ attribute refkind = kind                => debug_refkind = kind
     attr (@name.central)
         push_node = @name,
         is_reference,
-        debug_refkind = "methodCall"
+        debug_refkind = "calls"
 }
 
 (method_invocation

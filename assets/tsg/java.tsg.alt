@@ -74,6 +74,7 @@ attribute refkind = kind                => debug_refkind = kind
   (line_comment)@this
   (block_comment)@this
   (array_type)@this
+  (method_invocation)@this
 ] {
   node @this.scope
   node @this.pop_start
@@ -356,6 +357,24 @@ attribute refkind = kind                => debug_refkind = kind
   name: (_)@name
 )@this {
   attr (@name.pop_end) defkind = "variant"
+}
+
+;; method_invocation
+(method_invocation object: (_)? @object name: (_)@name)@this {
+  if some @object {
+    attr (@name.push_start)
+      is_reference, refkind = "calls"
+    edge @this.push_start -> @name.push_start
+    edge @name.push_end -> @object.push_start
+    edge @object.push_end -> @this.scope
+    edge @this.pop_start -> @name.push_start
+  } else {
+    attr (@name.push_start)
+      is_reference, refkind = "calls"
+    edge @this.push_start -> @name.push_start
+    edge @name.push_end -> @this.scope
+    edge @this.pop_start -> @name.push_start
+  }
 }
 
 ;; field access against identifier
