@@ -25,6 +25,10 @@ impl Refkind {
             _ => Self::Nothing
         }
     }
+
+    pub fn is_nothing(&self) -> bool {
+        self == &Refkind::Nothing
+    }
 }
 
 impl Display for Refkind {
