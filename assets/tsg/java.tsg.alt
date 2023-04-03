@@ -73,13 +73,21 @@ attribute refkind = kind                => debug_refkind = kind
   (boolean_type)@this
   (line_comment)@this
   (block_comment)@this
-  (array_type)@this
   (method_invocation)@this
 ] {
   node @this.scope
   node @this.pop_start
   node @this.push_start
   edge @this.scope -> @this.pop_start
+}
+
+[
+  (void_type)@this
+  (integral_type)@this
+  (boolean_type)@this
+] {
+  attr (@this.push_start)
+    push_node = @this
 }
 
 [
@@ -393,7 +401,8 @@ attribute refkind = kind                => debug_refkind = kind
 [
   (array_type element: (type_identifier)@child)@this
 ] {
-  attr (@child.push_start)
-    is_reference, refkind = "usesType"
-  edge @this.pop_start -> @child.push_start
+  node @this.scope
+  let @this.pop_start =  @child.push_start
+  let @this.push_start =  @child.push_start
+  edge @this.scope -> @this.pop_start
 }
