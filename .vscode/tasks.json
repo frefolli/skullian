@@ -1,0 +1,33 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "type": "shell",
+            "label": "test-tsg",
+            "presentation": {
+                "reveal": "always"
+            },
+            "command": ".\\target\\release\\skullian.exe",
+            "args": [
+                "-D",
+                ".\\tests\\graph\\tsg\\java"
+            ]
+        },
+        {
+            "type": "shell",
+            "label": "arcanine",
+            "presentation": {
+                "reveal": "always"
+            },
+            "command": ".\\target\\release\\skullian.exe",
+            "args": [
+                "-W",
+                "..\\arcan-2\\test-data\\dependency-benchmark-prujit-et-al\\src",
+                "-f",
+                "java",
+                "-o",
+                "..\\skullian-display\\public\\js\\data.json"
+            ]
+        }
+    ]
+}

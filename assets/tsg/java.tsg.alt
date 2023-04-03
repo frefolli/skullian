@@ -51,6 +51,7 @@ attribute refkind = kind                => debug_refkind = kind
   (method_declaration)@this
   (constructor_declaration)@this
   (field_declaration)@this
+  (constant_declaration)@this
   (local_variable_declaration)@this
   (formal_parameter)@this
   (class_body)@this
@@ -66,6 +67,8 @@ attribute refkind = kind                => debug_refkind = kind
   (binary_expression)@this
   (assignment_expression)@this
   (decimal_integer_literal)@this
+  (true)@this
+  (false)@this
   (string_literal)@this
   (null_literal)@this
   (void_type)@this
@@ -74,6 +77,17 @@ attribute refkind = kind                => debug_refkind = kind
   (line_comment)@this
   (block_comment)@this
   (method_invocation)@this
+  (if_statement)@this
+  (parenthesized_expression)@this
+  (object_creation_expression)@this
+  (throw_statement)@this
+  (return_statement)@this
+  (cast_expression)@this
+  (array_creation_expression)@this
+  (for_statement)@this
+  (update_expression)@this
+  (array_access)@this
+  (while_statement)@this
 ] {
   node @this.scope
   node @this.pop_start
@@ -123,6 +137,7 @@ attribute refkind = kind                => debug_refkind = kind
 
 [
   (field_declaration declarator: (variable_declarator name: (_)@name))@this
+  (constant_declaration declarator: (variable_declarator name: (_)@name))@this
   (local_variable_declaration declarator: (variable_declarator name: (_)@name))@this
   (formal_parameter name: (_)@name)@this
   (package_declaration (_)@name)@this
@@ -148,6 +163,22 @@ attribute refkind = kind                => debug_refkind = kind
   (binary_expression right: (_)@child)@this
   (assignment_expression right: (_)@child)@this
   (array_type element: (_)@child)@this
+  (if_statement condition: (_)@child)@this
+  (if_statement consequence: (_)@child)@this
+  (if_statement alternative: (_)@child)@this
+  (parenthesized_expression (_)@child)@this
+  (throw_statement (_)@child)@this
+  (return_statement (_)@child)@this
+  (cast_expression value: (_)@child)@this
+  (for_statement init: (_)@child)@this
+  (for_statement condition: (_)@child)@this
+  (for_statement update: (_)@child)@this
+  (for_statement body: (_)@child)@this
+  (update_expression (_)@child)@this
+  (array_access array: (_)@child)@this
+  (array_access index: (_)@child)@this
+  (while_statement condition: (_)@child)@this
+  (while_statement body: (_)@child)@this
 ] {
   edge @child.scope -> @this.scope
   edge @this.pop_start -> @child.pop_start
@@ -191,6 +222,7 @@ attribute refkind = kind                => debug_refkind = kind
 [
   (method_declaration type: (_)@type name: (_)@name)@this
   (field_declaration type: (_)@type declarator: (variable_declarator name: (_)@name))@this
+  (constant_declaration type: (_)@type declarator: (variable_declarator name: (_)@name))@this
   (local_variable_declaration type: (_)@type declarator: (variable_declarator name: (_)@name))@this
   (formal_parameter type: (_)@type name: (_)@name)@this
 ] {
@@ -199,6 +231,18 @@ attribute refkind = kind                => debug_refkind = kind
 
   edge @type.push_start -> @this.scope
   edge @name.pop_end -> @type.push_start
+}
+
+[
+  (object_creation_expression type: (_)@type)@this
+  (cast_expression type: (_)@type)@this
+  (array_creation_expression type: (_)@type)@this
+] {
+  attr (@type.push_start)
+    is_reference, refkind = "usesType"
+  edge @this.pop_start -> @type.push_start
+  edge @type.push_start -> @this.scope
+  let @this.push_end = @type.push_end
 }
 
 ;; identifiers
@@ -346,6 +390,13 @@ attribute refkind = kind                => debug_refkind = kind
   attr (@name.pop_end) defkind = "attribute"
 }
 
+;; fields
+(constant_declaration
+  declarator: (variable_declarator name: (_)@name)
+)@this {
+  attr (@name.pop_end) defkind = "constant"
+}
+
 ;; parameters
 (formal_parameter
   name: (_)@name
@@ -376,12 +427,14 @@ attribute refkind = kind                => debug_refkind = kind
     edge @name.push_end -> @object.push_start
     edge @object.push_end -> @this.scope
     edge @this.pop_start -> @name.push_start
+    let @this.push_end = @object.push_end
   } else {
     attr (@name.push_start)
       is_reference, refkind = "calls"
     edge @this.push_start -> @name.push_start
     edge @name.push_end -> @this.scope
     edge @this.pop_start -> @name.push_start
+    let @this.push_end = @name.push_end
   }
 }
 
@@ -391,6 +444,7 @@ attribute refkind = kind                => debug_refkind = kind
   (assignment_expression left: (identifier)@child)@this
   (binary_expression right: (identifier)@child)@this
   (assignment_expression right: (identifier)@child)@this
+  (array_access array: (identifier)@child)@this
 ] {
   attr (@child.push_start)
     is_reference, refkind = "accessField"
@@ -399,7 +453,7 @@ attribute refkind = kind                => debug_refkind = kind
 
 ;; field access against identifier
 [
-  (array_type element: (type_identifier)@child)@this
+  (array_type element: (_)@child)@this
 ] {
   node @this.scope
   let @this.pop_start =  @child.push_start

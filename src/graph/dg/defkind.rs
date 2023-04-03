@@ -14,6 +14,8 @@ pub enum Defkind {
     Attribute,
     Enum,
     Variant,
+    Constant,
+    Annotation,
     Nothing
 }
 
@@ -32,6 +34,8 @@ impl Defkind {
             "attribute" => Self::Attribute,
             "enum" => Self::Enum,
             "variant" => Self::Variant,
+            "constant" => Self::Constant,
+            "annotation" => Self::Annotation,
             _ => Self::Nothing
         }
     }
@@ -47,6 +51,8 @@ impl Defkind {
                 Self::Attribute => "attribute",
                 Self::Enum => "enum",
                 Self::Variant => "variant",
+                Self::Constant => "constant",
+                Self::Annotation => "annotation",
                 Self::Nothing => "ellipse"
             },
             "background-color": match self {
@@ -58,6 +64,8 @@ impl Defkind {
                 Self::Attribute => "yellow",
                 Self::Enum => "blue",
                 Self::Variant => "variant",
+                Self::Constant => "constant",
+                Self::Annotation => "annotation",
                 Self::Nothing => "green"
             }
         })
@@ -75,6 +83,8 @@ impl Display for Defkind {
             Self::Attribute => write!(f, "attribute"),
             Self::Enum => write!(f, "enum"),
             Self::Variant => write!(f, "variant"),
+            Self::Constant => write!(f, "constant"),
+            Self::Annotation => write!(f, "annotation"),
             Self::Nothing => write!(f, "nothing")
         }
     }
