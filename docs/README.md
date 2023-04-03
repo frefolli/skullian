@@ -117,7 +117,6 @@ Using `cargo-deb` crate (install it with `cargo install cargo-deb`), use `cargo 
 | isChildOf |  | &check; |
 | isImplementationOf |  | &check; |
 | includes |  | &check; |
-| belongsTo |  | &cross; |
-| calls |  | &cross; |
-| accessTo |  | &cross; |
-| dependsOn |  | &cross; |
+| accessField |  | &check; |
+| usesType |  | &cross; |
+| methodCall |  | &cross; |

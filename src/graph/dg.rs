@@ -216,14 +216,14 @@ fn walk_step(
                             ));
                     }
                 },
-                Refkind::MethodCall => {
+                Refkind::Calls => {
                     let sink = explorer.get_name_binding(current_node);
                     if sink.is_some() {
                         dep_graph.add_edge(
                             DepGraphEdge::new(
                                 current_parent.unwrap(),
                                 *sink.unwrap(),
-                                EdgeLabel::MethodCall
+                                EdgeLabel::Calls
                             ));
                     }
                 },
@@ -294,7 +294,7 @@ pub fn resolve_all_paths_only_of_references(
                 "refkind".to_string()
             ).unwrap_or_default());
             match refkind {
-                Refkind::Implements | Refkind::Extends | Refkind::Includes | Refkind::UsesType | Refkind::AccessField | Refkind::MethodCall => {
+                Refkind::Implements | Refkind::Extends | Refkind::Includes | Refkind::UsesType | Refkind::AccessField | Refkind::Calls => {
                     references.push(node_handle);
                 },
                 Refkind::Nothing => (),
@@ -347,7 +347,7 @@ pub fn resolve_all_paths_manual_extension(
                 "refkind".to_string()
             ).unwrap_or_default());
             match refkind {
-                Refkind::Implements | Refkind::Extends | Refkind::Includes | Refkind::UsesType | Refkind::AccessField | Refkind::MethodCall => {
+                Refkind::Implements | Refkind::Extends | Refkind::Includes | Refkind::UsesType | Refkind::AccessField | Refkind::Calls => {
                     references.push(node_handle);
                 },
                 Refkind::Nothing => ()
@@ -443,7 +443,7 @@ pub fn fun_facts_about_edges(dep_graph: &DepGraph) {
     let mut includes = 0;
     let mut uses_type = 0;
     let mut access_field = 0;
-    let mut method_call = 0;
+    let mut calls = 0;
 
     for (_node, _edges) in dep_graph.iter_edges() {
         for edge in _edges.iter() {
@@ -455,7 +455,7 @@ pub fn fun_facts_about_edges(dep_graph: &DepGraph) {
                 EdgeLabel::Includes => includes += 1,
                 EdgeLabel::UsesType => uses_type += 1,
                 EdgeLabel::AccessField => access_field += 1,
-                EdgeLabel::MethodCall => method_call += 1
+                EdgeLabel::Calls => calls += 1
             }
         }
     }
@@ -463,7 +463,7 @@ pub fn fun_facts_about_edges(dep_graph: &DepGraph) {
     let total = defined_by + is_implementation_of +
                      is_child_of + nested_to +
                      includes + uses_type +
-                     access_field + method_call;
+                     access_field + calls;
     log::info!("found {} definedBy", defined_by);
     log::info!("found {} isImplementationOf", is_implementation_of);
     log::info!("found {} isChildOf", is_child_of);
@@ -471,7 +471,7 @@ pub fn fun_facts_about_edges(dep_graph: &DepGraph) {
     log::info!("found: {} includes", includes);
     log::info!("found: {} uses_type", uses_type);
     log::info!("found: {} access_field", access_field);
-    log::info!("found: {} method_call", method_call);
+    log::info!("found: {} calls", calls);
     log::info!("total: {} edges", total);
 }
 

@@ -68,6 +68,12 @@ attribute refkind = kind                => debug_refkind = kind
   (decimal_integer_literal)@this
   (string_literal)@this
   (null_literal)@this
+  (void_type)@this
+  (integral_type)@this
+  (boolean_type)@this
+  (line_comment)@this
+  (block_comment)@this
+  (array_type)@this
 ] {
   node @this.scope
   node @this.pop_start
@@ -132,6 +138,7 @@ attribute refkind = kind                => debug_refkind = kind
   (assignment_expression left: (_)@child)@this
   (binary_expression right: (_)@child)@this
   (assignment_expression right: (_)@child)@this
+  (array_type element: (_)@child)@this
 ] {
   edge @child.scope -> @this.scope
   edge @this.pop_start -> @child.pop_start
@@ -170,6 +177,19 @@ attribute refkind = kind                => debug_refkind = kind
     is_reference, refkind = "implements"
   edge @this.pop_end -> @super.push_start
   edge @super.push_end -> @this.scope
+}
+
+[
+  (method_declaration type: (_)@type name: (_)@name)@this
+  (field_declaration type: (_)@type declarator: (variable_declarator name: (_)@name))@this
+  (local_variable_declaration type: (_)@type declarator: (variable_declarator name: (_)@name))@this
+  (formal_parameter type: (_)@type name: (_)@name)@this
+] {
+  attr (@type.push_start)
+    is_reference, refkind = "usesType"
+
+  edge @type.push_start -> @this.scope
+  edge @name.pop_end -> @type.push_start
 }
 
 ;; identifiers
@@ -347,5 +367,14 @@ attribute refkind = kind                => debug_refkind = kind
 ] {
   attr (@child.push_start)
     is_reference, refkind = "accessField"
+  edge @this.pop_start -> @child.push_start
+}
+
+;; field access against identifier
+[
+  (array_type element: (type_identifier)@child)@this
+] {
+  attr (@child.push_start)
+    is_reference, refkind = "usesType"
   edge @this.pop_start -> @child.push_start
 }
