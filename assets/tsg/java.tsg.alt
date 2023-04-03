@@ -147,6 +147,13 @@ attribute refkind = kind                => debug_refkind = kind
 }
 
 [
+  (method_declaration name: (_)@name body: (_)@body)@this
+  (constructor_declaration name: (_)@name body: (_)@body)@this
+] {
+  edge @body.scope -> @name.push_start
+}
+
+[
   (class_declaration superclass: (superclass (_)@super))@this
   (interface_declaration (extends_interfaces (type_list (_)@super)))@this
 ] {
@@ -340,4 +347,5 @@ attribute refkind = kind                => debug_refkind = kind
 ] {
   attr (@child.push_start)
     is_reference, refkind = "accessField"
+  edge @this.pop_start -> @child.push_start
 }
