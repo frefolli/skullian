@@ -107,128 +107,135 @@ fn walk_step(
         explorer.visit(current_node);
         let concrete_node = stack_graph.index(current_node);
         if concrete_node.is_definition() {
-            let symbol = stack_graph.index(concrete_node.symbol().unwrap()).to_string();
-            let qualified_name = format!("{}{}", scope_prefix, symbol);
-
-            // check if definition is a justified duplicated (ex: package declaration at top level)
-            let mut defnode = dep_graph.get_node_by_name(&qualified_name);
-            let node_data : &DepGraphNode;
-            if defnode.is_some() {
-                next_parent = defnode.copied();
-                node_data = dep_graph.get_node(&defnode.unwrap()).unwrap();
-            } else {
-                dep_graph.add_node(
+            let defkind = Defkind::from(
+                find_debug_info(
+                    stack_graph,
                     current_node,
-                    DepGraphNode::new(
-                        qualified_name.clone(),
-                        Defkind::from(
-                            find_debug_info(
-                                stack_graph,
-                                current_node,
-                                "defkind".to_string()
-                            ).unwrap_or_default()
-                        )
-                    ));
-                dep_graph.add_name(current_node, qualified_name);
-                node_data = dep_graph.get_node(&current_node).unwrap();
-                next_parent = Some(current_node);
-                defnode = Some(&current_node);
-            }
+                    "defkind".to_string()
+                ).unwrap_or_default()
+            );
+            if ! defkind.is_nothing() {
+                let symbol = stack_graph.index(concrete_node.symbol().unwrap()).to_string();
+                let qualified_name = format!("{}{}", scope_prefix, symbol);
 
-            if current_parent.is_some() {
-                let current_defkind = node_data.get_defkind();
-                let parent_defkind = dep_graph.get_node(&current_parent.unwrap()).unwrap().get_defkind();
-                if current_defkind == parent_defkind {
-                    dep_graph.add_edge(
-                        DepGraphEdge::new(
-                            *defnode.unwrap(),
-                            current_parent.unwrap(),
-                            EdgeLabel::NestedTo
-                        ));
+                // check if definition is a justified duplicated (ex: package declaration at top level)
+                let mut defnode = dep_graph.get_node_by_name(&qualified_name);
+                let node_data : &DepGraphNode;
+                if defnode.is_some() {
+                    next_parent = defnode.copied();
+                    node_data = dep_graph.get_node(&defnode.unwrap()).unwrap();
                 } else {
-                    dep_graph.add_edge(
-                        DepGraphEdge::new(
-                            *defnode.unwrap(),
-                            current_parent.unwrap(),
-                            EdgeLabel::DefinedBy
+                    dep_graph.add_node(
+                        current_node,
+                        DepGraphNode::new(
+                            qualified_name.clone(),
+                            defkind
                         ));
+                    dep_graph.add_name(current_node, qualified_name);
+                    node_data = dep_graph.get_node(&current_node).unwrap();
+                    next_parent = Some(current_node);
+                    defnode = Some(&current_node);
+                }
+
+                if current_parent.is_some() {
+                    let current_defkind = node_data.get_defkind();
+                    let parent_defkind = dep_graph.get_node(&current_parent.unwrap()).unwrap().get_defkind();
+                    if current_defkind == parent_defkind {
+                        dep_graph.add_edge(
+                            DepGraphEdge::new(
+                                *defnode.unwrap(),
+                                current_parent.unwrap(),
+                                EdgeLabel::NestedTo
+                            ));
+                    } else {
+                        dep_graph.add_edge(
+                            DepGraphEdge::new(
+                                *defnode.unwrap(),
+                                current_parent.unwrap(),
+                                EdgeLabel::DefinedBy
+                            ));
+                    }
                 }
             }
         } else if concrete_node.is_reference() {
-            let refkind = Refkind::from(find_debug_info(
-                stack_graph,
-                current_node,
-                "refkind".to_string()
-            ).unwrap_or_default());
-            match refkind {
-                Refkind::Extends => {
-                    let sink = explorer.get_name_binding(current_node);
-                    if sink.is_some() {
-                        dep_graph.add_edge(
-                            DepGraphEdge::new(
-                                current_parent.unwrap(),
-                                *sink.unwrap(),
-                                EdgeLabel::IsChildOf
-                            ));
-                    }
-                },
-                Refkind::Implements => {
-                    let sink = explorer.get_name_binding(current_node);
-                    if sink.is_some() {
-                        dep_graph.add_edge(
-                            DepGraphEdge::new(
-                                current_parent.unwrap(),
-                                *sink.unwrap(),
-                                EdgeLabel::IsImplementationOf
-                            ));
-                    }
-                },
-                Refkind::Includes => {
-                    let sink = explorer.get_name_binding(current_node);
-                    if sink.is_some() {
-                        dep_graph.add_edge(
-                            DepGraphEdge::new(
-                                current_parent.unwrap(),
-                                *sink.unwrap(),
-                                EdgeLabel::Includes
-                            ));
-                    }
-                },
-                Refkind::UsesType => {
-                    let sink = explorer.get_name_binding(current_node);
-                    if sink.is_some() {
-                        dep_graph.add_edge(
-                            DepGraphEdge::new(
-                                current_parent.unwrap(),
-                                *sink.unwrap(),
-                                EdgeLabel::UsesType
-                            ));
-                    }
-                },
-                Refkind::AccessField => {
-                    let sink = explorer.get_name_binding(current_node);
-                    if sink.is_some() {
-                        dep_graph.add_edge(
-                            DepGraphEdge::new(
-                                current_parent.unwrap(),
-                                *sink.unwrap(),
-                                EdgeLabel::AccessField
-                            ));
-                    }
-                },
-                Refkind::Calls => {
-                    let sink = explorer.get_name_binding(current_node);
-                    if sink.is_some() {
-                        dep_graph.add_edge(
-                            DepGraphEdge::new(
-                                current_parent.unwrap(),
-                                *sink.unwrap(),
-                                EdgeLabel::Calls
-                            ));
-                    }
-                },
-                Refkind::Nothing => ()
-            }
+            match current_parent {
+                Some(parent) => {
+                let refkind = Refkind::from(find_debug_info(
+                    stack_graph,
+                    current_node,
+                    "refkind".to_string()
+                ).unwrap_or_default());
+                match refkind {
+                    Refkind::Extends => {
+                        let sink = explorer.get_name_binding(current_node);
+                        if sink.is_some() {
+                            dep_graph.add_edge(
+                                DepGraphEdge::new(
+                                    parent,
+                                    *sink.unwrap(),
+                                    EdgeLabel::IsChildOf
+                                ));
+                        }
+                    },
+                    Refkind::Implements => {
+                        let sink = explorer.get_name_binding(current_node);
+                        if sink.is_some() {
+                            dep_graph.add_edge(
+                                DepGraphEdge::new(
+                                    parent,
+                                    *sink.unwrap(),
+                                    EdgeLabel::IsImplementationOf
+                                ));
+                        }
+                    },
+                    Refkind::Includes => {
+                        let sink = explorer.get_name_binding(current_node);
+                        if sink.is_some() {
+                            dep_graph.add_edge(
+                                DepGraphEdge::new(
+                                    parent,
+                                    *sink.unwrap(),
+                                    EdgeLabel::Includes
+                                ));
+                        }
+                    },
+                    Refkind::UsesType => {
+                        let sink = explorer.get_name_binding(current_node);
+                        if sink.is_some() {
+                            dep_graph.add_edge(
+                                DepGraphEdge::new(
+                                    parent,
+                                    *sink.unwrap(),
+                                    EdgeLabel::UsesType
+                                ));
+                        }
+                    },
+                    Refkind::AccessField => {
+                        let sink = explorer.get_name_binding(current_node);
+                        if sink.is_some() {
+                            dep_graph.add_edge(
+                                DepGraphEdge::new(
+                                    parent,
+                                    *sink.unwrap(),
+                                    EdgeLabel::AccessField
+                                ));
+                        }
+                    },
+                    Refkind::Calls => {
+                        let sink = explorer.get_name_binding(current_node);
+                        if sink.is_some() {
+                            dep_graph.add_edge(
+                                DepGraphEdge::new(
+                                    parent,
+                                    *sink.unwrap(),
+                                    EdgeLabel::Calls
+                                ));
+                        }
+                    },
+                    Refkind::Nothing => ()
+                }},
+                None => ()
+            };
         }
 
         // PREPARE PHASE
@@ -368,7 +375,7 @@ pub fn resolve_all_paths_manual_extension(
         while let Some(path) = queue.pop_front() {
             NoCancellation.check("finding paths").unwrap();
             if !cycle_detector.should_process_path(&path, |probe| probe.cmp(stack_graph, &mut paths, &path)) {
-                continue;
+               continue;
             }
             path.extend(stack_graph, &mut paths, &mut queue);
             if path.is_complete(stack_graph) {

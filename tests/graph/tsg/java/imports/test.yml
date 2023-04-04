@@ -1,0 +1,39 @@
+filepaths:
+  - Main.java
+  - sub/Foo.java
+  - sub/Bar.java
+  - Bing.java
+nodes:
+  - name: com.Main
+    kind: class
+  - name: com.Bing
+    kind: class
+  - name: com.sub.Foo
+    kind: class
+  - name: com.sub.Bar
+    kind: class
+edges:
+  - source: com.Main
+    sink: com
+    kind: definedBy
+  - source: com.Bing
+    sink: com
+    kind: definedBy
+  - source: com.sub.Foo
+    sink: com.sub
+    kind: definedBy
+  - source: com.sub.Bar
+    sink: com.sub
+    kind: definedBy
+  - source: com
+    sink: com.sub.Bar
+    kind: includes
+  - source: com.Main.main.obj3
+    sink: com.Bing
+    kind: usesType
+  - source: com.Main.main.obj2
+    sink: com.sub.Foo
+    kind: usesType
+  - source: com.Main.main.obj1
+    sink: com.sub.Bar
+    kind: usesType

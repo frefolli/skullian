@@ -108,6 +108,8 @@ attribute refkind = kind                => debug_refkind = kind
 ] {
   attr (@this.push_start)
     push_node = @this
+  let @this.push_end = @this.push_start
+  let @this.pop_end = @this.pop_start
 }
 
 [
@@ -241,7 +243,7 @@ attribute refkind = kind                => debug_refkind = kind
   attr (@type.push_start)
     is_reference, refkind = "usesType"
 
-  edge @type.push_start -> @this.scope
+  edge @type.push_end -> @this.scope
   edge @name.pop_end -> @type.push_start
 }
 
@@ -314,6 +316,24 @@ attribute refkind = kind                => debug_refkind = kind
     is_reference, refkind = "accessField"
 }
 
+;; imports
+(program
+  (import_declaration
+    (_)@name
+  )@this
+)@parent {
+  node @this.scope
+  attr (@name.push_start) is_reference, refkind = "includes"
+  let @this.pop_end = (node)
+  let @this.push_start = (node)
+  let @this.push_end = (node) 
+
+  let @this.pop_start = @name.pop_end
+  edge @this.pop_start -> @name.push_start
+  edge @name.push_end -> @parent.scope
+  edge @this.scope -> @this.pop_start
+}
+
 ;; packages
 (package_declaration
   (_)@name
@@ -326,23 +346,6 @@ attribute refkind = kind                => debug_refkind = kind
   let @this.push_end = @name.push_end
   edge @this.scope -> @this.pop_start
   edge @this.push_end -> @this.scope
-}
-
-;; imports
-(import_declaration
-  (_)@name
-)@this {
-  node @this.scope
-  attr (@name.push_start) is_reference, refkind = "includes"
-  let @this.pop_start = (node)
-  let @this.pop_end = (node)
-  let @this.push_start = (node)
-  let @this.push_end = (node) 
-
-  edge @this.pop_start -> @name.pop_end
-  edge @this.pop_start -> @name.push_start
-  edge @name.push_end -> @this.scope
-  edge @this.scope -> @this.pop_start
 }
 
 (program
@@ -409,7 +412,7 @@ attribute refkind = kind                => debug_refkind = kind
   attr (@name.pop_end) defkind = "attribute"
 }
 
-;; fields
+;; constants
 (constant_declaration
   declarator: (variable_declarator name: (_)@name)
 )@this {
@@ -485,5 +488,8 @@ attribute refkind = kind                => debug_refkind = kind
   node @this.scope
   let @this.pop_start =  @child.push_start
   let @this.push_start =  @child.push_start
+  let @this.push_end = @child.push_end
+  let @this.pop_end = @child.pop_end
   edge @this.scope -> @this.pop_start
+  edge @this.push_end -> @this.scope
 }

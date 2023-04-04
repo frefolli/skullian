@@ -100,35 +100,37 @@ fn job_stack_graph(config: &CLIConfig) {
             }
         }
     }
-    println!("[");
+    println!("@startuml");
     for node in stack_graph.iter_nodes() {
         let details = std::ops::Index::index(&stack_graph, node);
-        let mut color = "blue";
+        let mut node_type = "enum";
         if details.is_root() {
-            color = "green";
+            node_type = "interface";
         }
         if details.is_definition() {
-            color = "red";
+            node_type = "class";
         }
         if details.is_reference() {
-            color = "yellow";
+            node_type = "abstract";
         }
         
         match details.symbol() {
             Some(symbol) => {
-                println!("{{ \"data\": {{\"id\": \"{}\", \"label\": \"{}\"}}, \"style\": {{\"background-color\": \"{}\"}}}},", node.as_u32(), stack_graph.index(symbol), color);
+                println!("{} n{} as \"{}\"", node_type, node.as_u32(), stack_graph.index(symbol));
             },
             None => {
-                println!("{{ \"data\": {{\"id\": \"{}\"}}, \"style\": {{\"background-color\": \"{}\"}}}},", node.as_u32(), color);
+                println!("{} n{}", node_type, node.as_u32());
             }
         }
+    }
+    for node in stack_graph.iter_nodes() {
         let edges = stack_graph.outgoing_edges(node);
         for edge in edges {
-            println!("{{ \"data\": {{\"id\": \"{} -> {}\", \"source\": \"{}\", \"target\": \"{}\"}}}},",
-                edge.source.as_u32(), edge.sink.as_u32(), edge.source.as_u32(), edge.sink.as_u32());
+            println!("n{} ---> n{}",
+                edge.source.as_u32(), edge.sink.as_u32());
         }
     }
-    println!("]");
+    println!("@enduml");
 }
 
 fn job_workflow(config: &CLIConfig) {
