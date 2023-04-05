@@ -14,6 +14,7 @@ pub fn from_language_name(
 ) -> Option<Box<std::path::Path>> {
     match language_name {
         "java" => return Some(std::path::Path::new("assets/tsg/java.tsg.alt").into()),
+        "cpp" => return Some(std::path::Path::new("assets/tsg/cpp.tsg.alt").into()),
         &_ => return None
     }
 }

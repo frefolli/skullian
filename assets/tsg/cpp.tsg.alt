@@ -1,0 +1,136 @@
+;;;;;;;;;;;;;;;;;;;
+;; Global Variables
+
+global FILE_PATH
+global ROOT_NODE
+global JUMP_TO_SCOPE_NODE
+
+;;;;;;;;;;;;;;;;;;;;;;;
+;; Attribute Shorthands
+
+attribute node_definition = node        => type = "pop_symbol", node_symbol = node, is_definition
+attribute node_reference = node         => type = "push_symbol", node_symbol = node, is_reference
+attribute pop_node = node               => type = "pop_symbol", node_symbol = node
+attribute pop_scoped_node = node        => type = "pop_scoped_symbol", node_symbol = node
+attribute pop_scoped_symbol = symbol    => type = "pop_scoped_symbol", symbol = symbol
+attribute pop_symbol = symbol           => type = "pop_symbol", symbol = symbol
+attribute push_node = node              => type = "push_symbol", node_symbol = node
+attribute push_scoped_node = node       => type = "push_scoped_symbol", node_symbol = node
+attribute push_scoped_symbol = symbol   => type = "push_scoped_symbol", symbol = symbol
+attribute push_symbol = symbol          => type = "push_symbol", symbol = symbol
+attribute scoped_node_definition = node => type = "pop_scoped_symbol", node_symbol = node, is_definition
+attribute scoped_node_reference = node  => type = "push_scoped_symbol", node_symbol = node, is_reference
+attribute symbol_definition = symbol    => type = "pop_symbol", symbol = symbol, is_definition
+attribute symbol_reference = symbol     => type = "push_symbol", symbol = symbol, is_reference
+attribute node_symbol = node            => symbol = (source-text node), source_node = node
+attribute defkind = kind                => debug_defkind = kind
+attribute refkind = kind                => debug_refkind = kind
+
+;; initializations
+[
+    (translation_unit)@this
+    (field_identifier)@this
+    (type_identifier)@this
+    (identifier)@this
+    (destructor_name)@this
+    (class_specifier)@this
+    (field_declaration_list)@this
+    (access_specifier)@this
+    (field_declaration)@this
+    (declaration)@this
+    (parameter_declaration)@this
+    (parameter_list)@this
+] {
+    node @this.scope
+    node @this.pop_start
+    node @this.push_start
+    edge @this.scope -> @this.pop_start
+}
+
+;; body go-through
+[
+    (translation_unit (_)@child)@this
+    (field_declaration_list (_)@child)@this
+    (parameter_list (_)@child)@this
+] {
+    edge @child.scope -> @this.scope
+    edge @this.pop_start -> @child.pop_start
+}
+
+;; root
+(translation_unit)@this {
+    edge ROOT_NODE -> @this.scope
+    edge @this.scope -> ROOT_NODE
+}
+
+;; identifiers
+[
+    (identifier)@this
+    (type_identifier)@this
+    (field_identifier)@this
+    (destructor_name)@this
+] {
+    attr (@this.pop_start) pop_node = @this
+    attr (@this.push_start) push_node = @this
+    let @this.pop_end = @this.pop_start
+    let @this.push_end = @this.push_start
+    edge @this.push_end -> @this.scope
+}
+
+;; classes
+
+(class_specifier
+  name: (_)@name
+)@this {
+    edge @this.pop_start -> @name.pop_start
+    attr (@name.pop_end) is_definition, defkind = "class"
+}
+
+(class_specifier
+  name: (_)@name
+  body: (_)@body
+)@this {
+    edge @name.pop_end -> @body.pop_start
+    edge @body.scope -> @this.scope
+}
+
+;; functions
+[
+    (field_declaration declarator: (function_declarator declarator: (_)@name))@this
+    (declaration declarator: (function_declarator declarator: (_)@name))@this
+] {
+    edge @this.pop_start -> @name.pop_start
+    attr (@name.pop_end) is_definition, defkind = "function"
+}
+
+;; function parameters
+[
+    (field_declaration
+        declarator: (function_declarator
+            declarator: (_)@name
+            parameters: (_)@parameters))@this
+    (declaration
+        declarator: (function_declarator
+            declarator: (_)@name
+            parameters: (_)@parameters))@this
+] {
+    edge @parameters.scope -> @this.scope
+    edge @name.pop_end -> @parameters.pop_start
+}
+
+;; fields
+[
+    (field_declaration declarator: (field_identifier)@name)@this
+    (declaration declarator: (identifier)@name)@this
+] {
+    edge @this.pop_start -> @name.pop_start
+    attr (@name.pop_end) is_definition, defkind = "attribute"
+}
+
+;; fields
+[
+    (parameter_declaration declarator: (identifier)@name)@this
+] {
+    edge @this.pop_start -> @name.pop_start
+    attr (@name.pop_end) is_definition, defkind = "parameter"
+}

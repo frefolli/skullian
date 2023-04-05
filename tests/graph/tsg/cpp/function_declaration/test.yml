@@ -1,0 +1,6 @@
+filepaths:
+  - main.cpp
+nodes:
+  - name: function
+    kind: function
+edges: []
