@@ -21,6 +21,7 @@ pub fn from_file_name(
         "cpp" => return Some("cpp"),
         "cc" => return Some("cpp"),
         "rs" => return Some("rust"),
+        "py" => return Some("python"),
         &_ => return None
     }
 }

@@ -15,6 +15,7 @@ pub fn from_language_name(
     match language_name {
         "java" => return Some(std::path::Path::new("assets/tsg/java.tsg.alt").into()),
         "cpp" => return Some(std::path::Path::new("assets/tsg/cpp.tsg.alt").into()),
+        "python" => return Some(std::path::Path::new("assets/tsg/python.tsg.alt").into()),
         &_ => return None
     }
 }

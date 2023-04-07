@@ -1,0 +1,16 @@
+filepaths:
+  - main.py
+nodes:
+  - name: Class
+    kind: class
+  - name: Class.__init__
+    kind: function
+  - name: Class.__init__.self
+    kind: parameter
+edges:
+  - source: Class.__init__
+    sink: Class
+    kind: definedBy
+  - source: Class.__init__.self
+    sink: Class.__init__
+    kind: definedBy

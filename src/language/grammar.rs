@@ -20,6 +20,7 @@ pub fn from_language_name(
         "c" => return Some(tree_sitter_c::language()),
         "cpp" => return Some(tree_sitter_cpp::language()),
         "rust" => return Some(tree_sitter_rust::language()),
+        "python" => return Some(tree_sitter_python::language()),
         &_ => return None
     }
 }
