@@ -94,29 +94,27 @@ Using `cargo-deb` crate (install it with `cargo install cargo-deb`), use `cargo 
 
 # State of Art
 
-## Java
+## Categories
 
-### Categories
-
-| category | note | status |
+| category | note | java | cpp |
 | --- | --- | --- |
-| import |  | &check; |
-| package |  | &check; |
-| class |  | &check; |
-| interface |  | &check; |
-| method |  | &check; |
-| parameter |  | &check; |
-| attribute |  | &check; |
+| import |  | &check; | &cross; |
+| package |  | &check; | &check; |
+| class |  | &check; | &check; |
+| interface |  | &check; |  |
+| method |  | &check; | &check; |
+| parameter |  | &check; | &check; |
+| attribute |  | &check; | &check; |
 
-### Relationships
+## Relationships
 
-| relationship | note | status |
+| relationship | note | java | cpp |
 | --- | --- | --- |
-| definedBy |  | &check; |
-| nestedTo |  | &check; |
-| isChildOf |  | &check; |
-| isImplementationOf |  | &check; |
-| includes |  | &check; |
-| accessField |  | &check; |
-| usesType |  | &cross; |
-| methodCall |  | &cross; |
+| definedBy |  | &check; | &check; |
+| nestedTo |  | &check; | &check; |
+| isChildOf |  | &check; | &check; |
+| isImplementationOf |  | &check; |  |
+| includes |  | &check; | &cross; |
+| accessField |  | &check; | &cross; |
+| usesType |  | &check; | &check; |
+| calls |  | &check; | &cross; |
