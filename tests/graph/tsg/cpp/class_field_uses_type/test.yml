@@ -1,0 +1,16 @@
+filepaths:
+  - main.cpp
+nodes:
+  - name: Class
+    kind: class
+  - name: Class.field
+    kind: attribute
+  - name: Type
+    kind: class
+edges:
+  - source: Class.field
+    sink: Class
+    kind: definedBy
+  - source: Class.field
+    sink: Type
+    kind: usesType

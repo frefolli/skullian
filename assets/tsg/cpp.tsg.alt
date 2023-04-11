@@ -47,6 +47,17 @@ attribute refkind = kind                => debug_refkind = kind
     edge @this.scope -> @this.pop_start
 }
 
+;; magic words
+[
+    (primitive_type)@this
+] {
+    node @this.scope
+    let @this.pop_start = @this.scope
+    let @this.push_start = @this.scope
+    let @this.pop_end = @this.scope
+    let @this.push_end = @this.scope
+}
+
 ;; body go-through
 [
     (translation_unit (_)@child)@this
@@ -127,10 +138,25 @@ attribute refkind = kind                => debug_refkind = kind
     attr (@name.pop_end) is_definition, defkind = "attribute"
 }
 
-;; fields
+;; parameters
 [
     (parameter_declaration declarator: (identifier)@name)@this
 ] {
     edge @this.pop_start -> @name.pop_start
     attr (@name.pop_end) is_definition, defkind = "parameter"
+}
+
+;; type usages
+[
+    (field_declaration type: (_)@type declarator: (function_declarator declarator: (_)@name))@this
+    (declaration type: (_)@type declarator: (function_declarator declarator: (_)@name))@this
+    (field_declaration type: (_)@type declarator: (field_identifier)@name)@this
+    (declaration type: (_)@type declarator: (identifier)@name)@this
+    (parameter_declaration type: (_)@type declarator: (identifier)@name)@this
+] {
+  attr (@type.push_start)
+    is_reference, refkind = "usesType"
+
+  edge @type.push_end -> @this.scope
+  edge @name.pop_end -> @type.push_start
 }

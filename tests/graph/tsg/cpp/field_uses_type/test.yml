@@ -1,0 +1,11 @@
+filepaths:
+  - main.cpp
+nodes:
+  - name: field
+    kind: attribute
+  - name: Type
+    kind: class
+edges:
+  - source: field
+    sink: Type
+    kind: usesType
