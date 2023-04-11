@@ -4,13 +4,13 @@ use super::{defkind::Defkind, edge_label::EdgeLabel, dep_graph::DepGraph};
 
 #[derive(Debug, Clone)]
 pub struct TestError {
-    msg: String
+    _msg: String
 }
 
 impl TestError {
     fn new(msg: String) -> TestError {
         TestError {
-            msg
+            _msg: msg
         }
     }
 }
@@ -83,9 +83,8 @@ impl EdgeTest {
         match dep_graph.get_node_by_name(&self.source) {
             Some(node_handle) => {
                 match dep_graph.get_node_by_name(&self.sink) {
-                    Some(sink_handle) => {
+                    Some(_sink_handle) => {
                         for edge in dep_graph.get_edges(node_handle).unwrap() {
-                            let data = dep_graph.get_node(sink_handle).unwrap();
                             let actual_sink = dep_graph.get_node(&edge.get_sink());
                             if actual_sink.unwrap().get_qualified_name() == self.sink {
                                 if edge.get_label() == self.kind {

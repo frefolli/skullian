@@ -28,13 +28,16 @@ attribute refkind = kind                => debug_refkind = kind
 
 ;; initializations
 [
+    (namespace_definition)@this
     (translation_unit)@this
     (field_identifier)@this
     (type_identifier)@this
     (identifier)@this
+    (namespace_identifier)@this
     (destructor_name)@this
     (class_specifier)@this
     (field_declaration_list)@this
+    (declaration_list)@this
     (access_specifier)@this
     (field_declaration)@this
     (declaration)@this
@@ -63,6 +66,7 @@ attribute refkind = kind                => debug_refkind = kind
 [
     (translation_unit (_)@child)@this
     (field_declaration_list (_)@child)@this
+    (declaration_list (_)@child)@this
     (parameter_list (_)@child)@this
 ] {
     edge @child.scope -> @this.scope
@@ -78,6 +82,7 @@ attribute refkind = kind                => debug_refkind = kind
 ;; identifiers
 [
     (identifier)@this
+    (namespace_identifier)@this
     (type_identifier)@this
     (field_identifier)@this
     (destructor_name)@this
@@ -87,6 +92,23 @@ attribute refkind = kind                => debug_refkind = kind
     let @this.pop_end = @this.pop_start
     let @this.push_end = @this.push_start
     edge @this.push_end -> @this.scope
+}
+
+[
+    (qualified_identifier
+        scope: (_)@scope
+        name: (_)@name
+    )@this
+] {
+  node @this.scope
+  edge @scope.pop_end -> @name.pop_start
+  edge @name.push_end -> @scope.push_start
+  let @this.pop_start = @scope.pop_start
+  let @this.pop_end = @name.pop_end
+  let @this.push_start = @name.push_start
+  let @this.push_end = @scope.push_end
+  edge @this.scope -> @this.pop_start
+  edge @this.push_end -> @this.scope
 }
 
 ;; classes
@@ -177,4 +199,21 @@ attribute refkind = kind                => debug_refkind = kind
         is_reference, refkind = "extends"
     edge @this.pop_start -> @super.push_start
     edge @super.push_end -> @this.scope
+}
+
+;; namespace
+
+(namespace_definition
+  name: (_)@name
+)@this {
+    edge @this.pop_start -> @name.pop_start
+    attr (@name.pop_end) is_definition, defkind = "package"
+}
+
+(namespace_definition
+  name: (_)@name
+  body: (_)@body
+)@this {
+    edge @name.pop_end -> @body.pop_start
+    edge @body.scope -> @this.scope
 }
