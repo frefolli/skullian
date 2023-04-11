@@ -1,0 +1,13 @@
+filepaths:
+  - main.cpp
+nodes:
+  - name: Father
+    kind: class
+  - name: Mother
+    kind: class
+  - name: Child
+    kind: class
+edges:
+  - source: Child
+    sink: Mother
+    kind: isChildOf

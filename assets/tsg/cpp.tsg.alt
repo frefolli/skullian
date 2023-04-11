@@ -40,6 +40,7 @@ attribute refkind = kind                => debug_refkind = kind
     (declaration)@this
     (parameter_declaration)@this
     (parameter_list)@this
+    (base_class_clause)@this
 ] {
     node @this.scope
     node @this.pop_start
@@ -105,6 +106,14 @@ attribute refkind = kind                => debug_refkind = kind
     edge @body.scope -> @this.scope
 }
 
+(class_specifier
+  name: (_)@name
+  (base_class_clause)@supers
+)@this {
+    edge @name.pop_end -> @supers.pop_start
+    edge @supers.scope -> @this.scope
+}
+
 ;; functions
 [
     (field_declaration declarator: (function_declarator declarator: (_)@name))@this
@@ -159,4 +168,13 @@ attribute refkind = kind                => debug_refkind = kind
 
   edge @type.push_end -> @this.scope
   edge @name.pop_end -> @type.push_start
+}
+
+;; extends
+(base_class_clause (_)@super)@this
+{
+    attr (@super.push_start)
+        is_reference, refkind = "extends"
+    edge @this.pop_start -> @super.push_start
+    edge @super.push_end -> @this.scope
 }

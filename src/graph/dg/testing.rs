@@ -86,7 +86,8 @@ impl EdgeTest {
                     Some(sink_handle) => {
                         for edge in dep_graph.get_edges(node_handle).unwrap() {
                             let data = dep_graph.get_node(sink_handle).unwrap();
-                            if data.get_qualified_name() == self.sink {
+                            let actual_sink = dep_graph.get_node(&edge.get_sink());
+                            if actual_sink.unwrap().get_qualified_name() == self.sink {
                                 if edge.get_label() == self.kind {
                                     return Ok(());
                                 }

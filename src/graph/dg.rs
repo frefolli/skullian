@@ -377,7 +377,6 @@ pub fn resolve_all_paths_manual_extension(
             if !cycle_detector.should_process_path(&path, |probe| probe.cmp(stack_graph, &mut paths, &path)) {
                continue;
             }
-            path.extend(stack_graph, &mut paths, &mut queue);
             if path.is_complete(stack_graph) {
                 match Defkind::from(
                     find_debug_info(
@@ -393,10 +392,13 @@ pub fn resolve_all_paths_manual_extension(
                             progress_bar.inc(1);
                             explorer.set_name_binding(path.start_node, path.end_node);
                             break;
+                        } else {
+                            log::info!("found a duplicate for a name binding")
                         }
                     }
                 }
             }
+            path.extend(stack_graph, &mut paths, &mut queue);
         }
     }
     progress_bar.finish();
