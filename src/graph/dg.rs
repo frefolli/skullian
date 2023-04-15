@@ -417,6 +417,7 @@ fn fun_facts_about_nodes(dep_graph: &DepGraph) {
     let mut constants = 0;
     let mut annotations = 0;
     let mut annotation_elements = 0;
+    let mut files = 0;
     let mut others = 0;
 
     for (_node, _data) in dep_graph.iter_nodes() {
@@ -432,7 +433,8 @@ fn fun_facts_about_nodes(dep_graph: &DepGraph) {
             Defkind::Nothing => others += 1,
             Defkind::Constant => constants += 1,
             Defkind::Annotation => annotations += 1,
-            Defkind::AnnotationElement => annotation_elements += 1
+            Defkind::AnnotationElement => annotation_elements += 1,
+            Defkind::File => files += 1
         }
     }
 
@@ -441,7 +443,7 @@ fn fun_facts_about_nodes(dep_graph: &DepGraph) {
                      parameters + attributes +
                      enums + enum_variants +
                      constants + annotations +
-                     annotation_elements + others;
+                     annotation_elements + files + others;
     log::info!("found {} packages", packages);
     log::info!("found {} classes", classes);
     log::info!("found {} interfaces", interfaces);
@@ -453,6 +455,7 @@ fn fun_facts_about_nodes(dep_graph: &DepGraph) {
     log::info!("found {} constants", constants);
     log::info!("found {} annotations", annotations);
     log::info!("found {} annotation_elements", annotation_elements);
+    log::info!("found {} files", files);
     log::info!("found {} other nodes", others);
     log::info!("total: {} nodes", total);
 }

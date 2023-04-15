@@ -20,6 +20,8 @@ pub fn from_file_name(
         "c" => return Some("c"),
         "cpp" => return Some("cpp"),
         "cc" => return Some("cpp"),
+        "hpp" => return Some("cpp"),
+        "hh" => return Some("cpp"),
         "rs" => return Some("rust"),
         "py" => return Some("python"),
         &_ => return None

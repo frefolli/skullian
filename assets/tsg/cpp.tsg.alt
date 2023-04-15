@@ -44,6 +44,10 @@ attribute refkind = kind                => debug_refkind = kind
     (parameter_declaration)@this
     (parameter_list)@this
     (base_class_clause)@this
+    (preproc_ifdef)@this
+    (preproc_def)@this
+    (preproc_include)@this
+    (function_definition)@this
 ] {
     node @this.scope
     node @this.pop_start
@@ -68,6 +72,7 @@ attribute refkind = kind                => debug_refkind = kind
     (field_declaration_list (_)@child)@this
     (declaration_list (_)@child)@this
     (parameter_list (_)@child)@this
+    (preproc_ifdef name:(_) (_)@child)@this
 ] {
     edge @child.scope -> @this.scope
     edge @this.pop_start -> @child.pop_start
@@ -75,8 +80,22 @@ attribute refkind = kind                => debug_refkind = kind
 
 ;; root
 (translation_unit)@this {
-    edge ROOT_NODE -> @this.scope
+    let filepath = (path-normalize FILE_PATH)
+    node @this.filepath
+    attr (@this.filepath)
+        symbol_definition = filepath, defkind = "file"
+    edge ROOT_NODE -> @this.filepath
+    edge @this.filepath -> @this.scope
     edge @this.scope -> ROOT_NODE
+}
+
+;; preproc_include
+(preproc_include path: (string_literal)@path)@this {
+    let mod_name = (path-normalize (path-join (path-dir FILE_PATH) (replace (source-text @path) "\"" "")))
+    print mod_name
+    attr (@this.push_start)
+        symbol_reference = mod_name, refkind = "includes"
+    edge @this.push_start -> ROOT_NODE
 }
 
 ;; identifiers

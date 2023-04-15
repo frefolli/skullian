@@ -17,6 +17,7 @@ pub enum Defkind {
     Constant,
     Annotation,
     AnnotationElement,
+    File,
     Nothing
 }
 
@@ -38,6 +39,7 @@ impl Defkind {
             "constant" => Self::Constant,
             "annotation" => Self::Annotation,
             "annotationElement" => Self::AnnotationElement,
+            "file" => Self::File,
             _ => Self::Nothing
         }
     }
@@ -56,6 +58,7 @@ impl Defkind {
                 Self::Constant => "constant",
                 Self::Annotation => "annotation",
                 Self::AnnotationElement => "annotation",
+                Self::File => "file",
                 Self::Nothing => "ellipse"
             },
             "background-color": match self {
@@ -70,6 +73,7 @@ impl Defkind {
                 Self::Constant => "constant",
                 Self::Annotation => "annotation",
                 Self::AnnotationElement => "annotation",
+                Self::File => "file",
                 Self::Nothing => "green"
             }
         })
@@ -90,6 +94,7 @@ impl Display for Defkind {
             Self::Constant => write!(f, "constant"),
             Self::Annotation => write!(f, "annotation"),
             Self::AnnotationElement => write!(f, "annotationElement"),
+            Self::File => write!(f, "file"),
             Self::Nothing => write!(f, "nothing")
         }
     }
