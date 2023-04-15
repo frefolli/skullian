@@ -330,7 +330,7 @@ attribute refkind = kind                => debug_refkind = kind
 
   let @this.pop_start = @name.pop_end
   edge @this.pop_start -> @name.push_start
-  edge @name.push_end -> @parent.scope
+  edge @name.push_end -> ROOT_NODE
   edge @this.scope -> @this.pop_start
 }
 

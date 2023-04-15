@@ -76,10 +76,10 @@ impl DepGraph {
                                     }
                                 }
                             },
-                            None => ()
+                            None => log::warn!("edge with no sink")
                         }
                     }
-                    None => ()
+                    None => log::warn!("edge with no source")
                 }
             }
         }
@@ -113,10 +113,10 @@ impl DepGraph {
                                     }
                                 }
                             },
-                            None => ()
+                            None => log::warn!("edge with no sink")
                         }
                     }
-                    None => ()
+                    None => log::warn!("edge with no source")
                 }
             }
         }

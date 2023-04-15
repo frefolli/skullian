@@ -96,6 +96,7 @@ attribute refkind = kind                => debug_refkind = kind
     attr (@this.push_start)
         symbol_reference = mod_name, refkind = "includes"
     edge @this.push_start -> ROOT_NODE
+    edge @this.pop_start -> @this.push_start
 }
 
 ;; identifiers
