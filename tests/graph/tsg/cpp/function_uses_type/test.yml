@@ -1,11 +1,11 @@
 filepaths:
   - main.cpp
 nodes:
-  - name: function
+  - name: main.cpp::function
     kind: function
-  - name: Type
+  - name: main.cpp::Type
     kind: class
 edges:
-  - source: function
-    sink: Type
+  - source: main.cpp::function
+    sink: main.cpp::Type
     kind: usesType

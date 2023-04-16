@@ -1,11 +1,11 @@
 filepaths:
   - main.cpp
 nodes:
-  - name: field
+  - name: main.cpp::field
     kind: attribute
-  - name: Type
+  - name: main.cpp::Type
     kind: class
 edges:
-  - source: field
-    sink: Type
+  - source: main.cpp::field
+    sink: main.cpp::Type
     kind: usesType

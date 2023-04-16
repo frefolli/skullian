@@ -12,10 +12,11 @@
 pub fn from_language_name(
     language_name: &str
 ) -> Option<Box<std::path::Path>> {
+    let common_prefix = std::path::Path::new("assets").join("tsg");
     match language_name {
-        "java" => return Some(std::path::Path::new("assets/tsg/java.tsg.alt").into()),
-        "cpp" => return Some(std::path::Path::new("assets/tsg/cpp.tsg.alt").into()),
-        "python" => return Some(std::path::Path::new("assets/tsg/python.tsg.alt").into()),
+        "java" => return Some(common_prefix.join("java.tsg.alt").into()),
+        "cpp" => return Some(common_prefix.join("cpp.tsg.alt").into()),
+        "python" => return Some(common_prefix.join("python.tsg.alt").into()),
         &_ => return None
     }
 }

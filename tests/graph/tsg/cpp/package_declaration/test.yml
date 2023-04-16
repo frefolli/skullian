@@ -1,26 +1,26 @@
 filepaths:
   - main.cpp
 nodes:
-  - name: package
+  - name: main.cpp::package
     kind: package
-  - name: package.subpackage
+  - name: main.cpp::package.subpackage
     kind: package
-  - name: package.subpackage.Class
+  - name: main.cpp::package.subpackage.Class
     kind: class
-  - name: functionA
+  - name: main.cpp::functionA
     kind: function
-  - name: package.functionB
+  - name: main.cpp::package.functionB
     kind: function
 edges:
-  - source: package.subpackage
-    sink: package
+  - source: main.cpp::package.subpackage
+    sink: main.cpp::package
     kind: nestedTo
-  - source: package.subpackage.Class
-    sink: package.subpackage
+  - source: main.cpp::package.subpackage.Class
+    sink: main.cpp::package.subpackage
     kind: definedBy
-  - source: functionA
-    sink: package.subpackage.Class
+  - source: main.cpp::functionA
+    sink: main.cpp::package.subpackage.Class
     kind: usesType
-  - source: package.functionB
-    sink: package.subpackage.Class
+  - source: main.cpp::package.functionB
+    sink: main.cpp::package.subpackage.Class
     kind: usesType

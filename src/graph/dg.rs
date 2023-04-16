@@ -98,6 +98,7 @@ fn walk_step(
     dep_graph: &mut DepGraph,
     stack_graph: &StackGraph
 ) {
+    let mut delimiter: &str = ".";
     let current_node = explorer.get_current_node().unwrap();
     let current_parent = explorer.get_parent_node();
     let mut next_parent = explorer.get_parent_node();
@@ -115,6 +116,9 @@ fn walk_step(
                 ).unwrap_or_default()
             );
             if ! defkind.is_nothing() {
+                if defkind == Defkind::File {
+                    delimiter = "::";
+                }
                 let symbol = stack_graph.index(concrete_node.symbol().unwrap()).to_string();
                 let qualified_name = format!("{}{}", scope_prefix, symbol);
 
@@ -241,7 +245,7 @@ fn walk_step(
         // PREPARE PHASE
         if concrete_node.is_definition() {
             let symbol = stack_graph.index(concrete_node.symbol().unwrap()).to_string();
-            explorer.set_scope_prefix(format!("{}{}.", scope_prefix, symbol));
+            explorer.set_scope_prefix(format!("{}{}{}", scope_prefix, symbol, delimiter));
             explorer.set_parent_node(next_parent);
         }
         
@@ -517,8 +521,10 @@ pub fn build_dep_graph(
     log::info!("Explorer is_done_with resolving_paths");
     walk_step(&mut explorer, dep_graph, stack_graph);
     log::info!("Explorer is_done_with exploring graph");
-    save_to_data_json(output_file, dep_graph);
-    log::info!("Explorer is_done_with saving_graph_to_json");
+    if output_file.as_os_str() != "" {
+        save_to_data_json(output_file, dep_graph);
+        log::info!("Explorer is_done_with saving_graph_to_json");
+    }
     fun_facts(&dep_graph);
     log::info!("{}", dep_graph);
 }

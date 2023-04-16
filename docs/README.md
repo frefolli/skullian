@@ -86,6 +86,11 @@ run either:
 
 Will perform unit tests and doctests
 
+To run also tsg tests:
+
+- ```cargo run -- -D .\tests\graph\tsg``` to run tests on debug executable
+- ```cargo run -r -- -D .\tests\graph\tsg``` to run tests on release executable
+
 # Packaging
 
 ## Debian
@@ -98,7 +103,8 @@ Using `cargo-deb` crate (install it with `cargo install cargo-deb`), use `cargo 
 
 | category | note | java | cpp |
 | --- | --- | --- |
-| import |  | &check; | &cross; |
+| file |  | &cross; | &check; |
+| import |  | &check; | &check; |
 | package |  | &check; | &check; |
 | class |  | &check; | &check; |
 | interface |  | &check; |  |
@@ -114,7 +120,7 @@ Using `cargo-deb` crate (install it with `cargo install cargo-deb`), use `cargo 
 | nestedTo |  | &check; | &check; |
 | isChildOf |  | &check; | &check; |
 | isImplementationOf |  | &check; |  |
-| includes |  | &check; | &cross; |
+| includes |  | &check; | &check; |
 | accessField |  | &check; | &cross; |
 | usesType |  | &check; | &check; |
 | calls |  | &check; | &cross; |

@@ -1,6 +1,6 @@
 filepaths:
   - main.cpp
 nodes:
-  - name: field
+  - name: main.cpp::field
     kind: attribute
 edges: []
