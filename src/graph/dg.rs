@@ -98,6 +98,7 @@ fn walk_step(
     dep_graph: &mut DepGraph,
     stack_graph: &StackGraph
 ) {
+    let mut delimiter: &str = ".";
     let current_node = explorer.get_current_node().unwrap();
     let current_parent = explorer.get_parent_node();
     let mut next_parent = explorer.get_parent_node();
@@ -107,134 +108,144 @@ fn walk_step(
         explorer.visit(current_node);
         let concrete_node = stack_graph.index(current_node);
         if concrete_node.is_definition() {
-            let symbol = stack_graph.index(concrete_node.symbol().unwrap()).to_string();
-            let qualified_name = format!("{}{}", scope_prefix, symbol);
-
-            // check if definition is a justified duplicated (ex: package declaration at top level)
-            let mut defnode = dep_graph.get_node_by_name(&qualified_name);
-            let node_data : &DepGraphNode;
-            if defnode.is_some() {
-                next_parent = defnode.copied();
-                node_data = dep_graph.get_node(&defnode.unwrap()).unwrap();
-            } else {
-                dep_graph.add_node(
+            let defkind = Defkind::from(
+                find_debug_info(
+                    stack_graph,
                     current_node,
-                    DepGraphNode::new(
-                        qualified_name.clone(),
-                        Defkind::from(
-                            find_debug_info(
-                                stack_graph,
-                                current_node,
-                                "defkind".to_string()
-                            ).unwrap_or_default()
-                        )
-                    ));
-                dep_graph.add_name(current_node, qualified_name);
-                node_data = dep_graph.get_node(&current_node).unwrap();
-                next_parent = Some(current_node);
-                defnode = Some(&current_node);
-            }
+                    "defkind".to_string()
+                ).unwrap_or_default()
+            );
+            if ! defkind.is_nothing() {
+                if defkind == Defkind::File {
+                    delimiter = "::";
+                }
+                let symbol = stack_graph.index(concrete_node.symbol().unwrap()).to_string();
+                let qualified_name = format!("{}{}", scope_prefix, symbol);
 
-            if current_parent.is_some() {
-                let current_defkind = node_data.get_defkind();
-                let parent_defkind = dep_graph.get_node(&current_parent.unwrap()).unwrap().get_defkind();
-                if current_defkind == parent_defkind {
-                    dep_graph.add_edge(
-                        DepGraphEdge::new(
-                            *defnode.unwrap(),
-                            current_parent.unwrap(),
-                            EdgeLabel::NestedTo
-                        ));
+                // check if definition is a justified duplicated (ex: package declaration at top level)
+                let mut defnode = dep_graph.get_node_by_name(&qualified_name);
+                let node_data : &DepGraphNode;
+                if defnode.is_some() {
+                    next_parent = defnode.copied();
+                    node_data = dep_graph.get_node(&defnode.unwrap()).unwrap();
                 } else {
-                    dep_graph.add_edge(
-                        DepGraphEdge::new(
-                            *defnode.unwrap(),
-                            current_parent.unwrap(),
-                            EdgeLabel::DefinedBy
+                    dep_graph.add_node(
+                        current_node,
+                        DepGraphNode::new(
+                            qualified_name.clone(),
+                            defkind
                         ));
+                    dep_graph.add_name(current_node, qualified_name);
+                    node_data = dep_graph.get_node(&current_node).unwrap();
+                    next_parent = Some(current_node);
+                    defnode = Some(&current_node);
+                }
+
+                if current_parent.is_some() {
+                    let current_defkind = node_data.get_defkind();
+                    let parent_defkind = dep_graph.get_node(&current_parent.unwrap()).unwrap().get_defkind();
+                    if current_defkind == parent_defkind {
+                        dep_graph.add_edge(
+                            DepGraphEdge::new(
+                                *defnode.unwrap(),
+                                current_parent.unwrap(),
+                                EdgeLabel::NestedTo
+                            ));
+                    } else {
+                        dep_graph.add_edge(
+                            DepGraphEdge::new(
+                                *defnode.unwrap(),
+                                current_parent.unwrap(),
+                                EdgeLabel::DefinedBy
+                            ));
+                    }
                 }
             }
         } else if concrete_node.is_reference() {
-            let refkind = Refkind::from(find_debug_info(
-                stack_graph,
-                current_node,
-                "refkind".to_string()
-            ).unwrap_or_default());
-            match refkind {
-                Refkind::Extends => {
-                    let sink = explorer.get_name_binding(current_node);
-                    if sink.is_some() {
-                        dep_graph.add_edge(
-                            DepGraphEdge::new(
-                                current_parent.unwrap(),
-                                *sink.unwrap(),
-                                EdgeLabel::IsChildOf
-                            ));
-                    }
-                },
-                Refkind::Implements => {
-                    let sink = explorer.get_name_binding(current_node);
-                    if sink.is_some() {
-                        dep_graph.add_edge(
-                            DepGraphEdge::new(
-                                current_parent.unwrap(),
-                                *sink.unwrap(),
-                                EdgeLabel::IsImplementationOf
-                            ));
-                    }
-                },
-                Refkind::Includes => {
-                    let sink = explorer.get_name_binding(current_node);
-                    if sink.is_some() {
-                        dep_graph.add_edge(
-                            DepGraphEdge::new(
-                                current_parent.unwrap(),
-                                *sink.unwrap(),
-                                EdgeLabel::Includes
-                            ));
-                    }
-                },
-                Refkind::UsesType => {
-                    let sink = explorer.get_name_binding(current_node);
-                    if sink.is_some() {
-                        dep_graph.add_edge(
-                            DepGraphEdge::new(
-                                current_parent.unwrap(),
-                                *sink.unwrap(),
-                                EdgeLabel::UsesType
-                            ));
-                    }
-                },
-                Refkind::AccessField => {
-                    let sink = explorer.get_name_binding(current_node);
-                    if sink.is_some() {
-                        dep_graph.add_edge(
-                            DepGraphEdge::new(
-                                current_parent.unwrap(),
-                                *sink.unwrap(),
-                                EdgeLabel::AccessField
-                            ));
-                    }
-                },
-                Refkind::MethodCall => {
-                    let sink = explorer.get_name_binding(current_node);
-                    if sink.is_some() {
-                        dep_graph.add_edge(
-                            DepGraphEdge::new(
-                                current_parent.unwrap(),
-                                *sink.unwrap(),
-                                EdgeLabel::MethodCall
-                            ));
-                    }
-                },
-                Refkind::Nothing => ()
-            }
+            match current_parent {
+                Some(parent) => {
+                let refkind = Refkind::from(find_debug_info(
+                    stack_graph,
+                    current_node,
+                    "refkind".to_string()
+                ).unwrap_or_default());
+                match refkind {
+                    Refkind::Extends => {
+                        let sink = explorer.get_name_binding(current_node);
+                        if sink.is_some() {
+                            dep_graph.add_edge(
+                                DepGraphEdge::new(
+                                    parent,
+                                    *sink.unwrap(),
+                                    EdgeLabel::IsChildOf
+                                ));
+                        }
+                    },
+                    Refkind::Implements => {
+                        let sink = explorer.get_name_binding(current_node);
+                        if sink.is_some() {
+                            dep_graph.add_edge(
+                                DepGraphEdge::new(
+                                    parent,
+                                    *sink.unwrap(),
+                                    EdgeLabel::IsImplementationOf
+                                ));
+                        }
+                    },
+                    Refkind::Includes => {
+                        let sink = explorer.get_name_binding(current_node);
+                        if sink.is_some() {
+                            dep_graph.add_edge(
+                                DepGraphEdge::new(
+                                    parent,
+                                    *sink.unwrap(),
+                                    EdgeLabel::Includes
+                                ));
+                        }
+                    },
+                    Refkind::UsesType => {
+                        let sink = explorer.get_name_binding(current_node);
+                        if sink.is_some() {
+                            dep_graph.add_edge(
+                                DepGraphEdge::new(
+                                    parent,
+                                    *sink.unwrap(),
+                                    EdgeLabel::UsesType
+                                ));
+                        }
+                    },
+                    Refkind::AccessField => {
+                        let sink = explorer.get_name_binding(current_node);
+                        if sink.is_some() {
+                            dep_graph.add_edge(
+                                DepGraphEdge::new(
+                                    parent,
+                                    *sink.unwrap(),
+                                    EdgeLabel::AccessField
+                                ));
+                        }
+                    },
+                    Refkind::Calls => {
+                        let sink = explorer.get_name_binding(current_node);
+                        if sink.is_some() {
+                            dep_graph.add_edge(
+                                DepGraphEdge::new(
+                                    parent,
+                                    *sink.unwrap(),
+                                    EdgeLabel::Calls
+                                ));
+                        }
+                    },
+                    Refkind::Nothing => ()
+                }},
+                None => ()
+            };
         }
 
         // PREPARE PHASE
         if concrete_node.is_definition() {
             let symbol = stack_graph.index(concrete_node.symbol().unwrap()).to_string();
-            explorer.set_scope_prefix(format!("{}{}.", scope_prefix, symbol));
+            explorer.set_scope_prefix(format!("{}{}{}", scope_prefix, symbol, delimiter));
             explorer.set_parent_node(next_parent);
         }
         
@@ -293,11 +304,11 @@ pub fn resolve_all_paths_only_of_references(
                 node_handle,
                 "refkind".to_string()
             ).unwrap_or_default());
-            match refkind {
-                Refkind::Implements | Refkind::Extends | Refkind::Includes | Refkind::UsesType | Refkind::AccessField | Refkind::MethodCall => {
+            match refkind.is_nothing() {
+                false => {
                     references.push(node_handle);
                 },
-                Refkind::Nothing => (),
+                true => (),
             }
         }
     }
@@ -310,10 +321,21 @@ pub fn resolve_all_paths_only_of_references(
         &NoCancellation,
         |sg,_ps,p| {
             if p.is_complete(sg) {
-                if explorer.name_bindings.get(&p.start_node).is_none() {
-                    bindings += 1;
-                    progress_bar.inc(1);
-                    explorer.set_name_binding(p.start_node, p.end_node);
+                match Defkind::from(
+                    find_debug_info(
+                        stack_graph,
+                        p.end_node,
+                        "defkind".to_string()
+                    ).unwrap_or_default()
+                ).is_nothing() {
+                    true => {},
+                    false => {
+                        if explorer.name_bindings.get(&p.start_node).is_none() {
+                            bindings += 1;
+                            progress_bar.inc(1);
+                            explorer.set_name_binding(p.start_node, p.end_node);
+                        }
+                    }
                 }
             }
         }
@@ -335,11 +357,11 @@ pub fn resolve_all_paths_manual_extension(
                 node_handle,
                 "refkind".to_string()
             ).unwrap_or_default());
-            match refkind {
-                Refkind::Implements | Refkind::Extends | Refkind::Includes | Refkind::UsesType | Refkind::AccessField | Refkind::MethodCall => {
+            match refkind.is_nothing() {
+                false => {
                     references.push(node_handle);
                 },
-                Refkind::Nothing => (),
+                true => (),
             }
         }
     }
@@ -357,17 +379,30 @@ pub fn resolve_all_paths_manual_extension(
         while let Some(path) = queue.pop_front() {
             NoCancellation.check("finding paths").unwrap();
             if !cycle_detector.should_process_path(&path, |probe| probe.cmp(stack_graph, &mut paths, &path)) {
-                continue;
+               continue;
             }
-            path.extend(stack_graph, &mut paths, &mut queue);
             if path.is_complete(stack_graph) {
-                if explorer.name_bindings.get(&path.start_node).is_none() {
-                    bindings += 1;
-                    progress_bar.inc(1);
-                    explorer.set_name_binding(path.start_node, path.end_node);
-                    break;
+                match Defkind::from(
+                    find_debug_info(
+                        stack_graph,
+                        path.end_node,
+                        "defkind".to_string()
+                    ).unwrap_or_default()
+                ).is_nothing() {
+                    true => {},
+                    false => {
+                        if explorer.name_bindings.get(&path.start_node).is_none() {
+                            bindings += 1;
+                            progress_bar.inc(1);
+                            explorer.set_name_binding(path.start_node, path.end_node);
+                            break;
+                        } else {
+                            log::info!("found a duplicate for a name binding")
+                        }
+                    }
                 }
             }
+            path.extend(stack_graph, &mut paths, &mut queue);
         }
     }
     progress_bar.finish();
@@ -381,6 +416,12 @@ fn fun_facts_about_nodes(dep_graph: &DepGraph) {
     let mut functions = 0;
     let mut parameters = 0;
     let mut attributes = 0;
+    let mut enums = 0;
+    let mut enum_variants = 0;
+    let mut constants = 0;
+    let mut annotations = 0;
+    let mut annotation_elements = 0;
+    let mut files = 0;
     let mut others = 0;
 
     for (_node, _data) in dep_graph.iter_nodes() {
@@ -391,20 +432,34 @@ fn fun_facts_about_nodes(dep_graph: &DepGraph) {
             Defkind::Function => functions += 1,
             Defkind::Parameter => parameters += 1,
             Defkind::Attribute => attributes += 1,
+            Defkind::Enum => enums += 1,
+            Defkind::EnumVariant => enum_variants += 1,
             Defkind::Nothing => others += 1,
+            Defkind::Constant => constants += 1,
+            Defkind::Annotation => annotations += 1,
+            Defkind::AnnotationElement => annotation_elements += 1,
+            Defkind::File => files += 1
         }
     }
 
     let total = packages + classes +
                      interfaces + functions +
                      parameters + attributes +
-                     others;
+                     enums + enum_variants +
+                     constants + annotations +
+                     annotation_elements + files + others;
     log::info!("found {} packages", packages);
     log::info!("found {} classes", classes);
     log::info!("found {} interfaces", interfaces);
     log::info!("found {} functions", functions);
     log::info!("found {} parameters", parameters);
     log::info!("found {} attributes", attributes);
+    log::info!("found {} enums", enums);
+    log::info!("found {} enum_variants", enum_variants);
+    log::info!("found {} constants", constants);
+    log::info!("found {} annotations", annotations);
+    log::info!("found {} annotation_elements", annotation_elements);
+    log::info!("found {} files", files);
     log::info!("found {} other nodes", others);
     log::info!("total: {} nodes", total);
 }
@@ -417,7 +472,7 @@ pub fn fun_facts_about_edges(dep_graph: &DepGraph) {
     let mut includes = 0;
     let mut uses_type = 0;
     let mut access_field = 0;
-    let mut method_call = 0;
+    let mut calls = 0;
 
     for (_node, _edges) in dep_graph.iter_edges() {
         for edge in _edges.iter() {
@@ -429,7 +484,7 @@ pub fn fun_facts_about_edges(dep_graph: &DepGraph) {
                 EdgeLabel::Includes => includes += 1,
                 EdgeLabel::UsesType => uses_type += 1,
                 EdgeLabel::AccessField => access_field += 1,
-                EdgeLabel::MethodCall => method_call += 1
+                EdgeLabel::Calls => calls += 1
             }
         }
     }
@@ -437,7 +492,7 @@ pub fn fun_facts_about_edges(dep_graph: &DepGraph) {
     let total = defined_by + is_implementation_of +
                      is_child_of + nested_to +
                      includes + uses_type +
-                     access_field + method_call;
+                     access_field + calls;
     log::info!("found {} definedBy", defined_by);
     log::info!("found {} isImplementationOf", is_implementation_of);
     log::info!("found {} isChildOf", is_child_of);
@@ -445,7 +500,7 @@ pub fn fun_facts_about_edges(dep_graph: &DepGraph) {
     log::info!("found: {} includes", includes);
     log::info!("found: {} uses_type", uses_type);
     log::info!("found: {} access_field", access_field);
-    log::info!("found: {} method_call", method_call);
+    log::info!("found: {} calls", calls);
     log::info!("total: {} edges", total);
 }
 
@@ -461,12 +516,15 @@ pub fn build_dep_graph(
 ) {
     let mut explorer = SynchroExplorer::new();
     explorer.set_current_node(Some(stack_graphs::graph::StackGraph::root_node()));
+    // resolve_all_paths_only_of_references(&mut explorer, stack_graph);
     resolve_all_paths_manual_extension(&mut explorer, stack_graph);
     log::info!("Explorer is_done_with resolving_paths");
     walk_step(&mut explorer, dep_graph, stack_graph);
     log::info!("Explorer is_done_with exploring graph");
-    save_to_data_json(output_file, dep_graph);
-    log::info!("Explorer is_done_with saving_graph_to_json");
+    if output_file.as_os_str() != "" {
+        save_to_data_json(output_file, dep_graph);
+        log::info!("Explorer is_done_with saving_graph_to_json");
+    }
     fun_facts(&dep_graph);
     log::info!("{}", dep_graph);
 }

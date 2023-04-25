@@ -1,0 +1,6 @@
+filepaths:
+  - main.cpp
+nodes:
+  - name: main.cpp::Class
+    kind: class
+edges: []

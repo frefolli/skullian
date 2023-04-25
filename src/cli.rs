@@ -86,7 +86,7 @@ impl CLIConfig {
         return CLIConfig::new(
             String::from(""),
             String::from(""),
-            String::from("./data.json"),
+            String::from(""),
             CLIAction::Nothing,
             [String::from(".")].to_vec(),
             false,

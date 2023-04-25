@@ -1,5 +1,5 @@
 use core::panic;
-use std::{path::Path, collections::HashMap};
+use std::{path::Path, collections::HashMap, ops::Index};
 use log::LevelFilter;
 use log4rs::{append::console::ConsoleAppender, Config, config::{Appender, Root}};
 use skullian::{cli::CLIConfig, graph::{sg::ExtendableWithTSGrammar, dg::{testing::TestCase, dep_graph::DepGraph}}};
@@ -52,15 +52,22 @@ fn stack_graph_process(
     stack_graph: &mut stack_graphs::graph::StackGraph,
     globals: &mut tree_sitter_stack_graphs::Variables,
     language_name: &str,
-    path_str : &std::path::Path
+    path_str : &std::path::Path,
+    root_dir : &std::path::Path
 ) {
     let mut language_name = language_name;
     if language_name.is_empty() {
-        language_name = skullian::language::name::from_file_name(path_str).unwrap();
+        language_name = skullian::language::name::from_file_name(path_str).unwrap_or_else(|| {
+            panic!("unable to get language name from path {:?}", path_str);
+        });
     }
     if sgl_cache.get(&language_name.to_string()).is_none() {
-        let tsg_path = skullian::language::tsg::from_language_name(&language_name).unwrap();
-        let grammar = skullian::language::grammar::from_language_name(&language_name).expect("unable to load language_grammar");
+        let tsg_path = root_dir.join(skullian::language::tsg::from_language_name(&language_name).unwrap_or_else(|| {
+            panic!("unable to get tsg path from language name {}", language_name);
+        }));
+        let grammar = skullian::language::grammar::from_language_name(&language_name).unwrap_or_else(|| {
+            panic!("unable to get grammar from language name {}", language_name);
+        });
         let ts_rules = std::fs::read_to_string(tsg_path).expect("stack graph rules not issued");
         sgl_cache.insert(language_name.to_string(), StackGraphLanguage::from_str(grammar, ts_rules.as_str()).unwrap());
         log::info!("StackGraph is_done_with loading sgl for {}", &language_name);
@@ -72,13 +79,20 @@ fn stack_graph_process(
 }
 
 fn job_stack_graph(config: &CLIConfig) {
+    let root_dir = std::env::current_dir().unwrap();
     let mut stack_graph = StackGraph::new();
     let mut globals = Variables::new();
     let mut sgl_cache = HashMap::<String, StackGraphLanguage>::new();
     for target in &config.targets {
-        let target_path = Path::new(target);
+        let mut target_path = Path::new(target);
         if !target_path.exists() {
             panic!("target {} doesn't exists", target_path.display());
+        }
+        if target_path.is_dir() {
+            std::env::set_current_dir(target_path).unwrap_or_else(|_| {
+                panic!("unable to cd to target {:?}", target_path);
+            });
+            target_path = Path::new(".");
         }
         for direntry in walkdir::WalkDir::new(target_path) {
             let entry = direntry.unwrap();
@@ -94,22 +108,66 @@ fn job_stack_graph(config: &CLIConfig) {
                     &mut stack_graph,
                     &mut globals,
                     &config.language_name,
-                    entry.path()
+                    entry.path(),
+                    root_dir.as_path()
                 );
                 }
             }
         }
+        if target_path.is_dir() {
+            std::env::set_current_dir(root_dir.as_path()).unwrap_or_else(|_| {
+                panic!("unable to return to root dir {:?}", root_dir);
+            });
+        }
     }
+    println!("@startuml");
+    for node in stack_graph.iter_nodes() {
+        let details = std::ops::Index::index(&stack_graph, node);
+        let mut node_type = "enum";
+        if details.is_root() {
+            node_type = "interface";
+        }
+        if details.is_definition() {
+            node_type = "class";
+        }
+        if details.is_reference() {
+            node_type = "abstract";
+        }
+        
+        match details.symbol() {
+            Some(symbol) => {
+                println!("{} n{} as \"{}\"", node_type, node.as_u32(), stack_graph.index(symbol));
+            },
+            None => {
+                println!("{} n{}", node_type, node.as_u32());
+            }
+        }
+    }
+    for node in stack_graph.iter_nodes() {
+        let edges = stack_graph.outgoing_edges(node);
+        for edge in edges {
+            println!("n{} ---> n{}",
+                edge.source.as_u32(), edge.sink.as_u32());
+        }
+    }
+    println!("@enduml");
 }
 
 fn job_workflow(config: &CLIConfig) {
     let mut stack_graph = StackGraph::new();
     let mut globals = Variables::new();
     let mut sgl_cache = HashMap::<String, StackGraphLanguage>::new();
+    let root_dir = std::env::current_dir().unwrap();
     for target in &config.targets {
-        let target_path = Path::new(target);
+        let mut target_path = Path::new(target);
         if !target_path.exists() {
             panic!("target {} doesn't exists", target_path.display());
+        }
+        if target_path.is_dir() {
+            std::env::set_current_dir(target_path).unwrap_or_else(|_| {
+                panic!("unable to cd to target {:?}", target_path);
+            });
+            target_path = Path::new(".");
         }
         for direntry in walkdir::WalkDir::new(target_path) {
             let entry = direntry.unwrap();
@@ -125,10 +183,16 @@ fn job_workflow(config: &CLIConfig) {
                         &mut stack_graph,
                         &mut globals,
                         &config.language_name,
-                        entry.path()
+                        entry.path(),
+                        root_dir.as_path()
                     );
                 }
             }
+        }
+        if target_path.is_dir() {
+            std::env::set_current_dir(root_dir.as_path()).unwrap_or_else(|_| {
+                panic!("unable to return to root dir {:?}", root_dir);
+            });
         }
     }
     let mut dep_graph = DepGraph::new();
@@ -137,6 +201,7 @@ fn job_workflow(config: &CLIConfig) {
 
 fn job_debug(config: &CLIConfig) {
     let mut sgl_cache = HashMap::<String, StackGraphLanguage>::new();
+    let root_dir = std::env::current_dir().unwrap();
     for target in &config.targets {
         let target_path = Path::new(target);
         if !target_path.exists() {
@@ -150,20 +215,22 @@ fn job_debug(config: &CLIConfig) {
                 {
                     let yaml = std::fs::read_to_string(entry.path()).unwrap();
                     let test : TestCase = serde_yaml::from_str(&yaml).unwrap();
+                    std::env::set_current_dir(entry.path().parent().unwrap()).unwrap();
 
                     let mut dep_graph = DepGraph::new();
                     let mut stack_graph = StackGraph::new();
                     let mut globals = Variables::new();
 
                     for path in test.filepaths.iter() {
-                        let filepath = entry.path().with_file_name(path.as_os_str());
+                        let filepath = path;
                     
                         stack_graph_process(
                             &mut sgl_cache,
                             &mut stack_graph,
                             &mut globals,
                             &config.language_name,
-                            &filepath
+                            &filepath,
+                            root_dir.as_path()
                         );
                     }
                     
@@ -172,6 +239,7 @@ fn job_debug(config: &CLIConfig) {
                         Ok(()) => println!("{:?} ok", entry.path()),
                         Err(err) => println!("{:?} err: {:?}", entry.path(), err),
                     }
+                    std::env::set_current_dir(root_dir.as_path()).unwrap();
                 }
             }
         }

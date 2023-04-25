@@ -1,0 +1,238 @@
+;;;;;;;;;;;;;;;;;;;
+;; Global Variables
+
+global FILE_PATH
+global ROOT_NODE
+global JUMP_TO_SCOPE_NODE
+
+;;;;;;;;;;;;;;;;;;;;;;;
+;; Attribute Shorthands
+
+attribute node_definition = node        => type = "pop_symbol", node_symbol = node, is_definition
+attribute node_reference = node         => type = "push_symbol", node_symbol = node, is_reference
+attribute pop_node = node               => type = "pop_symbol", node_symbol = node
+attribute pop_scoped_node = node        => type = "pop_scoped_symbol", node_symbol = node
+attribute pop_scoped_symbol = symbol    => type = "pop_scoped_symbol", symbol = symbol
+attribute pop_symbol = symbol           => type = "pop_symbol", symbol = symbol
+attribute push_node = node              => type = "push_symbol", node_symbol = node
+attribute push_scoped_node = node       => type = "push_scoped_symbol", node_symbol = node
+attribute push_scoped_symbol = symbol   => type = "push_scoped_symbol", symbol = symbol
+attribute push_symbol = symbol          => type = "push_symbol", symbol = symbol
+attribute scoped_node_definition = node => type = "pop_scoped_symbol", node_symbol = node, is_definition
+attribute scoped_node_reference = node  => type = "push_scoped_symbol", node_symbol = node, is_reference
+attribute symbol_definition = symbol    => type = "pop_symbol", symbol = symbol, is_definition
+attribute symbol_reference = symbol     => type = "push_symbol", symbol = symbol, is_reference
+attribute node_symbol = node            => symbol = (source-text node), source_node = node
+attribute defkind = kind                => debug_defkind = kind
+attribute refkind = kind                => debug_refkind = kind
+
+;; initializations
+[
+    (namespace_definition)@this
+    (translation_unit)@this
+    (field_identifier)@this
+    (type_identifier)@this
+    (identifier)@this
+    (namespace_identifier)@this
+    (destructor_name)@this
+    (class_specifier)@this
+    (field_declaration_list)@this
+    (declaration_list)@this
+    (access_specifier)@this
+    (field_declaration)@this
+    (declaration)@this
+    (parameter_declaration)@this
+    (parameter_list)@this
+    (base_class_clause)@this
+    (preproc_ifdef)@this
+    (preproc_def)@this
+    (preproc_include)@this
+    (function_definition)@this
+] {
+    node @this.scope
+    node @this.pop_start
+    node @this.push_start
+    edge @this.scope -> @this.pop_start
+}
+
+;; magic words
+[
+    (primitive_type)@this
+] {
+    node @this.scope
+    let @this.pop_start = @this.scope
+    let @this.push_start = @this.scope
+    let @this.pop_end = @this.scope
+    let @this.push_end = @this.scope
+}
+
+;; body go-through
+[
+    (translation_unit (_)@child)@this
+    (field_declaration_list (_)@child)@this
+    (declaration_list (_)@child)@this
+    (parameter_list (_)@child)@this
+    (preproc_ifdef name:(_) (_)@child)@this
+] {
+    edge @child.scope -> @this.scope
+    edge @this.pop_start -> @child.pop_start
+}
+
+;; root
+(translation_unit)@this {
+    let filepath = (path-normalize FILE_PATH)
+    node @this.filepath
+    attr (@this.filepath)
+        symbol_definition = filepath, defkind = "file"
+    edge ROOT_NODE -> @this.filepath
+    edge @this.filepath -> @this.scope
+    edge @this.scope -> ROOT_NODE
+}
+
+;; preproc_include
+(preproc_include path: (string_literal)@path)@this {
+    let mod_name = (path-normalize (path-join (path-dir FILE_PATH) (replace (source-text @path) "\"" "")))
+    attr (@this.push_start)
+        symbol_reference = mod_name, refkind = "includes"
+    edge @this.push_start -> ROOT_NODE
+    edge @this.pop_start -> @this.push_start
+}
+
+;; identifiers
+[
+    (identifier)@this
+    (namespace_identifier)@this
+    (type_identifier)@this
+    (field_identifier)@this
+    (destructor_name)@this
+] {
+    attr (@this.pop_start) pop_node = @this
+    attr (@this.push_start) push_node = @this
+    let @this.pop_end = @this.pop_start
+    let @this.push_end = @this.push_start
+    edge @this.push_end -> @this.scope
+}
+
+[
+    (qualified_identifier
+        scope: (_)@scope
+        name: (_)@name
+    )@this
+] {
+  node @this.scope
+  edge @scope.pop_end -> @name.pop_start
+  edge @name.push_end -> @scope.push_start
+  let @this.pop_start = @scope.pop_start
+  let @this.pop_end = @name.pop_end
+  let @this.push_start = @name.push_start
+  let @this.push_end = @scope.push_end
+  edge @this.scope -> @this.pop_start
+  edge @this.push_end -> @this.scope
+}
+
+;; classes
+
+(class_specifier
+  name: (_)@name
+)@this {
+    edge @this.pop_start -> @name.pop_start
+    attr (@name.pop_end) is_definition, defkind = "class"
+}
+
+(class_specifier
+  name: (_)@name
+  body: (_)@body
+)@this {
+    edge @name.pop_end -> @body.pop_start
+    edge @body.scope -> @this.scope
+}
+
+(class_specifier
+  name: (_)@name
+  (base_class_clause)@supers
+)@this {
+    edge @name.pop_end -> @supers.pop_start
+    edge @supers.scope -> @this.scope
+}
+
+;; functions
+[
+    (field_declaration declarator: (function_declarator declarator: (_)@name))@this
+    (declaration declarator: (function_declarator declarator: (_)@name))@this
+] {
+    edge @this.pop_start -> @name.pop_start
+    attr (@name.pop_end) is_definition, defkind = "function"
+}
+
+;; function parameters
+[
+    (field_declaration
+        declarator: (function_declarator
+            declarator: (_)@name
+            parameters: (_)@parameters))@this
+    (declaration
+        declarator: (function_declarator
+            declarator: (_)@name
+            parameters: (_)@parameters))@this
+] {
+    edge @parameters.scope -> @this.scope
+    edge @name.pop_end -> @parameters.pop_start
+}
+
+;; fields
+[
+    (field_declaration declarator: (field_identifier)@name)@this
+    (declaration declarator: (identifier)@name)@this
+] {
+    edge @this.pop_start -> @name.pop_start
+    attr (@name.pop_end) is_definition, defkind = "attribute"
+}
+
+;; parameters
+[
+    (parameter_declaration declarator: (identifier)@name)@this
+] {
+    edge @this.pop_start -> @name.pop_start
+    attr (@name.pop_end) is_definition, defkind = "parameter"
+}
+
+;; type usages
+[
+    (field_declaration type: (_)@type declarator: (function_declarator declarator: (_)@name))@this
+    (declaration type: (_)@type declarator: (function_declarator declarator: (_)@name))@this
+    (field_declaration type: (_)@type declarator: (field_identifier)@name)@this
+    (declaration type: (_)@type declarator: (identifier)@name)@this
+    (parameter_declaration type: (_)@type declarator: (identifier)@name)@this
+] {
+  attr (@type.push_start)
+    is_reference, refkind = "usesType"
+
+  edge @type.push_end -> @this.scope
+  edge @name.pop_end -> @type.push_start
+}
+
+;; extends
+(base_class_clause (_)@super)@this
+{
+    attr (@super.push_start)
+        is_reference, refkind = "extends"
+    edge @this.pop_start -> @super.push_start
+    edge @super.push_end -> @this.scope
+}
+
+;; namespace
+
+(namespace_definition
+  name: (_)@name
+)@this {
+    edge @this.pop_start -> @name.pop_start
+    attr (@name.pop_end) is_definition, defkind = "package"
+}
+
+(namespace_definition
+  name: (_)@name
+  body: (_)@body
+)@this {
+    edge @name.pop_end -> @body.pop_start
+    edge @body.scope -> @this.scope
+}

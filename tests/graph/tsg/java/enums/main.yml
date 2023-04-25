@@ -1,0 +1,32 @@
+filepaths:
+  - main.java
+nodes:
+  - name: Enum
+    kind: enum
+  - name: Enum.toString
+    kind: function
+  - name: Enum.A
+    kind: enumVariant
+  - name: Enum.B
+    kind: enumVariant
+  - name: Enum.C
+    kind: enumVariant
+edges:
+  - source: Enum.Enum
+    sink: Enum
+    kind: definedBy
+  - source: Enum.toString
+    sink: Enum
+    kind: definedBy
+  - source: Enum.A
+    sink: Enum
+    kind: definedBy
+  - source: Enum.Enum
+    sink: Enum.i
+    kind: accessField
+  - source: Enum.assign
+    sink: Enum.i
+    kind: accessField
+  - source: Enum.Enum
+    sink: Enum.Enum.j
+    kind: accessField

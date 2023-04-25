@@ -12,7 +12,7 @@ nodes:
 edges:
   - source: com.Main.main
     sink: com.A.B.method
-    kind: methodCall
+    kind: calls
   - source: com.A.B.method
     sink: com.A.B.method
-    kind: methodCall
+    kind: calls

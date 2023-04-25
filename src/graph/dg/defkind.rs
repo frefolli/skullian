@@ -12,10 +12,20 @@ pub enum Defkind {
     Function,
     Parameter,
     Attribute,
+    Enum,
+    EnumVariant,
+    Constant,
+    Annotation,
+    AnnotationElement,
+    File,
     Nothing
 }
 
 impl Defkind {
+    pub fn is_nothing(&self) -> bool {
+        self == &Defkind::Nothing
+    }
+
     pub fn from(defkind: String) -> Defkind {
         match defkind.as_str() {
             "package" => Self::Package,
@@ -24,6 +34,12 @@ impl Defkind {
             "function" => Self::Function,
             "parameter" => Self::Parameter,
             "attribute" => Self::Attribute,
+            "enum" => Self::Enum,
+            "enumVariant" => Self::EnumVariant,
+            "constant" => Self::Constant,
+            "annotation" => Self::Annotation,
+            "annotationElement" => Self::AnnotationElement,
+            "file" => Self::File,
             _ => Self::Nothing
         }
     }
@@ -37,6 +53,12 @@ impl Defkind {
                 Self::Interface => "parallelogram",
                 Self::Parameter => "parameter",
                 Self::Attribute => "attribute",
+                Self::Enum => "enum",
+                Self::EnumVariant => "enumVariant",
+                Self::Constant => "constant",
+                Self::Annotation => "annotation",
+                Self::AnnotationElement => "annotation",
+                Self::File => "file",
                 Self::Nothing => "ellipse"
             },
             "background-color": match self {
@@ -46,6 +68,12 @@ impl Defkind {
                 Self::Interface => "yellow",
                 Self::Parameter => "red",
                 Self::Attribute => "yellow",
+                Self::Enum => "blue",
+                Self::EnumVariant => "enumVariant",
+                Self::Constant => "constant",
+                Self::Annotation => "annotation",
+                Self::AnnotationElement => "annotation",
+                Self::File => "file",
                 Self::Nothing => "green"
             }
         })
@@ -61,6 +89,12 @@ impl Display for Defkind {
             Self::Interface => write!(f, "interface"),
             Self::Parameter => write!(f, "parameter"),
             Self::Attribute => write!(f, "attribute"),
+            Self::Enum => write!(f, "enum"),
+            Self::EnumVariant => write!(f, "enumVariant"),
+            Self::Constant => write!(f, "constant"),
+            Self::Annotation => write!(f, "annotation"),
+            Self::AnnotationElement => write!(f, "annotationElement"),
+            Self::File => write!(f, "file"),
             Self::Nothing => write!(f, "nothing")
         }
     }

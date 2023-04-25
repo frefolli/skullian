@@ -86,6 +86,11 @@ run either:
 
 Will perform unit tests and doctests
 
+To run also tsg tests:
+
+- ```cargo run -- -D .\tests\graph\tsg``` to run tests on debug executable
+- ```cargo run -r -- -D .\tests\graph\tsg``` to run tests on release executable
+
 # Packaging
 
 ## Debian
@@ -94,30 +99,28 @@ Using `cargo-deb` crate (install it with `cargo install cargo-deb`), use `cargo 
 
 # State of Art
 
-## Java
+## Categories
 
-### Categories
-
-| category | note | status |
+| category | note | java | cpp |
 | --- | --- | --- |
-| import |  | &check; |
-| package |  | &check; |
-| class |  | &check; |
-| interface |  | &check; |
-| method |  | &check; |
-| parameter |  | &check; |
-| attribute |  | &check; |
+| file |  | &cross; | &check; |
+| import |  | &check; | &check; |
+| package |  | &check; | &check; |
+| class |  | &check; | &check; |
+| interface |  | &check; |  |
+| method |  | &check; | &check; |
+| parameter |  | &check; | &check; |
+| attribute |  | &check; | &check; |
 
-### Relationships
+## Relationships
 
-| relationship | note | status |
+| relationship | note | java | cpp |
 | --- | --- | --- |
-| definedBy |  | &check; |
-| nestedTo |  | &check; |
-| isChildOf |  | &check; |
-| isImplementationOf |  | &check; |
-| includes |  | &check; |
-| belongsTo |  | &cross; |
-| calls |  | &cross; |
-| accessTo |  | &cross; |
-| dependsOn |  | &cross; |
+| definedBy |  | &check; | &check; |
+| nestedTo |  | &check; | &check; |
+| isChildOf |  | &check; | &check; |
+| isImplementationOf |  | &check; |  |
+| includes |  | &check; | &check; |
+| accessField |  | &check; | &cross; |
+| usesType |  | &check; | &check; |
+| calls |  | &check; | &cross; |

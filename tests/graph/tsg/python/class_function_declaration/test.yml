@@ -1,0 +1,11 @@
+filepaths:
+  - main.py
+nodes:
+  - name: Class
+    kind: class
+  - name: Class.function
+    kind: function
+edges:
+  - source: Class.function
+    sink: Class
+    kind: definedBy

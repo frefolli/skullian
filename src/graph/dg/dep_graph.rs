@@ -1,6 +1,7 @@
 use std::{collections::HashMap, fmt::Display};
 use stack_graphs::{arena::Handle, graph::Node};
 
+use super::defkind::Defkind;
 use super::dep_graph_node::DepGraphNode;
 use super::dep_graph_edge::DepGraphEdge;
 
@@ -49,50 +50,77 @@ impl DepGraph {
     }
 
     pub fn nodes_to_string(&self) -> String {
-        Vec::<String>::from_iter(
-            self.iter_nodes().map(
-                |(_,data)| data.to_string()
-            )
-        ).join("\n")
+        let mut strings = Vec::<String>::new();
+        for (_, data) in self.iter_nodes() {
+                match data.get_defkind() == Defkind::Nothing {
+                    true => (),
+                    false => {
+                        strings.push(data.to_string());
+                    }
+                }
+        }
+        strings.join("\n")
     }
 
     pub fn edges_to_string(&self) -> String {
-        let mut strings = Vec::<String>::from_iter(
-            self.iter_edges().map(
-                |(_,edges)| {
-                    if edges.len() > 0 {
-                        return Vec::<String>::from_iter(
-                            edges.iter().map(
-                                |edge| {
-                                    edge.to_string(self)
+        let mut strings = Vec::<String>::new();
+        for (_, edges) in self.iter_edges() {
+            for edge in edges {
+                match self.get_node(&edge.get_source()) {
+                    Some(source_node) => {
+                        match self.get_node(&edge.get_sink()) {
+                            Some(sink_node) => {
+                                if ! source_node.get_defkind().is_nothing() {
+                                    if ! sink_node.get_defkind().is_nothing() {
+                                        strings.push(edge.to_string(self));
+                                    }
                                 }
-                            )
-                        ).join("\n")
+                            },
+                            None => log::warn!("edge with no sink")
+                        }
                     }
-                    String::from("")
+                    None => log::warn!("edge with no source")
                 }
-            )
-        );
-        strings.retain(|ss| ss.len()> 0);
+            }
+        }
         strings.join("\n")
     }
 
     pub fn nodes_to_json(&self) -> Vec<serde_json::value::Value> {
-        Vec::<serde_json::value::Value>::from_iter(
-            self.iter_nodes().map(
-                |(_,data)| data.to_json()
-            )
-        )
+        let mut jsons = Vec::<serde_json::value::Value>::new();
+        for (_, data) in self.iter_nodes() {
+            match data.get_defkind() == Defkind::Nothing {
+                true => (),
+                false => {
+                    jsons.push(data.to_json());
+                }
+            }
+        }
+        jsons
     }
 
     pub fn edges_to_json(&self) -> Vec<serde_json::value::Value> {
-        let mut edges_data = Vec::<serde_json::value::Value>::new();
+        let mut jsons = Vec::<serde_json::value::Value>::new();
         for (_, edges) in self.iter_edges() {
-            for edge in edges.iter() {
-                edges_data.push(edge.to_json(self));
+            for edge in edges {
+                match self.get_node(&edge.get_source()) {
+                    Some(source_node) => {
+                        match self.get_node(&edge.get_sink()) {
+                            Some(sink_node) => {
+                                if ! source_node.get_defkind().is_nothing() {
+                                    if ! sink_node.get_defkind().is_nothing() {
+                                        jsons.push(edge.to_json(self));
+                                    }
+                                }
+                            },
+                            None => log::warn!("edge with no sink")
+                        }
+                    }
+                    None => log::warn!("edge with no source")
+                }
             }
         }
-        edges_data
+        jsons
     }
 
     pub fn to_json(&self) -> serde_json::value::Value {
