@@ -14,6 +14,8 @@
 | CA | calls |  |
 | CO | isChildOf |  |
 | IO | isImplementationOf |  |
+| TT | throwsType | proposed |
+| CT | castsType | proposed |
 |  |  |  |
 
 ### Problems
@@ -27,8 +29,8 @@
 | AF1 | implementation doesn't serve as a bridge to resolve names |  |
 | AF2 | typing doesn't serve as a bridge to resolve names |  |
 | UT0 | annotation usage isn't used to detect a usesType |  |
-| UT0 | cast usage isn't used to detect a usesType |  |
-| CA0 | `new` doesn't trigger call of constructor |
+| UT1 | cast usage isn't used to detect a usesType or castsType |  |
+| TT0 | `new` doesn't trigger call of constructor or usesType or thrownsType |
 
 ## Prujit
 
@@ -51,15 +53,15 @@
 | ACC-11 | domain.direct.allowed.AccessObjectReferenceWithinIfStatement.AccessObjectReferenceWithinIfStatement | AF | domain.direct.Base.profileDao | NO | AF0 |
 | ANN-1 | domain.direct.allowed.AnnotationDependency | UT | technology.direct.dao.SettingsAnnotation | NO | UT0 |
 | CAL-1 | domain.direct.allowed.CallClassMethod.CallClassMethod | CA | technology.direct.dao.BadgesDAO.getAllBadges | NO | IC0 |
-| CAL-2 | domain.direct.allowed.CallConstructor.CallConstructor | CA | technology.direct.dao.AccountDAO.AccountDAO | NO | CA0 |
-| CAL-3 | domain.direct.allowed.CallConstructorLibraryClass.handleCallback | CA | fi.foyt.foursquare.api.FoursquareApi.FoursquareApi | NO | CA0 |
+| CAL-2 | domain.direct.allowed.CallConstructor.CallConstructor | CA | technology.direct.dao.AccountDAO.AccountDAO | NO | TT0 |
+| CAL-3 | domain.direct.allowed.CallConstructorLibraryClass.handleCallback | CA | fi.foyt.foursquare.api.FoursquareApi.FoursquareApi | NO | TT0 |
 | CAL-4 | domain.direct.allowed.CallInstance.CallInstance | CA | technology.direct.dao.ProfileDAO.getCampaignType | NO | AF1 |
 | CAL-5 | domain.direct.allowed.CallInstanceInnerClass.CallMethodInstanceInnerClass | CA | technology.direct.dao.CallInstanceOuterClassDAO.CallInstanceInnerClassDAO.getNext | NO | AF1 |
 | CAL-6 | domain.direct.allowed.CallInstanceInterface.test | CA | technology.direct.dao.CallInstanceInterfaceDAO.InterfaceMethod | NO | AF2 |
 | CAL-7 | domain.direct.allowed.CallInstanceLibraryClass.handleCallback | CA | fi.foyt.foursquare.api.FoursquareApi.getAuthenticationUrl | NO | AF1,AF2 |
 | CAL-8 | domain.direct.allowed.CallInstanceSuperClass.MethodOfSuperClass | CA | technology.direct.subclass.CallInstanceSubClassDOA.MethodOnSuperClass | NO | AF1 |
 | CAL-9 | domain.direct.allowed.CallInstanceSuperSuperClass.MethodOfSuperClass | CA | technology.direct.subclass.CallInstanceSubSubClassDOA.MethodOnSuperClass | NO | AF1 |
-| DEC-1 | domain.direct.allowed.DeclarationExceptionThrows.getStatics | CA | technology.direct.dao.StaticsException.StaticsException | NO |  |
+| DEC-1 | domain.direct.allowed.DeclarationExceptionThrows.getStatics | CA | technology.direct.dao.StaticsException.StaticsException | NO | TT0 |
 | DEC-2 | domain.direct.allowed.DeclarationParameter.getProfileInformation.dao | UT | technology.direct.dao.ProfileDAO | YES |  |
 | DEC-3 | domain.direct.allowed.DeclarationReturnType.getVenues | UT | technology.direct.dao.VenueDAO | YES |  |
 | DEC-4 | domain.direct.allowed.DeclarationTypeCast.getProfileInformation | UT | technology.direct.dao.ProfileDAO | NO | UT1 |
