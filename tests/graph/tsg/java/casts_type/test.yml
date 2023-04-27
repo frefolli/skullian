@@ -1,0 +1,14 @@
+filepaths:
+  - main.java
+  - type.java
+nodes:
+  - name: com
+    kind: package
+  - name: com.Main
+    kind: class
+  - name: com.Type
+    kind: class
+edges:
+  - source: com.Main.foo
+    sink: com.Type
+    kind: castsType

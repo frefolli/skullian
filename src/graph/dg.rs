@@ -236,6 +236,28 @@ fn walk_step(
                                 ));
                         }
                     },
+                    Refkind::CastsType => {
+                        let sink = explorer.get_name_binding(current_node);
+                        if sink.is_some() {
+                            dep_graph.add_edge(
+                                DepGraphEdge::new(
+                                    parent,
+                                    *sink.unwrap(),
+                                    EdgeLabel::CastsType
+                                ));
+                        }
+                    },
+                    Refkind::ThrowsType => {
+                        let sink = explorer.get_name_binding(current_node);
+                        if sink.is_some() {
+                            dep_graph.add_edge(
+                                DepGraphEdge::new(
+                                    parent,
+                                    *sink.unwrap(),
+                                    EdgeLabel::ThrowsType
+                                ));
+                        }
+                    },
                     Refkind::Nothing => ()
                 }},
                 None => ()
@@ -473,6 +495,8 @@ pub fn fun_facts_about_edges(dep_graph: &DepGraph) {
     let mut uses_type = 0;
     let mut access_field = 0;
     let mut calls = 0;
+    let mut casts_type = 0;
+    let mut throws_type = 0;
 
     for (_node, _edges) in dep_graph.iter_edges() {
         for edge in _edges.iter() {
@@ -484,7 +508,9 @@ pub fn fun_facts_about_edges(dep_graph: &DepGraph) {
                 EdgeLabel::Includes => includes += 1,
                 EdgeLabel::UsesType => uses_type += 1,
                 EdgeLabel::AccessField => access_field += 1,
-                EdgeLabel::Calls => calls += 1
+                EdgeLabel::Calls => calls += 1,
+                EdgeLabel::CastsType => casts_type += 1,
+                EdgeLabel::ThrowsType => throws_type += 1
             }
         }
     }
@@ -492,7 +518,8 @@ pub fn fun_facts_about_edges(dep_graph: &DepGraph) {
     let total = defined_by + is_implementation_of +
                      is_child_of + nested_to +
                      includes + uses_type +
-                     access_field + calls;
+                     access_field + calls +
+                     casts_type + throws_type;
     log::info!("found {} definedBy", defined_by);
     log::info!("found {} isImplementationOf", is_implementation_of);
     log::info!("found {} isChildOf", is_child_of);
@@ -501,6 +528,8 @@ pub fn fun_facts_about_edges(dep_graph: &DepGraph) {
     log::info!("found: {} uses_type", uses_type);
     log::info!("found: {} access_field", access_field);
     log::info!("found: {} calls", calls);
+    log::info!("found: {} casts_type", casts_type);
+    log::info!("found: {} throws_type", throws_type);
     log::info!("total: {} edges", total);
 }
 
