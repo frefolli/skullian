@@ -15,11 +15,13 @@ Goto [md documentation](docs/README.md) or [hosted documentation](https://frefol
 | -------- | -------- | ------ |
 | add castsType edge and refkind | 0 | &check; |
 | add throwsType edge and refkind | 0 | &check; |
-| adapt TSG to use `castsType` with type casts | 1 | &cross; |
-| adapt TSG to use `throwsType` with exception throwal | 2 | &cross; |
-| adapt TSG to use `usesType` with annotation usage | 3 | &cross; |
-| adapt TSG to use `extension` as bridge for name resolution | 4 | &cross; |
-| adapt TSG to use `implementation` as bridge for name resolution | 5 | &cross; |
-| adapt TSG to use `typing` as bridge for name resolution | 6 | &cross; |
-| add xml serialization for DepGraph targetting GraphML | 7 | &cross; |
+| adapt TSG to use `castsType` with type casts | 1 | &check; |
+| adapt TSG to use `throwsType` with exception throwal | 2 | &check; |
+| adapt TSG to use `usesType` with object creation | 3 | &check; |
+| adapt TSG to use `usesType` with array creation | 4 | &check; |
+| adapt TSG to use `usesType` with annotation usage | 5 | &check; |
+| adapt TSG to use `extension` as bridge for name resolution | 6 | &cross; |
+| adapt TSG to use `implementation` as bridge for name resolution | 7 | &cross; |
+| adapt TSG to use `typing` as bridge for name resolution | 8 | &cross; |
+| add xml serialization for DepGraph targetting GraphML | 9 | &cross; |
 |  |  |  |

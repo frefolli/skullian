@@ -148,6 +148,7 @@ attribute refkind = kind                => debug_refkind = kind
   (field_declaration declarator: (variable_declarator name: (_)@name))@this
   (constant_declaration declarator: (variable_declarator name: (_)@name))@this
   (local_variable_declaration declarator: (variable_declarator name: (_)@name))@this
+  (local_variable_declaration declarator: (variable_declarator value: (_)@name))@this
   (formal_parameter name: (_)@name)@this
   (annotation_type_element_declaration name: (_)@name)@this
   (package_declaration (_)@name)@this
@@ -247,16 +248,13 @@ attribute refkind = kind                => debug_refkind = kind
   edge @name.pop_end -> @type.push_start
 }
 
-[
-  (object_creation_expression type: (_)@type)@this
-  (cast_expression type: (_)@type)@this
-  (array_creation_expression type: (_)@type)@this
-] {
+;; annotation as modifiers
+(method_declaration (modifiers (annotation name: (_)@type)) name: (_)@name)@this {
   attr (@type.push_start)
     is_reference, refkind = "usesType"
-  edge @this.pop_start -> @type.push_start
-  edge @type.push_start -> @this.scope
-  let @this.push_end = @type.push_end
+
+  edge @type.push_end -> @this.scope
+  edge @name.pop_end -> @type.push_start
 }
 
 ;; identifiers
@@ -492,4 +490,38 @@ attribute refkind = kind                => debug_refkind = kind
   let @this.pop_end = @child.pop_end
   edge @this.scope -> @this.pop_start
   edge @this.push_end -> @this.scope
+}
+
+(cast_expression
+  type: (_)@type
+)@this {
+  attr (@type.push_start)
+    is_reference, refkind = "castsType"
+  edge @this.pop_start -> @type.push_start
+  edge @type.push_start -> @this.scope
+  let @this.push_end = @type.push_end
+}
+
+(throw_statement
+  (_ type: (_)@type)
+)@this {
+  attr (@type.push_start)
+    is_reference, refkind = "throwsType"
+  edge @this.pop_start -> @type.push_start
+  edge @type.push_start -> @this.scope
+  let @this.push_end = @type.push_end
+}
+
+;; detect if there is a throw_statement and in that case ignore reference definition
+[
+  (_ (object_creation_expression type: (_)@type)@this)@out
+  (_ (array_creation_expression type: (_)@type)@this)@out
+] {
+  if (not (eq (node-type @out) "throw_statement")) {
+    attr (@type.push_start)
+      is_reference, refkind = "usesType"
+    edge @this.pop_start -> @type.push_start
+    edge @type.push_start -> @this.scope
+    let @this.push_end = @type.push_end
+  }
 }

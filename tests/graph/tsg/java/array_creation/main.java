@@ -2,7 +2,6 @@ package com;
 
 class Main {
     public void foo() {
-        return new Type();
-        throw new Type();
+        return new Type[2];
     }
 }

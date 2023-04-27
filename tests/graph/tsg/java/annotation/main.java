@@ -1,8 +1,7 @@
 package com;
 
 class Main {
+    @Annotation(method = "")
     public void foo() {
-        return new Type();
-        throw new Type();
     }
 }
