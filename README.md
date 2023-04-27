@@ -24,6 +24,7 @@ Goto [md documentation](docs/README.md) or [hosted documentation](https://frefol
 | adapt TSG to use `extension` as bridge for name resolution | 7 | &check; |
 | adapt TSG to use `implementation` as bridge for name resolution | 8 | &check; |
 | write a test for prujit | 9 | &cross; |
+| edit test framework to print all errors instead of just one | 9 | &cross; |
 | optimize cycle detector | 10 | &cross; |
 | add xml serialization for DepGraph targetting GraphML | 11 | &cross; |
 |  |  |  |
