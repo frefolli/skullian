@@ -30,7 +30,7 @@
 | AF2 | typing doesn't serve as a bridge to resolve names |  |
 | UT0 | annotation usage isn't used to detect a usesType |  |
 | UT1 | cast usage isn't used to detect a usesType or castsType |  |
-| TT0 | `new` doesn't trigger call of constructor or usesType or thrownsType |
+| TT0 | `new` isn't used to detect a throwsType |
 
 ## Prujit
 
