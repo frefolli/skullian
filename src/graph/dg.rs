@@ -14,7 +14,7 @@ pub mod dep_graph_node;
 pub mod dep_graph_edge;
 pub mod testing;
 use std::{collections::{HashMap, VecDeque}, ops::Index};
-use stack_graphs::{graph::{StackGraph, Node}, arena::Handle, NoCancellation, cycles::CycleDetector, CancellationFlag, paths::{Path, Paths}};
+use stack_graphs::{graph::{StackGraph, Node}, arena::Handle, NoCancellation, CancellationFlag, paths::{Path, Paths}};
 use dep_graph::DepGraph;
 
 use self::{dep_graph_node::DepGraphNode, dep_graph_edge::DepGraphEdge, defkind::Defkind, refkind::Refkind, edge_label::EdgeLabel};
@@ -393,7 +393,7 @@ pub fn resolve_all_paths_manual_extension(
     let progress_bar = indicatif::ProgressBar::new(references.len().try_into().unwrap());
     for node_handle in references {
         let mut paths = Paths::new();
-        let mut cycle_detector = CycleDetector::new();
+        let mut cycle_detector = crate::graph::lavatrice::Lavatrice::new();
         let mut queue = [node_handle].iter()
             .into_iter()
             .filter_map(|node| Path::from_node(stack_graph, &mut paths, *node))
@@ -401,7 +401,7 @@ pub fn resolve_all_paths_manual_extension(
         while let Some(path) = queue.pop_front() {
             NoCancellation.check("finding paths").unwrap();
             if !cycle_detector.should_process_path(&path, |probe| probe.cmp(stack_graph, &mut paths, &path)) {
-               continue;
+                continue;
             }
             if path.is_complete(stack_graph) {
                 match Defkind::from(
@@ -419,7 +419,7 @@ pub fn resolve_all_paths_manual_extension(
                             explorer.set_name_binding(path.start_node, path.end_node);
                             break;
                         } else {
-                            log::info!("found a duplicate for a name binding")
+                            log::warn!("found a duplicate for a name binding")
                         }
                     }
                 }

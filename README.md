@@ -20,8 +20,10 @@ Goto [md documentation](docs/README.md) or [hosted documentation](https://frefol
 | adapt TSG to use `usesType` with object creation | 3 | &check; |
 | adapt TSG to use `usesType` with array creation | 4 | &check; |
 | adapt TSG to use `usesType` with annotation usage | 5 | &check; |
-| adapt TSG to use `extension` as bridge for name resolution | 6 | &cross; |
-| adapt TSG to use `implementation` as bridge for name resolution | 7 | &cross; |
-| adapt TSG to use `typing` as bridge for name resolution | 8 | &cross; |
-| add xml serialization for DepGraph targetting GraphML | 9 | &cross; |
+| adapt TSG to use `typing` as bridge for name resolution | 6 | &check; |
+| adapt TSG to use `extension` as bridge for name resolution | 7 | &check; |
+| adapt TSG to use `implementation` as bridge for name resolution | 8 | &check; |
+| write a test for prujit | 9 | &cross; |
+| optimize cycle detector | 10 | &cross; |
+| add xml serialization for DepGraph targetting GraphML | 11 | &cross; |
 |  |  |  |

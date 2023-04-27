@@ -1,0 +1,18 @@
+filepaths:
+  - main.java
+  - type.java
+nodes:
+  - name: Main
+    kind: class
+  - name: Main.field
+    kind: attribute
+  - name: Main.foo
+    kind: function
+  - name: Type
+    kind: class
+  - name: Type.method
+    kind: function
+edges:
+  - source: Main.foo
+    sink: Type.method
+    kind: calls
