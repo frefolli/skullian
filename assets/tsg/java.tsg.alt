@@ -98,6 +98,9 @@ attribute refkind = kind                => debug_refkind = kind
   node @this.scope
   node @this.pop_start
   node @this.push_start
+}
+
+(program)@this {
   edge @this.scope -> @this.pop_start
 }
 
@@ -124,6 +127,7 @@ attribute refkind = kind                => debug_refkind = kind
   edge @this.pop_start -> @name.pop_start
   let @this.pop_end = @name.pop_end
   edge @body.scope -> @this.scope
+  edge @body.scope -> @name.push_start
   edge @name.pop_end -> @body.pop_start
 }
 
@@ -151,11 +155,14 @@ attribute refkind = kind                => debug_refkind = kind
   (local_variable_declaration declarator: (variable_declarator value: (_)@name))@this
   (formal_parameter name: (_)@name)@this
   (annotation_type_element_declaration name: (_)@name)@this
-  (package_declaration (_)@name)@this
   (enum_constant name: (_)@name)@this
 ] {
   edge @name.scope -> @this.scope
   edge @this.pop_start -> @name.pop_start
+}
+
+(package_declaration (_)@name)@this {
+  edge @name.scope -> @this.scope
 }
 
 [
@@ -204,14 +211,6 @@ attribute refkind = kind                => debug_refkind = kind
 ] {
   edge @parameters.scope -> @this.scope
   edge @name.pop_end -> @parameters.pop_start
-  edge @name.scope -> @parameters.pop_start
-}
-
-[
-  (method_declaration name: (_)@name body: (_)@body)@this
-  (constructor_declaration name: (_)@name body: (_)@body)@this
-] {
-  edge @body.scope -> @name.push_start
 }
 
 [
@@ -296,7 +295,6 @@ attribute refkind = kind                => debug_refkind = kind
   let @this.pop_end = @name.pop_end
   let @this.push_start = @name.push_start
   let @this.push_end = @scope.push_end
-  edge @this.scope -> @this.pop_start
   edge @this.push_end -> @this.scope
 }
 
@@ -329,7 +327,6 @@ attribute refkind = kind                => debug_refkind = kind
   let @this.pop_start = @name.pop_end
   edge @this.pop_start -> @name.push_start
   edge @name.push_end -> ROOT_NODE
-  edge @this.scope -> @this.pop_start
 }
 
 ;; packages
@@ -342,7 +339,6 @@ attribute refkind = kind                => debug_refkind = kind
   let @this.pop_end = @name.pop_end
   let @this.push_start = @name.push_start
   let @this.push_end = @name.push_end
-  edge @this.scope -> @this.pop_start
   edge @this.push_end -> @this.scope
 }
 
@@ -356,7 +352,7 @@ attribute refkind = kind                => debug_refkind = kind
     edge @package.push_end -> ROOT_NODE
     edge @this.scope -> ROOT_NODE
   } else {
-    edge ROOT_NODE -> @this.scope
+    edge ROOT_NODE -> @this.pop_start
     edge @this.scope -> ROOT_NODE
   }
 }
@@ -488,7 +484,6 @@ attribute refkind = kind                => debug_refkind = kind
   let @this.push_start =  @child.push_start
   let @this.push_end = @child.push_end
   let @this.pop_end = @child.pop_end
-  edge @this.scope -> @this.pop_start
   edge @this.push_end -> @this.scope
 }
 

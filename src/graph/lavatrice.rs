@@ -84,7 +84,7 @@ impl HasPathKey for PartialPath {
     }
 }
 
-const MAX_SIMILAR_PATH_COUNT: usize = 1500;
+const MAX_SIMILAR_PATH_COUNT: usize = 15;
 
 impl<P> Lavatrice<P>
 where
