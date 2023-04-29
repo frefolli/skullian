@@ -200,6 +200,7 @@ attribute refkind = kind                => debug_refkind = kind
   (while_statement body: (_)@child)@this
   (explicit_constructor_invocation (_)@child)@this
   (argument_list (_)@child)@this
+  (method_invocation arguments: (argument_list)@child)@this
 ] {
   edge @child.scope -> @this.scope
   edge @this.pop_start -> @child.pop_start

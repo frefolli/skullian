@@ -24,13 +24,7 @@
 
 | problem_id | description | causes |
 | --------- | ----------- | ------ |
-| IC0 | when a package is defined import statements cannot be used as bridges to resolve names | N/A |
-| AF0 | extension doesn't serve as a bridge to resolve names |  |
-| AF1 | implementation doesn't serve as a bridge to resolve names |  |
-| AF2 | typing doesn't serve as a bridge to resolve names |  |
-| UT0 | annotation usage isn't used to detect a usesType |  |
-| UT1 | cast usage isn't used to detect a usesType or castsType |  |
-| TT0 | `new` isn't used to detect a throwsType |
+|  |  |  |
 
 ## Prujit
 
@@ -40,10 +34,10 @@
 
 | benchmark_id | from | relationship | to | detected | problems |
 | ------------ | ---- | ------------ | --- | ------- | -------- |
-| ACC-1 | domain.direct.allowed.AccessClassVariable.AccessClassVariable | AF | technology.direct.dao.CheckInDAO.currentLocation | NO | IC0 |
+| ACC-1 | domain.direct.allowed.AccessClassVariable.AccessClassVariable | AF | technology.direct.dao.CheckInDAO.currentLocation | YES | IC0 |
 | ACC-2 | domain.direct.allowed.AccessClassVariableConstant.testAccessStaticFinalAttribute | AF | technology.direct.dao.UserDAO.name | YES |  |
 | ACC-3 | domain.direct.allowed.AccessClassVariableInterface.testAccessFinalAttribute | AF | technology.direct.dao.ISierraDAO.NAME | YES |  |
-| ACC-4 | domain.direct.allowed.AccessEnumeration.AccessEnumeration | AF | technology.direct.dao.TipDAO.ONE | NO | IC0 |
+| ACC-4 | domain.direct.allowed.AccessEnumeration.AccessEnumeration | AF | technology.direct.dao.TipDAO.ONE | YES | IC0 |
 | ACC-5 | domain.direct.allowed.AccessInstanceVariableRead.AccessInstanceVariableRead | AF | technology.direct.dao.ProfileDAO.name | NO | AF0 |
 | ACC-6 | domain.direct.allowed.AccessInstanceVariableWrite.AccessInstanceVariableWrite | AF | technology.direct.dao.ProfileDAO.name | NO | AF0 |
 | ACC-7 | domain.direct.allowed.AccessInstanceVariableConstant.testAccessFinalAttribute | AF | technology.direct.dao.UserDAO.message | NO | AF0 |

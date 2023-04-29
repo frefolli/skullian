@@ -1,17 +1,25 @@
+use std::fmt::Display;
+
 use serde::{Serialize, Deserialize};
 
 use super::{defkind::Defkind, edge_label::EdgeLabel, dep_graph::DepGraph};
 
 #[derive(Debug, Clone)]
 pub struct TestError {
-    _msg: String
+    msg: String
 }
 
 impl TestError {
     fn new(msg: String) -> TestError {
         TestError {
-            _msg: msg
+            msg: msg
         }
+    }
+}
+
+impl Display for TestError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", self.msg)
     }
 }
 
@@ -136,14 +144,25 @@ impl TestCase {
     pub fn verify(
         &self,
         dep_graph: &DepGraph
-    ) -> Result<(), TestError> {
+    ) -> Option<()> {
+        let ok: bool = true;
         for node in self.nodes.iter() {
-            node.verify(dep_graph)?;
+            match node.verify(dep_graph) {
+                Ok(_) => {},
+                Err(error) => log::error!("{}", error),
+            }
         }
         for edge in self.edges.iter() {
-            edge.verify(dep_graph)?;
+            match edge.verify(dep_graph) {
+                Ok(_) => {},
+                Err(error) => log::error!("{}", error),
+            }
         }
 
-        Ok(())
+        if ok {
+            return Some(())
+        } else {
+            return None;
+        }
     }
 }

@@ -236,8 +236,8 @@ fn job_debug(config: &CLIConfig) {
                     
                     skullian::graph::dg::build_dep_graph(&mut dep_graph, Path::new(&config.output_file), &stack_graph);
                     match test.verify(&dep_graph) {
-                        Ok(()) => println!("{:?} ok", entry.path()),
-                        Err(err) => println!("{:?} err: {:?}", entry.path(), err),
+                        Some(()) => println!("{:?} ok", entry.path()),
+                        None => println!("{:?} error", entry.path()),
                     }
                     std::env::set_current_dir(root_dir.as_path()).unwrap();
                 }

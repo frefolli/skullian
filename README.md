@@ -23,10 +23,10 @@ Goto [md documentation](docs/README.md) or [hosted documentation](https://frefol
 | adapt TSG to use `typing` as bridge for name resolution | 6 | &check; |
 | adapt TSG to use `extension` as bridge for name resolution | 7 | &check; |
 | adapt TSG to use `implementation` as bridge for name resolution | 8 | &check; |
-| enable passthrough for function call parameters | 9 | &cross; |
-| attempt to remove cycles from TSG | 10 | &cross; |
-| write a test for prujit | 11 | &cross; |
-| edit test framework to print all errors instead of just one | 12 | &cross; |
+| enable passthrough for function call parameters | 9 | &check; |
+| write a test for prujit | 10 | &cross; |
+| edit test framework to print all errors instead of just one | 11 | &cross; |
+| attempt to remove cycles from TSG | 12 | &cross; |
 | optimize cycle detector | 13 | &cross; |
 | add xml serialization for DepGraph targetting GraphML | 14 | &cross; |
 |  |  |  |
