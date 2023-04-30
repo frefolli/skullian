@@ -246,7 +246,7 @@ fn job_debug(config: &CLIConfig) {
                         );
                     }
                     
-                    skullian::graph::dg::build_dep_graph(&mut dep_graph, Path::new(&config.output_file), &stack_graph);
+                    skullian::graph::dg::build_dep_graph(&mut dep_graph, Path::new(""), &stack_graph);
                     match test.verify(&dep_graph) {
                         Ok(report) => {
                             report_text += format!("\n\n## {:?}\n\n{}", entry.path(), report).as_str();

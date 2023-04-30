@@ -20,6 +20,7 @@
 
 | source | sink | kind | detected |
 | --- | --- | --- | --- |
+| com.Main | com.Annotation | usesType | OK |
 | com.Main.foo | com.Annotation | usesType | OK |
 
 ## ".\\tests\\graph\\tsg\\java\\array_creation\\test.yml"
@@ -50,8 +51,8 @@
 | domain.direct.violating.AccessInstanceVariableConstant.testAccessFinalAttribute | technology.direct.dao.UserDAO.message | accessField | NO |
 | domain.direct.violating.AccessInstanceVariableSuperClass.Method | technology.direct.dao.CallInstanceSuperClassDAO.VariableOnSuperClass | accessField | NO |
 | domain.direct.violating.AccessInstanceVariableSuperSuperClass.Method | technology.direct.dao.CallInstanceSuperClassDAO.VariableOnSuperClass | accessField | NO |
-| domain.direct.violating.AccessObjectReferenceAsParameter.AccessObjectReferenceAsParameter | domain.direct.Base.profileDao | accessField | NO |
-| domain.direct.violating.AccessObjectReferenceWithinIfStatement.AccessObjectReferenceWithinIfStatement | domain.direct.Base.profileDao | accessField | NO |
+| domain.direct.violating.AccessObjectReferenceAsParameter.AccessObjectReferenceAsParameter | domain.direct.Base.profileDao | accessField | OK |
+| domain.direct.violating.AccessObjectReferenceWithinIfStatement.AccessObjectReferenceWithinIfStatement | domain.direct.Base.profileDao | accessField | OK |
 | domain.direct.violating.AnnotationDependency | technology.direct.dao.SettingsAnnotation | usesType | NO |
 | domain.direct.violating.CallClassMethod.CallClassMethod | technology.direct.dao.BadgesDAO.getAllBadges | calls | OK |
 | domain.direct.violating.CallConstructor.CallConstructor | technology.direct.dao.AccountDAO | usesType | OK |
@@ -432,7 +433,7 @@
 
 | source | sink | kind | detected |
 | --- | --- | --- | --- |
-| com.Main.foo | com.sub.Type.method | calls | NO |
+| com.Main.foo | com.sub.Type.method | calls | OK |
 | com.SubMain.bar | com.sub.Type.method | calls | NO |
 | com.Main.foo | com.Poco.wifi | accessField | OK |
 | com.SubMain.bar | com.Poco.wifi | accessField | OK |

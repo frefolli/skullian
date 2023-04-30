@@ -101,7 +101,7 @@ attribute refkind = kind                => debug_refkind = kind
 }
 
 (program)@this {
-  edge @this.scope -> @this.pop_start
+  ;; edge @this.scope -> @this.pop_start
 }
 
 [
@@ -168,7 +168,7 @@ attribute refkind = kind                => debug_refkind = kind
 }
 
 (package_declaration (_)@name)@this {
-  edge @name.scope -> @this.scope
+  ;; edge @name.scope -> @this.scope
 }
 
 [
@@ -208,8 +208,10 @@ attribute refkind = kind                => debug_refkind = kind
   (argument_list (_)@child)@this
   (method_invocation arguments: (argument_list)@child)@this
 ] {
-  edge @child.scope -> @this.scope
-  edge @this.pop_start -> @child.pop_start
+  if (eq "package_declaration" (node-type @child)) {} else {
+    edge @child.scope -> @this.scope
+    edge @this.pop_start -> @child.pop_start
+  }
 }
 
 [
@@ -247,6 +249,15 @@ attribute refkind = kind                => debug_refkind = kind
   (formal_parameter type: (_)@type name: (_)@name)@this
   (annotation_type_element_declaration type: (_)@type name: (_)@name)@this
 ] {
+  attr (@type.push_start)
+    is_reference, refkind = "usesType"
+
+  edge @type.push_end -> @this.scope
+  edge @name.pop_end -> @type.push_start
+}
+
+;; annotation as modifiers
+(class_declaration (modifiers (annotation name: (_)@type)) name: (_)@name)@this {
   attr (@type.push_start)
     is_reference, refkind = "usesType"
 
@@ -340,13 +351,13 @@ attribute refkind = kind                => debug_refkind = kind
 (package_declaration
   (_)@name
 )@this {
-  node @this.scope
+  ;; node @this.scope
   attr (@name.pop_end) defkind = "package"
   let @this.pop_start = @name.pop_start
   let @this.pop_end = @name.pop_end
   let @this.push_start = @name.push_start
   let @this.push_end = @name.push_end
-  edge @this.push_end -> @this.scope
+  ;; edge @this.push_end -> @this.scope
 }
 
 (program
@@ -354,7 +365,7 @@ attribute refkind = kind                => debug_refkind = kind
 )@this {
   if some @package {
     edge ROOT_NODE -> @package.pop_start
-    edge @package.pop_end -> @this.scope
+    edge @package.pop_end -> @this.pop_start
     edge @this.scope -> @package.push_start
     edge @package.push_end -> ROOT_NODE
     edge @this.scope -> ROOT_NODE
