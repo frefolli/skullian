@@ -116,19 +116,25 @@ attribute refkind = kind                => debug_refkind = kind
 }
 
 [
-  (enum_declaration name: (_)@name body: (_)@body)@this
-  (class_declaration name: (_)@name body: (_)@body)@this
-  (interface_declaration name: (_)@name body: (_)@body)@this
-  (annotation_type_declaration name: (_)@name body: (_)@body)@this
-  (method_declaration name: (_)@name body: (_)@body)@this
-  (constructor_declaration name: (_)@name body: (_)@body)@this
+  (enum_declaration name: (_)@name body: (_)?@body)@this
+  (class_declaration name: (_)@name body: (_)?@body)@this
+  (interface_declaration name: (_)@name body: (_)?@body)@this
+  (annotation_type_declaration name: (_)@name body: (_)?@body)@this
+  (method_declaration name: (_)@name body: (_)?@body)@this
+  (constructor_declaration name: (_)@name body: (_)?@body)@this
 ] {
-  edge @name.scope -> @this.scope
-  edge @this.pop_start -> @name.pop_start
-  let @this.pop_end = @name.pop_end
-  edge @body.scope -> @this.scope
-  edge @body.scope -> @name.push_start
-  edge @name.pop_end -> @body.pop_start
+  if some @body {
+    edge @name.scope -> @this.scope
+    edge @this.pop_start -> @name.pop_start
+    let @this.pop_end = @name.pop_end
+    edge @body.scope -> @this.scope
+    edge @body.scope -> @name.push_start
+    edge @name.pop_end -> @body.pop_start
+  } else {
+    edge @name.scope -> @this.scope
+    edge @this.pop_start -> @name.pop_start
+    let @this.pop_end = @name.pop_end
+  }
 }
 
 [

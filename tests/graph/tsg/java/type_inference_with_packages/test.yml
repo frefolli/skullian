@@ -1,0 +1,27 @@
+filepaths:
+  - main.java
+  - com/sub/type.java
+nodes:
+  - name: com.Main
+    kind: class
+  - name: com.Main.field
+    kind: attribute
+  - name: com.Main.foo
+    kind: function
+  - name: com.sub.Type
+    kind: class
+  - name: com.sub.Type.method
+    kind: function
+edges:
+  - source: com.Main.foo
+    sink: com.sub.Type.method
+    kind: calls
+  - source: com.SubMain.bar
+    sink: com.sub.Type.method
+    kind: calls
+  - source: com.Main.foo
+    sink: com.Poco.wifi
+    kind: accessField
+  - source: com.SubMain.bar
+    sink: com.Poco.wifi
+    kind: accessField

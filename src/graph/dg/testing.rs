@@ -64,6 +64,15 @@ impl NodeTest {
     }
 }
 
+impl Display for NodeTest {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "| {} | {} |",
+            self.name,
+            self.kind
+        )
+    }
+}
+
 #[derive(Serialize, Deserialize, PartialEq, Debug)]
 pub struct EdgeTest {
     pub source: String,
@@ -121,6 +130,16 @@ impl EdgeTest {
     }
 }
 
+impl Display for EdgeTest {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "| {} | {} | {} |",
+            self.source,
+            self.sink,
+            self.kind
+        )
+    }
+}
+
 #[derive(Serialize, Deserialize, PartialEq, Debug)]
 pub struct TestCase {
     pub filepaths: Vec<Box<std::path::Path>>,
@@ -144,25 +163,38 @@ impl TestCase {
     pub fn verify(
         &self,
         dep_graph: &DepGraph
-    ) -> Option<()> {
-        let ok: bool = true;
+    ) -> Result<String, String> {
+        let mut ok: bool = true;
+        let mut report: String = String::from("");
+        report += "| node | kind | detected |\n| --- | --- | --- |";
         for node in self.nodes.iter() {
             match node.verify(dep_graph) {
-                Ok(_) => {},
-                Err(error) => log::error!("{}", error),
+                Ok(_) => {
+                    report += format!("\n{} OK |", node).as_str();
+                },
+                Err(_) => {
+                    ok = false;
+                    report += format!("\n{} NO |", node).as_str();
+                }
             }
         }
+        report += "\n\n| source | sink | kind | detected |\n| --- | --- | --- | --- |";
         for edge in self.edges.iter() {
             match edge.verify(dep_graph) {
-                Ok(_) => {},
-                Err(error) => log::error!("{}", error),
+                Ok(_) => {
+                    report += format!("\n{} OK |", edge).as_str();
+                },
+                Err(_) => {
+                    ok = false;
+                    report += format!("\n{} NO |", edge).as_str();
+                }
             }
         }
 
         if ok {
-            return Some(())
+            return Ok(report);
         } else {
-            return None;
+            return Err(report);
         }
     }
 }

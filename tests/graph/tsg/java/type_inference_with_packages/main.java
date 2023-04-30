@@ -1,3 +1,6 @@
+package com;
+import com.sub.Type;
+
 class Poco {
     int wifi;
 }

@@ -16,3 +16,12 @@ edges:
   - source: Main.foo
     sink: Type.method
     kind: calls
+  - source: SubMain.bar
+    sink: Type.method
+    kind: calls
+  - source: Main.foo
+    sink: Poco.wifi
+    kind: accessField
+  - source: SubMain.bar
+    sink: Poco.wifi
+    kind: accessField

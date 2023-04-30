@@ -157,105 +157,139 @@ filepaths:
   - src/technology/direct/subclass/CallInstanceSubSubClassDOA.java
 nodes: []
 edges:
-  - source: domain.direct.allowed.AccessClassVariable.AccessClassVariable
+#   testid: ACC-1
+  - source: domain.direct.violating.AccessClassVariable.AccessClassVariable
     sink: technology.direct.dao.CheckInDAO.currentLocation
     kind: accessField
-  - source: domain.direct.allowed.AccessClassVariableConstant.testAccessStaticFinalAttribute
+#   testid: ACC-2
+  - source: domain.direct.violating.AccessClassVariableConstant.testAccessStaticFinalAttribute
     sink: technology.direct.dao.UserDAO.name
     kind: accessField
-  - source: domain.direct.allowed.AccessClassVariableInterface.testAccessFinalAttribute
+#   testid: ACC-3
+  - source: domain.direct.violating.AccessClassVariableInterface.testAccessFinalAttribute
     sink: technology.direct.dao.ISierraDAO.NAME
     kind: accessField
-  - source: domain.direct.allowed.AccessEnumeration.AccessEnumeration
+#   testid: ACC-4
+  - source: domain.direct.violating.AccessEnumeration.AccessEnumeration
     sink: technology.direct.dao.TipDAO.ONE
     kind: accessField
-  - source: domain.direct.allowed.AccessInstanceVariableRead.AccessInstanceVariableRead
+#   testid: ACC-5
+  - source: domain.direct.violating.AccessInstanceVariableRead.AccessInstanceVariableRead
     sink: technology.direct.dao.ProfileDAO.name
     kind: accessField
-  - source: domain.direct.allowed.AccessInstanceVariableWrite.AccessInstanceVariableWrite
+#   testid: ACC-6
+  - source: domain.direct.violating.AccessInstanceVariableWrite.AccessInstanceVariableWrite
     sink: technology.direct.dao.ProfileDAO.name
     kind: accessField
-  - source: domain.direct.allowed.AccessInstanceVariableConstant.testAccessFinalAttribute
+#   testid: ACC-7
+  - source: domain.direct.violating.AccessInstanceVariableConstant.testAccessFinalAttribute
     sink: technology.direct.dao.UserDAO.message
     kind: accessField
-  - source: domain.direct.allowed.AccessInstanceVariableSuperClass.Method
-    sink: technology.direct.subclass.CallInstanceSubClassDOA.VariableOnSuperClass
+#   testid: ACC-8
+  - source: domain.direct.violating.AccessInstanceVariableSuperClass.Method
+    sink: technology.direct.dao.CallInstanceSuperClassDAO.VariableOnSuperClass
     kind: accessField
-  - source: domain.direct.allowed.AccessInstanceVariableSuperSuperClass.Method
-    sink: technology.direct.subclass.CallInstanceSubSubClassDOA.VariableOnSuperClass
+#   testid: ACC-9
+  - source: domain.direct.violating.AccessInstanceVariableSuperSuperClass.Method
+    sink: technology.direct.dao.CallInstanceSuperClassDAO.VariableOnSuperClass
     kind: accessField
-  - source: domain.direct.allowed.AccessObjectReferenceAsParameter.AccessObjectReferenceAsParameter
+#   testid: ACC-10
+  - source: domain.direct.violating.AccessObjectReferenceAsParameter.AccessObjectReferenceAsParameter
     sink: domain.direct.Base.profileDao
     kind: accessField
-  - source: domain.direct.allowed.AccessObjectReferenceWithinIfStatement.AccessObjectReferenceWithinIfStatement
+#   testid: ACC-11
+  - source: domain.direct.violating.AccessObjectReferenceWithinIfStatement.AccessObjectReferenceWithinIfStatement
     sink: domain.direct.Base.profileDao
     kind: accessField
-  - source: domain.direct.allowed.AnnotationDependency
+#   testid: ANN-1
+  - source: domain.direct.violating.AnnotationDependency
     sink: technology.direct.dao.SettingsAnnotation
     kind: usesType
-  - source: domain.direct.allowed.CallClassMethod.CallClassMethod
+#   testid: CAL-1
+  - source: domain.direct.violating.CallClassMethod.CallClassMethod
     sink: technology.direct.dao.BadgesDAO.getAllBadges
     kind: calls
-  - source: domain.direct.allowed.CallConstructor.CallConstructor
-    sink: technology.direct.dao.AccountDAO.AccountDAO
-    kind: calls
-  - source: domain.direct.allowed.CallConstructorLibraryClass.handleCallback
-    sink: fi.foyt.foursquare.api.FoursquareApi.FoursquareApi
-    kind: calls
-  - source: domain.direct.allowed.CallInstance.CallInstance
+#   testid: CAL-2
+  - source: domain.direct.violating.CallConstructor.CallConstructor
+    sink: technology.direct.dao.AccountDAO
+    kind: usesType
+#   testid: CAL-3
+  - source: domain.direct.violating.CallConstructorLibraryClass.handleCallback
+    sink: fi.foyt.foursquare.api.FoursquareApi
+    kind: usesType
+#   testid: CAL-4
+  - source: domain.direct.violating.CallInstance.CallInstance
     sink: technology.direct.dao.ProfileDAO.getCampaignType
     kind: calls
-  - source: domain.direct.allowed.CallInstanceInnerClass.CallMethodInstanceInnerClass
+#   testid: CAL-5
+  - source: domain.direct.violating.CallInstanceInnerClass.CallMethodInstanceInnerClass
     sink: technology.direct.dao.CallInstanceOuterClassDAO.CallInstanceInnerClassDAO.getNext
     kind: calls
-  - source: domain.direct.allowed.CallInstanceInterface.test
+#   testid: CAL-6
+  - source: domain.direct.violating.CallInstanceInterface.test
     sink: technology.direct.dao.CallInstanceInterfaceDAO.InterfaceMethod
     kind: calls
-  - source: domain.direct.allowed.CallInstanceLibraryClass.handleCallback
+#   testid: CAL-7
+  - source: domain.direct.violating.CallInstanceLibraryClass.handleCallback
     sink: fi.foyt.foursquare.api.FoursquareApi.getAuthenticationUrl
     kind: calls
-  - source: domain.direct.allowed.CallInstanceSuperClass.MethodOfSuperClass
-    sink: technology.direct.subclass.CallInstanceSubClassDOA.MethodOnSuperClass
+#   testid: CAL-8
+  - source: domain.direct.violating.CallInstanceSuperClass.MethodOfSuperClass
+    sink: technology.direct.dao.CallInstanceSuperClassDAO.MethodOnSuperClass
     kind: calls
-  - source: domain.direct.allowed.CallInstanceSuperSuperClass.MethodOfSuperClass
-    sink: technology.direct.subclass.CallInstanceSubSubClassDOA.MethodOnSuperClass
+#   testid: CAL-9
+  - source: domain.direct.violating.CallInstanceSuperSuperClass.MethodOfSuperClass
+    sink: technology.direct.dao.CallInstanceSuperClassDAO.MethodOnSuperClass
     kind: calls
-  - source: domain.direct.allowed.DeclarationExceptionThrows.getStatics
+#   testid: DEC-1
+  - source: domain.direct.violating.DeclarationExceptionThrows.getStatics
     sink: technology.direct.dao.StaticsException
     kind: throwsType
-  - source: domain.direct.allowed.DeclarationParameter.getProfileInformation.dao
+#   testid: DEC-2
+  - source: domain.direct.violating.DeclarationParameter.getProfileInformation.dao
     sink: technology.direct.dao.ProfileDAO
     kind: usesType
-  - source: domain.direct.allowed.DeclarationReturnType.getVenues
+#   testid: DEC-3
+  - source: domain.direct.violating.DeclarationReturnType.getVenues
     sink: technology.direct.dao.VenueDAO
     kind: usesType
-  - source: domain.direct.allowed.DeclarationTypeCast.getProfileInformation
+#   testid: DEC-4
+  - source: domain.direct.violating.DeclarationTypeCast.getProfileInformation
+    sink: technology.direct.dao.ProfileDAO
+    kind: castsType
+#   testid: DEC-5
+  - source: domain.direct.violating.DeclarationTypeCastOfArgument.initializeProfileInformation
+    sink: technology.direct.dao.ProfileDAO
+    kind: castsType
+#   testid: DEC-6
+  - source: domain.direct.violating.DeclarationVariableInstance.pdao
     sink: technology.direct.dao.ProfileDAO
     kind: usesType
-  - source: domain.direct.allowed.DeclarationTypeCastOfArgument.initializeProfileInformation
+#   testid: DEC-7
+  - source: domain.direct.violating.DeclarationVariableLocal.getProfileInformation.pdao
     sink: technology.direct.dao.ProfileDAO
     kind: usesType
-  - source: domain.direct.allowed.DeclarationVariableInstance.pdao
+#   testid: DEC-8
+  - source: domain.direct.violating.DeclarationVariableLocal_Initialized.getProfileInformation.pdao
     sink: technology.direct.dao.ProfileDAO
     kind: usesType
-  - source: domain.direct.allowed.DeclarationVariableLocal.getProfileInformation.pdao
+#   testid: DEC-9
+  - source: domain.direct.violating.DeclarationVariableStatic.pdao
     sink: technology.direct.dao.ProfileDAO
     kind: usesType
-  - source: domain.direct.allowed.DeclarationVariableLocal_Initialized.getProfileInformation.pdao
-    sink: technology.direct.dao.ProfileDAO
-    kind: usesType
-  - source: domain.direct.allowed.DeclarationVariableStatic.pdao
-    sink: technology.direct.dao.ProfileDAO
-    kind: usesType
-  - source: domain.direct.allowed
+#   testid: IMP-1
+  - source: domain.direct.violating
     sink: technology.direct.dao.AccountDAO
     kind: includes
-  - source: domain.direct.allowed.InheritanceExtends
+#   testid: INH-1
+  - source: domain.direct.violating.InheritanceExtends
     sink: technology.direct.dao.HistoryDAO
     kind: isChildOf
-  - source: domain.direct.allowed.InheritanceExtendsAbstractClass
+#   testid: INH-2
+  - source: domain.direct.violating.InheritanceExtendsAbstractClass
     sink: technology.direct.dao.FriendsDAO
     kind: isChildOf
-  - source: domain.direct.allowed.InheritanceImplementsInterface
+#   testid: INH-3
+  - source: domain.direct.violating.InheritanceImplementsInterface
     sink: technology.direct.dao.IMapDAO
     kind: isImplementationOf

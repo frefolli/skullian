@@ -202,6 +202,18 @@ fn job_workflow(config: &CLIConfig) {
 fn job_debug(config: &CLIConfig) {
     let mut sgl_cache = HashMap::<String, StackGraphLanguage>::new();
     let root_dir = std::env::current_dir().unwrap();
+    let mut report_text: String = String::from(
+"# Quality Report
+
+## Problems
+
+`Problems(problem_id: TEXT, description: TEXT, causes: TEXT)`
+
+| problem_id | description | causes |
+| --------- | ----------- | ------ |
+|  |  |  |
+
+## Tests");
     for target in &config.targets {
         let target_path = Path::new(target);
         if !target_path.exists() {
@@ -236,12 +248,29 @@ fn job_debug(config: &CLIConfig) {
                     
                     skullian::graph::dg::build_dep_graph(&mut dep_graph, Path::new(&config.output_file), &stack_graph);
                     match test.verify(&dep_graph) {
-                        Some(()) => println!("{:?} ok", entry.path()),
-                        None => println!("{:?} error", entry.path()),
+                        Ok(report) => {
+                            report_text += format!("\n\n## {:?}\n\n{}", entry.path(), report).as_str();
+                            println!("`{:?}` `ok`", entry.path());
+                        },
+                        Err(report) => {
+                            report_text += format!("\n\n## {:?}\n\n{}", entry.path(), report).as_str();
+                            println!("`{:?}` `error`", entry.path());
+                        },
                     }
                     std::env::set_current_dir(root_dir.as_path()).unwrap();
                 }
             }
+        }
+    }
+    let output_file = Path::new(&config.output_file);
+    if output_file.as_os_str() != "" {
+        match std::fs::write(output_file, report_text) {
+            Ok(_) => {},
+            Err(error) => {
+                panic!(
+                    "unable to write report file for tests at {:?}, {}",
+                    output_file, error)
+            },
         }
     }
 }

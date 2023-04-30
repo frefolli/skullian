@@ -7,7 +7,7 @@ public class AccessInstanceVariableSuperClass extends Base{
 	public AccessInstanceVariableSuperClass(){};
 	
 	public void Method() {
-		String s = subDao.VariableOnSuperClass; 
+		String s = subDao.VariableOnSuperClass;
 		System.out.println(s);
 	}
 }

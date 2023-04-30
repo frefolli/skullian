@@ -1,0 +1,1 @@
+[{"data":{"id":"Class.function"},"style":{"shape":"rectangle","background-color":"red"}},{"data":{"id":"Class"},"style":{"shape":"hexagon","background-color":"blue"}},{"data":{"id":"Class.function -> Class","source":"Class.function","target":"Class","label":"definedBy"}}]
