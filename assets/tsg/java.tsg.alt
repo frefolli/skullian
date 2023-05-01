@@ -42,9 +42,7 @@ attribute refkind = kind                => debug_refkind = kind
 ;; generics
 [
   (program)@this
-  (identifier)@this
   (this)@this
-  (type_identifier)@this
   (annotation_type_declaration)@this
   (enum_declaration)@this
   (class_declaration)@this
@@ -79,7 +77,6 @@ attribute refkind = kind                => debug_refkind = kind
   (boolean_type)@this
   (line_comment)@this
   (block_comment)@this
-  (method_invocation)@this
   (if_statement)@this
   (parenthesized_expression)@this
   (object_creation_expression)@this
@@ -94,6 +91,16 @@ attribute refkind = kind                => debug_refkind = kind
   (explicit_constructor_invocation)@this
   (super)@this
   (argument_list)@this
+] {
+  node @this.scope
+  node @this.pop_start
+  let @this.push_start = @this.scope
+}
+
+[
+  (identifier)@this
+  (type_identifier)@this
+  (method_invocation)@this
 ] {
   node @this.scope
   node @this.pop_start
@@ -502,7 +509,7 @@ attribute refkind = kind                => debug_refkind = kind
   let @this.push_start =  @child.push_start
   let @this.push_end = @child.push_end
   let @this.pop_end = @child.pop_end
-  edge @this.push_end -> @this.scope
+  ; edge @this.push_end -> @this.scope
 }
 
 (cast_expression
