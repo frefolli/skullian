@@ -116,8 +116,8 @@ attribute refkind = kind                => debug_refkind = kind
   (integral_type)@this
   (boolean_type)@this
 ] {
-  attr (@this.push_start)
-    push_node = @this
+  ;attr (@this.push_start)
+  ;  push_node = @this
   let @this.push_end = @this.push_start
   let @this.pop_end = @this.pop_start
 }
@@ -264,7 +264,10 @@ attribute refkind = kind                => debug_refkind = kind
 }
 
 ;; annotation as modifiers
-(class_declaration (modifiers (annotation name: (_)@type)) name: (_)@name)@this {
+[
+  (class_declaration (modifiers (marker_annotation name: (_)@type)) name: (_)@name)@this
+  (class_declaration (modifiers (annotation name: (_)@type)) name: (_)@name)@this
+] {
   attr (@type.push_start)
     is_reference, refkind = "usesType"
 
@@ -273,7 +276,10 @@ attribute refkind = kind                => debug_refkind = kind
 }
 
 ;; annotation as modifiers
-(method_declaration (modifiers (annotation name: (_)@type)) name: (_)@name)@this {
+[
+  (method_declaration (modifiers (marker_annotation name: (_)@type)) name: (_)@name)@this
+  (method_declaration (modifiers (annotation name: (_)@type)) name: (_)@name)@this
+] {
   attr (@type.push_start)
     is_reference, refkind = "usesType"
 
