@@ -555,5 +555,5 @@ pub fn build_dep_graph(
         log::info!("Explorer is_done_with saving_graph_to_json");
     }
     fun_facts(&dep_graph);
-    log::info!("{}", dep_graph);
+    println!("{}", &dep_graph);
 }

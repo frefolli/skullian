@@ -4,3 +4,4 @@
 *.puml
 *.png
 __pycache__
+*.graphml

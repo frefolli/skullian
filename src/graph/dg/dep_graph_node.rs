@@ -33,7 +33,12 @@ impl DepGraphNode {
     }
 
     pub fn to_string(&self) -> String {
-        format!("(node {} {})",
+        format!("
+\t\t<node id=\"{}\">
+\t\t\t<data id=\"qualified_name\">{}</data>
+\t\t\t<data id=\"kind\">{}</data>
+\t\t</node>",
+            self.qualified_name,
             self.qualified_name,
             self.defkind
         )
