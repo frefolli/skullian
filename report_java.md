@@ -1,76 +1,493 @@
-# Quality Report for Java
+# Quality Report
 
-## As Is
-
-### Relationships
-
-`Relationships(relationship_id: TEXT, fullname: TEXT, notes: TEXT)`
-
-| relationship_id | fullname | notes |
-| -------------- | --------- | ----- |
-| AF | accessField |  |
-| IC | includes |  |
-| UT | usesType |  |
-| CA | calls |  |
-| CO | isChildOf |  |
-| IO | isImplementationOf |  |
-| TT | throwsType | proposed |
-| CT | castsType | proposed |
-|  |  |  |
-
-### Problems
+## Problems
 
 `Problems(problem_id: TEXT, description: TEXT, causes: TEXT)`
 
 | problem_id | description | causes |
 | --------- | ----------- | ------ |
-| IC0 | when a package is defined import statements cannot be used as bridges to resolve names | N/A |
-| AF0 | extension doesn't serve as a bridge to resolve names |  |
-| AF1 | implementation doesn't serve as a bridge to resolve names |  |
-| AF2 | typing doesn't serve as a bridge to resolve names |  |
-| UT0 | annotation usage isn't used to detect a usesType |  |
-| UT1 | cast usage isn't used to detect a usesType or castsType |  |
-| TT0 | `new` doesn't trigger call of constructor or usesType or thrownsType |
+|  |  |  |
 
-## Prujit
+## Tests
 
-### Detection
+## "tests/graph/tsg/java/implementation_bridge/test.yml"
 
-`Detection(benchmark_id: TEXT, from: TEXT, relationship: TEXT, to: TEXT, detected: ENUM("NO", "YES"), problems: TEXT)`
+| node | kind | detected |
+| --- | --- | --- |
+| Main | class | OK |
+| Main.field | attribute | OK |
+| Main.foo | function | OK |
+| Type | class | OK |
+| Base | interface | OK |
+| Base.method | function | OK |
 
-| benchmark_id | from | relationship | to | detected | problems |
-| ------------ | ---- | ------------ | --- | ------- | -------- |
-| ACC-1 | domain.direct.allowed.AccessClassVariable.AccessClassVariable | AF | technology.direct.dao.CheckInDAO.currentLocation | NO | IC0 |
-| ACC-2 | domain.direct.allowed.AccessClassVariableConstant.testAccessStaticFinalAttribute | AF | technology.direct.dao.UserDAO.name | YES |  |
-| ACC-3 | domain.direct.allowed.AccessClassVariableInterface.testAccessFinalAttribute | AF | technology.direct.dao.ISierraDAO.NAME | YES |  |
-| ACC-4 | domain.direct.allowed.AccessEnumeration.AccessEnumeration | AF | technology.direct.dao.TipDAO.ONE | NO | IC0 |
-| ACC-5 | domain.direct.allowed.AccessInstanceVariableRead.AccessInstanceVariableRead | AF | technology.direct.dao.ProfileDAO.name | NO | AF0 |
-| ACC-6 | domain.direct.allowed.AccessInstanceVariableWrite.AccessInstanceVariableWrite | AF | technology.direct.dao.ProfileDAO.name | NO | AF0 |
-| ACC-7 | domain.direct.allowed.AccessInstanceVariableConstant.testAccessFinalAttribute | AF | technology.direct.dao.UserDAO.message | NO | AF0 |
-| ACC-8 | domain.direct.allowed.AccessInstanceVariableSuperClass.Method | AF | domain.direct.Base.VariableOnSuperClass | NO | AF0,AF2 |
-| ACC-9 | domain.direct.allowed.AccessInstanceVariableSuperSuperClass.Method | AF | domain.direct.Base.VariableOnSuperClass | NO | AF0,AF2 |
-| ACC-10 | domain.direct.allowed.AccessObjectReferenceAsParameter.AccessObjectReferenceAsParameter | AF | domain.direct.Base.profileDao | NO | AF0 |
-| ACC-11 | domain.direct.allowed.AccessObjectReferenceWithinIfStatement.AccessObjectReferenceWithinIfStatement | AF | domain.direct.Base.profileDao | NO | AF0 |
-| ANN-1 | domain.direct.allowed.AnnotationDependency | UT | technology.direct.dao.SettingsAnnotation | NO | UT0 |
-| CAL-1 | domain.direct.allowed.CallClassMethod.CallClassMethod | CA | technology.direct.dao.BadgesDAO.getAllBadges | NO | IC0 |
-| CAL-2 | domain.direct.allowed.CallConstructor.CallConstructor | CA | technology.direct.dao.AccountDAO.AccountDAO | NO | TT0 |
-| CAL-3 | domain.direct.allowed.CallConstructorLibraryClass.handleCallback | CA | fi.foyt.foursquare.api.FoursquareApi.FoursquareApi | NO | TT0 |
-| CAL-4 | domain.direct.allowed.CallInstance.CallInstance | CA | technology.direct.dao.ProfileDAO.getCampaignType | NO | AF1 |
-| CAL-5 | domain.direct.allowed.CallInstanceInnerClass.CallMethodInstanceInnerClass | CA | technology.direct.dao.CallInstanceOuterClassDAO.CallInstanceInnerClassDAO.getNext | NO | AF1 |
-| CAL-6 | domain.direct.allowed.CallInstanceInterface.test | CA | technology.direct.dao.CallInstanceInterfaceDAO.InterfaceMethod | NO | AF2 |
-| CAL-7 | domain.direct.allowed.CallInstanceLibraryClass.handleCallback | CA | fi.foyt.foursquare.api.FoursquareApi.getAuthenticationUrl | NO | AF1,AF2 |
-| CAL-8 | domain.direct.allowed.CallInstanceSuperClass.MethodOfSuperClass | CA | technology.direct.subclass.CallInstanceSubClassDOA.MethodOnSuperClass | NO | AF1 |
-| CAL-9 | domain.direct.allowed.CallInstanceSuperSuperClass.MethodOfSuperClass | CA | technology.direct.subclass.CallInstanceSubSubClassDOA.MethodOnSuperClass | NO | AF1 |
-| DEC-1 | domain.direct.allowed.DeclarationExceptionThrows.getStatics | CA | technology.direct.dao.StaticsException.StaticsException | NO | TT0 |
-| DEC-2 | domain.direct.allowed.DeclarationParameter.getProfileInformation.dao | UT | technology.direct.dao.ProfileDAO | YES |  |
-| DEC-3 | domain.direct.allowed.DeclarationReturnType.getVenues | UT | technology.direct.dao.VenueDAO | YES |  |
-| DEC-4 | domain.direct.allowed.DeclarationTypeCast.getProfileInformation | UT | technology.direct.dao.ProfileDAO | NO | UT1 |
-| DEC-5 | domain.direct.allowed.DeclarationTypeCastOfArgument.initializeProfileInformation | UT | technology.direct.dao.ProfileDAO | NO | UT1 |
-| DEC-6 | domain.direct.allowed.DeclarationVariableInstance.pdao | UT | technology.direct.dao.ProfileDAO | YES |  |
-| DEC-7 | domain.direct.allowed.DeclarationVariableLocal.getProfileInformation.pdao | UT | technology.direct.dao.ProfileDAO | YES |  |
-| DEC-7 | domain.direct.allowed.DeclarationVariableLocal_Initialized.getProfileInformation.pdao | UT | technology.direct.dao.ProfileDAO | YES |  |
-| DEC-9 | domain.direct.allowed.DeclarationVariableStatic.pdao | UT | technology.direct.dao.ProfileDAO | YES |  |
-| IMP-1 | domain.direct.allowed | IC | technology.direct.dao.AccountDAO | YES |  |
-| INH-1 | domain.direct.allowed.InheritanceExtends | CO | technology.direct.dao.HistoryDAO | YES |  |
-| INH-2 | domain.direct.allowed.InheritanceExtendsAbstractClass | CO | technology.direct.dao.FriendsDAO | YES |  |
-| INH-3 | domain.direct.allowed.InheritanceImplementsInterface | IO | technology.direct.dao.IMapDAO | YES |  |
+| source | sink | kind | detected |
+| --- | --- | --- | --- |
+| Main.foo | Base.method | calls | OK |
+
+score: 7 / 7 =$= 100%
+
+## "tests/graph/tsg/java/class_methods_with_parameters/main.yml"
+
+| node | kind | detected |
+| --- | --- | --- |
+| com | package | OK |
+| com.Main | class | OK |
+| com.Main.foo | function | OK |
+| com.Main.bar | function | OK |
+| com.Main.foo.args | parameter | OK |
+| com.Main.bar.argc | parameter | OK |
+
+| source | sink | kind | detected |
+| --- | --- | --- | --- |
+| com.Main | com | definedBy | OK |
+| com.Main.foo | com.Main | definedBy | OK |
+| com.Main.bar | com.Main | definedBy | OK |
+| com.Main.foo.args | com.Main.foo | definedBy | OK |
+| com.Main.bar.argc | com.Main.bar | definedBy | OK |
+
+score: 11 / 11 =$= 100%
+
+## "tests/graph/tsg/java/class_implementation/test.yml"
+
+| node | kind | detected |
+| --- | --- | --- |
+| com | package | OK |
+| com.A | interface | OK |
+| com.B | class | OK |
+
+| source | sink | kind | detected |
+| --- | --- | --- | --- |
+| com.B | com.A | isImplementationOf | OK |
+
+score: 4 / 4 =$= 100%
+
+## "tests/graph/tsg/java/class_with_attributes/main.yml"
+
+| node | kind | detected |
+| --- | --- | --- |
+| com | package | OK |
+| com.Main | class | OK |
+| com.Main.args | attribute | OK |
+
+| source | sink | kind | detected |
+| --- | --- | --- | --- |
+| com.Main | com | definedBy | OK |
+| com.Main.args | com.Main | definedBy | OK |
+
+score: 5 / 5 =$= 100%
+
+## "tests/graph/tsg/java/class_methods_with_attributes/main.yml"
+
+| node | kind | detected |
+| --- | --- | --- |
+| com | package | OK |
+| com.Main | class | OK |
+| com.Main.foo | function | OK |
+| com.Main.foo.args | attribute | OK |
+
+| source | sink | kind | detected |
+| --- | --- | --- | --- |
+| com.Main | com | definedBy | OK |
+| com.Main.foo | com.Main | definedBy | OK |
+| com.Main.foo.args | com.Main.foo | definedBy | OK |
+
+score: 7 / 7 =$= 100%
+
+## "tests/graph/tsg/java/class_method_call/main.yml"
+
+| node | kind | detected |
+| --- | --- | --- |
+| com | package | OK |
+| com.Main | class | OK |
+| com.A | class | OK |
+| com.A.B | class | OK |
+
+| source | sink | kind | detected |
+| --- | --- | --- | --- |
+| com.Main.main | com.A.B.method | calls | OK |
+| com.A.B.method | com.A.B.method | calls | OK |
+| com.C.method | com.A.B.method | calls | OK |
+| com.C.method | com.C.method | calls | OK |
+
+score: 8 / 8 =$= 100%
+
+## "tests/graph/tsg/java/type_inference/test.yml"
+
+| node | kind | detected |
+| --- | --- | --- |
+| Main | class | OK |
+| Main.field | attribute | OK |
+| Main.foo | function | OK |
+| Type | class | OK |
+| Type.method | function | OK |
+
+| source | sink | kind | detected |
+| --- | --- | --- | --- |
+| Main.foo | Type.method | calls | OK |
+| SubMain.bar | Type.method | calls | OK |
+| Main.foo | Poco.wifi | accessField | OK |
+| SubMain.bar | Poco.wifi | accessField | OK |
+
+score: 9 / 9 =$= 100%
+
+## "tests/graph/tsg/java/enums/main.yml"
+
+| node | kind | detected |
+| --- | --- | --- |
+| Enum | enum | OK |
+| Enum.toString | function | OK |
+| Enum.A | enumVariant | OK |
+| Enum.B | enumVariant | OK |
+| Enum.C | enumVariant | OK |
+
+| source | sink | kind | detected |
+| --- | --- | --- | --- |
+| Enum.Enum | Enum | definedBy | OK |
+| Enum.toString | Enum | definedBy | OK |
+| Enum.A | Enum | definedBy | OK |
+| Enum.Enum | Enum.i | accessField | OK |
+| Enum.assign | Enum.i | accessField | OK |
+| Enum.Enum | Enum.Enum.j | accessField | OK |
+
+score: 11 / 11 =$= 100%
+
+## "tests/graph/tsg/java/class_inheritance/test.yml"
+
+| node | kind | detected |
+| --- | --- | --- |
+| com | package | OK |
+| com.A | class | OK |
+| com.B | class | OK |
+| com.A.C | class | OK |
+
+| source | sink | kind | detected |
+| --- | --- | --- | --- |
+| com.B | com.A.C | isChildOf | OK |
+| com.A.C | com.A | nestedTo | OK |
+
+score: 6 / 6 =$= 100%
+
+## "tests/graph/tsg/java/object_creation/test.yml"
+
+| node | kind | detected |
+| --- | --- | --- |
+| com | package | OK |
+| com.Main | class | OK |
+| com.Type | class | OK |
+
+| source | sink | kind | detected |
+| --- | --- | --- | --- |
+| com.Main.foo | com.Type | usesType | OK |
+
+score: 4 / 4 =$= 100%
+
+## "tests/graph/tsg/java/class_type_usage_nested_packages/test.yml"
+
+| node | kind | detected |
+| --- | --- | --- |
+| com.net.Main | class | OK |
+| com.net.Foo | class | OK |
+
+| source | sink | kind | detected |
+| --- | --- | --- | --- |
+| com.net.Main | com.net | definedBy | OK |
+| com.net.Foo | com.net | definedBy | OK |
+| com.net.Main.main | com.net.Main | definedBy | OK |
+| com.net.Main.bar | com.net.Main | definedBy | OK |
+| com.net.Main.bing | com.net.Foo | usesType | OK |
+| com.net.Main.main.obj1 | com.net.Foo | usesType | OK |
+| com.net.Main.bar | com.net.Foo | usesType | OK |
+
+score: 9 / 9 =$= 100%
+
+## "tests/graph/tsg/java/nested_classes/test.yml"
+
+| node | kind | detected |
+| --- | --- | --- |
+| com | package | OK |
+| com.A | class | OK |
+| com.A.B | class | OK |
+| com.A.B.C | class | OK |
+
+| source | sink | kind | detected |
+| --- | --- | --- | --- |
+| com.A.B | com.A | nestedTo | OK |
+| com.A.B.C | com.A.B | nestedTo | OK |
+
+score: 6 / 6 =$= 100%
+
+## "tests/graph/tsg/java/casts_type/test.yml"
+
+| node | kind | detected |
+| --- | --- | --- |
+| com | package | OK |
+| com.Main | class | OK |
+| com.Type | class | OK |
+
+| source | sink | kind | detected |
+| --- | --- | --- | --- |
+| com.Main.foo | com.Type | castsType | OK |
+
+score: 4 / 4 =$= 100%
+
+## "tests/graph/tsg/java/class_type_usage/test.yml"
+
+| node | kind | detected |
+| --- | --- | --- |
+| com.Main | class | OK |
+| com.Foo | class | OK |
+
+| source | sink | kind | detected |
+| --- | --- | --- | --- |
+| com.Main | com | definedBy | OK |
+| com.Foo | com | definedBy | OK |
+| com.Main.main | com.Main | definedBy | OK |
+| com.Main.bar | com.Main | definedBy | OK |
+| com.Main.bing | com.Foo | usesType | OK |
+| com.Main.main.obj1 | com.Foo | usesType | OK |
+| com.Main.bar | com.Foo | usesType | OK |
+
+score: 9 / 9 =$= 100%
+
+## "tests/graph/tsg/java/throws_type/test.yml"
+
+| node | kind | detected |
+| --- | --- | --- |
+| com | package | OK |
+| com.Main | class | OK |
+| com.Type | class | OK |
+
+| source | sink | kind | detected |
+| --- | --- | --- | --- |
+| com.Main.foo | com.Type | throwsType | OK |
+
+score: 4 / 4 =$= 100%
+
+## "tests/graph/tsg/java/imports/test.yml"
+
+| node | kind | detected |
+| --- | --- | --- |
+| com.Main | class | OK |
+| com.Bing | class | OK |
+| com.sub.Foo | class | OK |
+| com.sub.Bar | class | OK |
+
+| source | sink | kind | detected |
+| --- | --- | --- | --- |
+| com.Main | com | definedBy | OK |
+| com.Bing | com | definedBy | OK |
+| com.sub.Foo | com.sub | definedBy | OK |
+| com.sub.Bar | com.sub | definedBy | OK |
+| com | com.sub.Bar | includes | OK |
+| com.Main.main.obj3 | com.Bing | usesType | OK |
+| com.Main.main.obj2 | com.sub.Foo | usesType | OK |
+| com.Main.main.obj1 | com.sub.Bar | usesType | OK |
+
+score: 12 / 12 =$= 100%
+
+## "tests/graph/tsg/java/interface_inheritance/test.yml"
+
+| node | kind | detected |
+| --- | --- | --- |
+| com | package | OK |
+| com.A | interface | OK |
+| com.B | interface | OK |
+
+| source | sink | kind | detected |
+| --- | --- | --- | --- |
+| com.B | com.A | isChildOf | OK |
+
+score: 4 / 4 =$= 100%
+
+## "tests/graph/tsg/java/type_inference_with_packages/test.yml"
+
+| node | kind | detected |
+| --- | --- | --- |
+| com.Main | class | OK |
+| com.Main.field | attribute | OK |
+| com.Main.foo | function | OK |
+| com.sub.Type | class | OK |
+| com.sub.Type.method | function | OK |
+
+| source | sink | kind | detected |
+| --- | --- | --- | --- |
+| com.Main.foo | com.sub.Type.method | calls | OK |
+| com.SubMain.bar | com.sub.Type.method | calls | OK |
+| com.Main.foo | com.Poco.wifi | accessField | OK |
+| com.SubMain.bar | com.Poco.wifi | accessField | OK |
+
+score: 9 / 9 =$= 100%
+
+## "tests/graph/tsg/java/extension_bridge/test.yml"
+
+| node | kind | detected |
+| --- | --- | --- |
+| Main | class | OK |
+| Main.field | attribute | OK |
+| Main.foo | function | OK |
+| Type | class | OK |
+| Base | class | OK |
+| Base.method | function | OK |
+
+| source | sink | kind | detected |
+| --- | --- | --- | --- |
+| Main.foo | Base.method | calls | OK |
+
+score: 7 / 7 =$= 100%
+
+## "tests/graph/tsg/java/benchmark/test.yml"
+
+| node | kind | detected |
+| --- | --- | --- |
+
+| source | sink | kind | detected |
+| --- | --- | --- | --- |
+| domain.direct.violating.AccessClassVariable.AccessClassVariable | technology.direct.dao.CheckInDAO.currentLocation | accessField | OK |
+| domain.direct.violating.AccessClassVariableConstant.testAccessStaticFinalAttribute | technology.direct.dao.UserDAO.name | accessField | OK |
+| domain.direct.violating.AccessClassVariableInterface.testAccessFinalAttribute | technology.direct.dao.ISierraDAO.NAME | accessField | OK |
+| domain.direct.violating.AccessEnumeration.AccessEnumeration | technology.direct.dao.TipDAO.ONE | accessField | OK |
+| domain.direct.violating.AccessInstanceVariableRead.AccessInstanceVariableRead | technology.direct.dao.ProfileDAO.name | accessField | NO |
+| domain.direct.violating.AccessInstanceVariableWrite.AccessInstanceVariableWrite | technology.direct.dao.ProfileDAO.name | accessField | NO |
+| domain.direct.violating.AccessInstanceVariableConstant.testAccessFinalAttribute | technology.direct.dao.UserDAO.message | accessField | NO |
+| domain.direct.violating.AccessInstanceVariableSuperClass.Method | technology.direct.dao.CallInstanceSuperClassDAO.VariableOnSuperClass | accessField | NO |
+| domain.direct.violating.AccessInstanceVariableSuperSuperClass.Method | technology.direct.dao.CallInstanceSuperClassDAO.VariableOnSuperClass | accessField | NO |
+| domain.direct.violating.AccessObjectReferenceAsParameter.AccessObjectReferenceAsParameter | domain.direct.Base.profileDao | accessField | OK |
+| domain.direct.violating.AccessObjectReferenceWithinIfStatement.AccessObjectReferenceWithinIfStatement | domain.direct.Base.profileDao | accessField | OK |
+| domain.direct.violating.AnnotationDependency | technology.direct.dao.SettingsAnnotation | usesType | OK |
+| domain.direct.violating.CallClassMethod.CallClassMethod | technology.direct.dao.BadgesDAO.getAllBadges | calls | OK |
+| domain.direct.violating.CallConstructor.CallConstructor | technology.direct.dao.AccountDAO | usesType | OK |
+| domain.direct.violating.CallInstance.CallInstance | technology.direct.dao.ProfileDAO.getCampaignType | calls | NO |
+| domain.direct.violating.CallInstanceInnerClass.CallMethodInstanceInnerClass | technology.direct.dao.CallInstanceOuterClassDAO.CallInstanceInnerClassDAO.getNext | calls | NO |
+| domain.direct.violating.CallInstanceInterface.test | technology.direct.dao.CallInstanceInterfaceDAO.InterfaceMethod | calls | NO |
+| domain.direct.violating.CallInstanceSuperClass.MethodOfSuperClass | technology.direct.dao.CallInstanceSuperClassDAO.MethodOnSuperClass | calls | NO |
+| domain.direct.violating.CallInstanceSuperSuperClass.MethodOfSuperClass | technology.direct.dao.CallInstanceSuperClassDAO.MethodOnSuperClass | calls | NO |
+| domain.direct.violating.DeclarationExceptionThrows.getStatics | technology.direct.dao.StaticsException | throwsType | OK |
+| domain.direct.violating.DeclarationParameter.getProfileInformation.dao | technology.direct.dao.ProfileDAO | usesType | OK |
+| domain.direct.violating.DeclarationReturnType.getVenues | technology.direct.dao.VenueDAO | usesType | OK |
+| domain.direct.violating.DeclarationTypeCast.getProfileInformation | technology.direct.dao.ProfileDAO | castsType | OK |
+| domain.direct.violating.DeclarationTypeCastOfArgument.initializeProfileInformation | technology.direct.dao.ProfileDAO | castsType | OK |
+| domain.direct.violating.DeclarationVariableInstance.pdao | technology.direct.dao.ProfileDAO | usesType | OK |
+| domain.direct.violating.DeclarationVariableLocal.getProfileInformation.pdao | technology.direct.dao.ProfileDAO | usesType | OK |
+| domain.direct.violating.DeclarationVariableLocal_Initialized.getProfileInformation.pdao | technology.direct.dao.ProfileDAO | usesType | OK |
+| domain.direct.violating.DeclarationVariableStatic.pdao | technology.direct.dao.ProfileDAO | usesType | OK |
+| domain.direct.violating | technology.direct.dao.AccountDAO | includes | OK |
+| domain.direct.violating.InheritanceExtends | technology.direct.dao.HistoryDAO | isChildOf | OK |
+| domain.direct.violating.InheritanceExtendsAbstractClass | technology.direct.dao.FriendsDAO | isChildOf | OK |
+| domain.direct.violating.InheritanceImplementsInterface | technology.direct.dao.IMapDAO | isImplementationOf | OK |
+
+score: 22 / 32 =$= 68.75%
+
+## "tests/graph/tsg/java/class_constructors/main.yml"
+
+| node | kind | detected |
+| --- | --- | --- |
+| com | package | OK |
+| com.Main | class | OK |
+| com.Main.Main | function | OK |
+| com.Main.Main.a | parameter | OK |
+| com.Main.Main.b | attribute | OK |
+
+| source | sink | kind | detected |
+| --- | --- | --- | --- |
+| com.Main | com | definedBy | OK |
+| com.Main.Main | com.Main | definedBy | OK |
+| com.Main.Main.a | com.Main.Main | definedBy | OK |
+| com.Main.Main.b | com.Main.Main | definedBy | OK |
+
+score: 9 / 9 =$= 100%
+
+## "tests/graph/tsg/java/class_field_access/main.yml"
+
+| node | kind | detected |
+| --- | --- | --- |
+| com | package | OK |
+| com.Main | class | OK |
+| com.A | class | OK |
+| com.A.B | class | OK |
+
+| source | sink | kind | detected |
+| --- | --- | --- | --- |
+| com.Main.main | com.A.B.method | accessField | OK |
+| com.Main.main | com.A.B.field | accessField | OK |
+
+score: 6 / 6 =$= 100%
+
+## "tests/graph/tsg/java/class_packages/test.yml"
+
+| node | kind | detected |
+| --- | --- | --- |
+| com.Main | class | OK |
+| com.Foo | class | OK |
+| com.sub.Bar | class | OK |
+
+| source | sink | kind | detected |
+| --- | --- | --- | --- |
+| com.Main | com | definedBy | OK |
+| com.Foo | com | definedBy | OK |
+| com.sub.Bar | com.sub | definedBy | OK |
+| com | com.sub.Bar | includes | OK |
+
+score: 7 / 7 =$= 100%
+
+## "tests/graph/tsg/java/annotation/test.yml"
+
+| node | kind | detected |
+| --- | --- | --- |
+| com | package | OK |
+| com.Main | class | OK |
+| com.Annotation | annotation | OK |
+
+| source | sink | kind | detected |
+| --- | --- | --- | --- |
+| com.Main | com.Annotation | usesType | OK |
+| com.Main.foo | com.Annotation | usesType | OK |
+
+score: 5 / 5 =$= 100%
+
+## "tests/graph/tsg/java/array_creation/test.yml"
+
+| node | kind | detected |
+| --- | --- | --- |
+| com | package | OK |
+| com.Main | class | OK |
+| com.Type | class | OK |
+
+| source | sink | kind | detected |
+| --- | --- | --- | --- |
+| com.Main.foo | com.Type | usesType | OK |
+
+score: 4 / 4 =$= 100%
+
+## "tests/graph/tsg/java/class_inheritance_with_packages/test.yml"
+
+| node | kind | detected |
+| --- | --- | --- |
+| com | package | OK |
+| com.A | class | OK |
+| com.B | class | OK |
+
+| source | sink | kind | detected |
+| --- | --- | --- | --- |
+| com.B | com.A | isChildOf | OK |
+
+score: 4 / 4 =$= 100%
+
+## "tests/graph/tsg/java/class_methods/main.yml"
+
+| node | kind | detected |
+| --- | --- | --- |
+| com | package | OK |
+| com.Main | class | OK |
+| com.Main.foo | function | OK |
+| com.Main.bar | function | OK |
+
+| source | sink | kind | detected |
+| --- | --- | --- | --- |
+| com.Main | com | definedBy | OK |
+| com.Main.foo | com.Main | definedBy | OK |
+| com.Main.bar | com.Main | definedBy | OK |
+
+score: 7 / 7 =$= 100%
+
+score: 200 / 210 =$= 95.23809523809524%

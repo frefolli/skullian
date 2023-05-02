@@ -42,9 +42,7 @@ attribute refkind = kind                => debug_refkind = kind
 ;; generics
 [
   (program)@this
-  (identifier)@this
   (this)@this
-  (type_identifier)@this
   (annotation_type_declaration)@this
   (enum_declaration)@this
   (class_declaration)@this
@@ -79,7 +77,6 @@ attribute refkind = kind                => debug_refkind = kind
   (boolean_type)@this
   (line_comment)@this
   (block_comment)@this
-  (method_invocation)@this
   (if_statement)@this
   (parenthesized_expression)@this
   (object_creation_expression)@this
@@ -97,8 +94,21 @@ attribute refkind = kind                => debug_refkind = kind
 ] {
   node @this.scope
   node @this.pop_start
+  let @this.push_start = @this.scope
+}
+
+[
+  (identifier)@this
+  (type_identifier)@this
+  (method_invocation)@this
+] {
+  node @this.scope
+  node @this.pop_start
   node @this.push_start
-  edge @this.scope -> @this.pop_start
+}
+
+(program)@this {
+  ;; edge @this.scope -> @this.pop_start
 }
 
 [
@@ -106,25 +116,32 @@ attribute refkind = kind                => debug_refkind = kind
   (integral_type)@this
   (boolean_type)@this
 ] {
-  attr (@this.push_start)
-    push_node = @this
+  ;attr (@this.push_start)
+  ;  push_node = @this
   let @this.push_end = @this.push_start
   let @this.pop_end = @this.pop_start
 }
 
 [
-  (enum_declaration name: (_)@name body: (_)@body)@this
-  (class_declaration name: (_)@name body: (_)@body)@this
-  (interface_declaration name: (_)@name body: (_)@body)@this
-  (annotation_type_declaration name: (_)@name body: (_)@body)@this
-  (method_declaration name: (_)@name body: (_)@body)@this
-  (constructor_declaration name: (_)@name body: (_)@body)@this
+  (enum_declaration name: (_)@name body: (_)?@body)@this
+  (class_declaration name: (_)@name body: (_)?@body)@this
+  (interface_declaration name: (_)@name body: (_)?@body)@this
+  (annotation_type_declaration name: (_)@name body: (_)?@body)@this
+  (method_declaration name: (_)@name body: (_)?@body)@this
+  (constructor_declaration name: (_)@name body: (_)?@body)@this
 ] {
-  edge @name.scope -> @this.scope
-  edge @this.pop_start -> @name.pop_start
-  let @this.pop_end = @name.pop_end
-  edge @body.scope -> @this.scope
-  edge @name.pop_end -> @body.pop_start
+  if some @body {
+    edge @name.scope -> @this.scope
+    edge @this.pop_start -> @name.pop_start
+    let @this.pop_end = @name.pop_end
+    edge @body.scope -> @this.scope
+    edge @body.scope -> @name.push_start
+    edge @name.pop_end -> @body.pop_start
+  } else {
+    edge @name.scope -> @this.scope
+    edge @this.pop_start -> @name.pop_start
+    let @this.pop_end = @name.pop_end
+  }
 }
 
 [
@@ -148,13 +165,17 @@ attribute refkind = kind                => debug_refkind = kind
   (field_declaration declarator: (variable_declarator name: (_)@name))@this
   (constant_declaration declarator: (variable_declarator name: (_)@name))@this
   (local_variable_declaration declarator: (variable_declarator name: (_)@name))@this
+  (local_variable_declaration declarator: (variable_declarator value: (_)@name))@this
   (formal_parameter name: (_)@name)@this
   (annotation_type_element_declaration name: (_)@name)@this
-  (package_declaration (_)@name)@this
   (enum_constant name: (_)@name)@this
 ] {
   edge @name.scope -> @this.scope
   edge @this.pop_start -> @name.pop_start
+}
+
+(package_declaration (_)@name)@this {
+  ;; edge @name.scope -> @this.scope
 }
 
 [
@@ -192,9 +213,12 @@ attribute refkind = kind                => debug_refkind = kind
   (while_statement body: (_)@child)@this
   (explicit_constructor_invocation (_)@child)@this
   (argument_list (_)@child)@this
+  (method_invocation arguments: (argument_list)@child)@this
 ] {
-  edge @child.scope -> @this.scope
-  edge @this.pop_start -> @child.pop_start
+  if (eq "package_declaration" (node-type @child)) {} else {
+    edge @child.scope -> @this.scope
+    edge @this.pop_start -> @child.pop_start
+  }
 }
 
 [
@@ -203,14 +227,6 @@ attribute refkind = kind                => debug_refkind = kind
 ] {
   edge @parameters.scope -> @this.scope
   edge @name.pop_end -> @parameters.pop_start
-  edge @name.scope -> @parameters.pop_start
-}
-
-[
-  (method_declaration name: (_)@name body: (_)@body)@this
-  (constructor_declaration name: (_)@name body: (_)@body)@this
-] {
-  edge @body.scope -> @name.push_start
 }
 
 [
@@ -247,16 +263,28 @@ attribute refkind = kind                => debug_refkind = kind
   edge @name.pop_end -> @type.push_start
 }
 
+;; annotation as modifiers
 [
-  (object_creation_expression type: (_)@type)@this
-  (cast_expression type: (_)@type)@this
-  (array_creation_expression type: (_)@type)@this
+  (class_declaration (modifiers (marker_annotation name: (_)@type)) name: (_)@name)@this
+  (class_declaration (modifiers (annotation name: (_)@type)) name: (_)@name)@this
 ] {
   attr (@type.push_start)
     is_reference, refkind = "usesType"
-  edge @this.pop_start -> @type.push_start
-  edge @type.push_start -> @this.scope
-  let @this.push_end = @type.push_end
+
+  edge @type.push_end -> @this.scope
+  edge @name.pop_end -> @type.push_start
+}
+
+;; annotation as modifiers
+[
+  (method_declaration (modifiers (marker_annotation name: (_)@type)) name: (_)@name)@this
+  (method_declaration (modifiers (annotation name: (_)@type)) name: (_)@name)@this
+] {
+  attr (@type.push_start)
+    is_reference, refkind = "usesType"
+
+  edge @type.push_end -> @this.scope
+  edge @name.pop_end -> @type.push_start
 }
 
 ;; identifiers
@@ -298,7 +326,6 @@ attribute refkind = kind                => debug_refkind = kind
   let @this.pop_end = @name.pop_end
   let @this.push_start = @name.push_start
   let @this.push_end = @scope.push_end
-  edge @this.scope -> @this.pop_start
   edge @this.push_end -> @this.scope
 }
 
@@ -331,21 +358,19 @@ attribute refkind = kind                => debug_refkind = kind
   let @this.pop_start = @name.pop_end
   edge @this.pop_start -> @name.push_start
   edge @name.push_end -> ROOT_NODE
-  edge @this.scope -> @this.pop_start
 }
 
 ;; packages
 (package_declaration
   (_)@name
 )@this {
-  node @this.scope
+  ;; node @this.scope
   attr (@name.pop_end) defkind = "package"
   let @this.pop_start = @name.pop_start
   let @this.pop_end = @name.pop_end
   let @this.push_start = @name.push_start
   let @this.push_end = @name.push_end
-  edge @this.scope -> @this.pop_start
-  edge @this.push_end -> @this.scope
+  ;; edge @this.push_end -> @this.scope
 }
 
 (program
@@ -353,12 +378,12 @@ attribute refkind = kind                => debug_refkind = kind
 )@this {
   if some @package {
     edge ROOT_NODE -> @package.pop_start
-    edge @package.pop_end -> @this.scope
+    edge @package.pop_end -> @this.pop_start
     edge @this.scope -> @package.push_start
     edge @package.push_end -> ROOT_NODE
     edge @this.scope -> ROOT_NODE
   } else {
-    edge ROOT_NODE -> @this.scope
+    edge ROOT_NODE -> @this.pop_start
     edge @this.scope -> ROOT_NODE
   }
 }
@@ -490,6 +515,39 @@ attribute refkind = kind                => debug_refkind = kind
   let @this.push_start =  @child.push_start
   let @this.push_end = @child.push_end
   let @this.pop_end = @child.pop_end
-  edge @this.scope -> @this.pop_start
-  edge @this.push_end -> @this.scope
+  ; edge @this.push_end -> @this.scope
+}
+
+(cast_expression
+  type: (_)@type
+)@this {
+  attr (@type.push_start)
+    is_reference, refkind = "castsType"
+  edge @this.pop_start -> @type.push_start
+  edge @type.push_start -> @this.scope
+  let @this.push_end = @type.push_end
+}
+
+(throw_statement
+  (_ type: (_)@type)
+)@this {
+  attr (@type.push_start)
+    is_reference, refkind = "throwsType"
+  edge @this.pop_start -> @type.push_start
+  edge @type.push_start -> @this.scope
+  let @this.push_end = @type.push_end
+}
+
+;; detect if there is a throw_statement and in that case ignore reference definition
+[
+  (_ (object_creation_expression type: (_)@type)@this)@out
+  (_ (array_creation_expression type: (_)@type)@this)@out
+] {
+  if (not (eq (node-type @out) "throw_statement")) {
+    attr (@type.push_start)
+      is_reference, refkind = "usesType"
+    edge @this.pop_start -> @type.push_start
+    edge @type.push_start -> @this.scope
+    let @this.push_end = @type.push_end
+  }
 }

@@ -10,6 +10,8 @@ pub enum Refkind {
     UsesType,
     AccessField,
     Calls,
+    CastsType,
+    ThrowsType,
     Nothing
 }
 
@@ -22,6 +24,8 @@ impl Refkind {
             "usesType" => Self::UsesType,
             "accessField" => Self::AccessField,
             "calls" => Self::Calls,
+            "castsType" => Self::CastsType,
+            "throwsType" => Self::ThrowsType,
             _ => Self::Nothing
         }
     }
@@ -40,6 +44,8 @@ impl Display for Refkind {
             Self::UsesType => write!(f, "usesType"),
             Self::AccessField => write!(f, "accessField"),
             Self::Calls => write!(f, "calls"),
+            Self::ThrowsType => write!(f, "throwsType"),
+            Self::CastsType => write!(f, "castsType"),
             Self::Nothing => write!(f, "nothing")
         }
     }

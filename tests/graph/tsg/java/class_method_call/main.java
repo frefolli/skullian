@@ -2,7 +2,7 @@ package com;
 
 class C {
     public static void method() {
-        method();
+        method(A.B.method());
     }
 }
 

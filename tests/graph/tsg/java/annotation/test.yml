@@ -1,0 +1,17 @@
+filepaths:
+  - main.java
+  - annotation.java
+nodes:
+  - name: com
+    kind: package
+  - name: com.Main
+    kind: class
+  - name: com.Annotation
+    kind: annotation
+edges:
+  - source: com.Main
+    sink: com.Annotation
+    kind: usesType
+  - source: com.Main.foo
+    sink: com.Annotation
+    kind: usesType

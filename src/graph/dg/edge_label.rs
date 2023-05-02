@@ -12,7 +12,9 @@ pub enum EdgeLabel {
     UsesType,
     AccessField,
     Calls,
-    NestedTo
+    NestedTo,
+    CastsType,
+    ThrowsType
 }
 
 impl EdgeLabel {
@@ -25,7 +27,9 @@ impl EdgeLabel {
             Self::UsesType => "usesType".to_string(),
             Self::AccessField => "accessField".to_string(),
             Self::Calls => "calls".to_string(),
-            Self::NestedTo => "nestedTo".to_string()
+            Self::NestedTo => "nestedTo".to_string(),
+            Self::CastsType => "castsType".to_string(),
+            Self::ThrowsType => "throwsType".to_string()
         }
     }
 }

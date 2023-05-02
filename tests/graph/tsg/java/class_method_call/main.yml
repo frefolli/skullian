@@ -16,3 +16,9 @@ edges:
   - source: com.A.B.method
     sink: com.A.B.method
     kind: calls
+  - source: com.C.method
+    sink: com.A.B.method
+    kind: calls
+  - source: com.C.method
+    sink: com.C.method
+    kind: calls

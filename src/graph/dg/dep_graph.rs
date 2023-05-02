@@ -133,21 +133,32 @@ impl DepGraph {
     pub fn get_node_by_name(&self, name: &String) -> Option<&Handle<Node>> {
         self.names.get(name)
     }
+
+    pub fn to_string(&self) -> String {
+        let nodes_rep = self.nodes_to_string();
+        let edges_rep = self.edges_to_string();
+        let ss = format!("<?xml version=\"1.0\" encoding=\"UTF-8\"?>
+<graphml xmlns=\"http://graphml.graphdrawing.org/xmlns\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://graphml.graphdrawing.org/xmlns http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd\">
+\t<key id=\"qualified_name\" for=\"node\" attr.name=\"qualified_name\" attr.type=\"string\">
+\t\t<default>yellow</default>
+\t</key>
+\t<key id=\"kind\" for=\"node\" attr.name=\"kind\" attr.type=\"string\">
+\t\t<default>yellow</default>
+\t</key>
+\t<key id=\"relationship\" for=\"edge\" attr.name=\"relationship\" attr.type=\"string\"/>
+\t<graph id=\"dep-graph\" edgedefault=\"directed\">
+{}
+{}
+\t</graph>
+</graphml>
+",
+        nodes_rep, edges_rep);
+        return ss.replace("\t", "  ");
+    }
 }
 
 impl Display for DepGraph {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        let nodes_rep = self.nodes_to_string();
-        let edges_rep = self.edges_to_string();
-
-        if nodes_rep.len() > 0 {
-            write!(f, "{}",
-                nodes_rep)?;
-            if edges_rep.len() > 0 {
-                write!(f, "\n{}",
-                edges_rep)?;
-            }
-        }
-        write!(f, "")
+       write!(f, "{}", self.to_string())
     }
 }

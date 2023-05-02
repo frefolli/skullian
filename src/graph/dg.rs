@@ -14,7 +14,7 @@ pub mod dep_graph_node;
 pub mod dep_graph_edge;
 pub mod testing;
 use std::{collections::{HashMap, VecDeque}, ops::Index};
-use stack_graphs::{graph::{StackGraph, Node}, arena::Handle, NoCancellation, cycles::CycleDetector, CancellationFlag, paths::{Path, Paths}};
+use stack_graphs::{graph::{StackGraph, Node}, arena::Handle, NoCancellation, CancellationFlag, paths::{Path, Paths}};
 use dep_graph::DepGraph;
 
 use self::{dep_graph_node::DepGraphNode, dep_graph_edge::DepGraphEdge, defkind::Defkind, refkind::Refkind, edge_label::EdgeLabel};
@@ -236,6 +236,28 @@ fn walk_step(
                                 ));
                         }
                     },
+                    Refkind::CastsType => {
+                        let sink = explorer.get_name_binding(current_node);
+                        if sink.is_some() {
+                            dep_graph.add_edge(
+                                DepGraphEdge::new(
+                                    parent,
+                                    *sink.unwrap(),
+                                    EdgeLabel::CastsType
+                                ));
+                        }
+                    },
+                    Refkind::ThrowsType => {
+                        let sink = explorer.get_name_binding(current_node);
+                        if sink.is_some() {
+                            dep_graph.add_edge(
+                                DepGraphEdge::new(
+                                    parent,
+                                    *sink.unwrap(),
+                                    EdgeLabel::ThrowsType
+                                ));
+                        }
+                    },
                     Refkind::Nothing => ()
                 }},
                 None => ()
@@ -264,6 +286,13 @@ fn walk_step(
             explorer.set_scope_prefix(scope_prefix);
         }
     }
+}
+
+pub fn save_to_data_string(output_file: &std::path::Path, dep_graph: &DepGraph) {
+    std::fs::write(
+        output_file,
+        dep_graph.to_string()
+    ).unwrap();
 }
 
 pub fn save_to_data_json(output_file: &std::path::Path, dep_graph: &DepGraph) {
@@ -371,7 +400,7 @@ pub fn resolve_all_paths_manual_extension(
     let progress_bar = indicatif::ProgressBar::new(references.len().try_into().unwrap());
     for node_handle in references {
         let mut paths = Paths::new();
-        let mut cycle_detector = CycleDetector::new();
+        let mut cycle_detector = crate::graph::lavatrice::Lavatrice::new();
         let mut queue = [node_handle].iter()
             .into_iter()
             .filter_map(|node| Path::from_node(stack_graph, &mut paths, *node))
@@ -379,7 +408,7 @@ pub fn resolve_all_paths_manual_extension(
         while let Some(path) = queue.pop_front() {
             NoCancellation.check("finding paths").unwrap();
             if !cycle_detector.should_process_path(&path, |probe| probe.cmp(stack_graph, &mut paths, &path)) {
-               continue;
+                continue;
             }
             if path.is_complete(stack_graph) {
                 match Defkind::from(
@@ -397,7 +426,7 @@ pub fn resolve_all_paths_manual_extension(
                             explorer.set_name_binding(path.start_node, path.end_node);
                             break;
                         } else {
-                            log::info!("found a duplicate for a name binding")
+                            log::warn!("found a duplicate for a name binding")
                         }
                     }
                 }
@@ -473,6 +502,8 @@ pub fn fun_facts_about_edges(dep_graph: &DepGraph) {
     let mut uses_type = 0;
     let mut access_field = 0;
     let mut calls = 0;
+    let mut casts_type = 0;
+    let mut throws_type = 0;
 
     for (_node, _edges) in dep_graph.iter_edges() {
         for edge in _edges.iter() {
@@ -484,7 +515,9 @@ pub fn fun_facts_about_edges(dep_graph: &DepGraph) {
                 EdgeLabel::Includes => includes += 1,
                 EdgeLabel::UsesType => uses_type += 1,
                 EdgeLabel::AccessField => access_field += 1,
-                EdgeLabel::Calls => calls += 1
+                EdgeLabel::Calls => calls += 1,
+                EdgeLabel::CastsType => casts_type += 1,
+                EdgeLabel::ThrowsType => throws_type += 1
             }
         }
     }
@@ -492,7 +525,8 @@ pub fn fun_facts_about_edges(dep_graph: &DepGraph) {
     let total = defined_by + is_implementation_of +
                      is_child_of + nested_to +
                      includes + uses_type +
-                     access_field + calls;
+                     access_field + calls +
+                     casts_type + throws_type;
     log::info!("found {} definedBy", defined_by);
     log::info!("found {} isImplementationOf", is_implementation_of);
     log::info!("found {} isChildOf", is_child_of);
@@ -501,6 +535,8 @@ pub fn fun_facts_about_edges(dep_graph: &DepGraph) {
     log::info!("found: {} uses_type", uses_type);
     log::info!("found: {} access_field", access_field);
     log::info!("found: {} calls", calls);
+    log::info!("found: {} casts_type", casts_type);
+    log::info!("found: {} throws_type", throws_type);
     log::info!("total: {} edges", total);
 }
 
@@ -522,9 +558,8 @@ pub fn build_dep_graph(
     walk_step(&mut explorer, dep_graph, stack_graph);
     log::info!("Explorer is_done_with exploring graph");
     if output_file.as_os_str() != "" {
-        save_to_data_json(output_file, dep_graph);
+        save_to_data_string(output_file, dep_graph);
         log::info!("Explorer is_done_with saving_graph_to_json");
     }
     fun_facts(&dep_graph);
-    log::info!("{}", dep_graph);
 }

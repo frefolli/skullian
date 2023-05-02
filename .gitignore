@@ -1,3 +1,7 @@
 /target
 /data.json
 *.log
+*.puml
+*.png
+__pycache__
+*.graphml
