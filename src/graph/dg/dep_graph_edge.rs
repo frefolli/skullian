@@ -41,7 +41,7 @@ impl DepGraphEdge {
         let target = graph.get_node(&self.sink).unwrap().get_qualified_name();
         format!("
 \t\t<edge source=\"{}\" target=\"{}\">
-\t\t\t<data id=\"relationship\">{}</data>
+\t\t\t<data key=\"relationship\">{}</data>
 \t\t</edge>", source, target, label)
     }
 
