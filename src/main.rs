@@ -202,6 +202,8 @@ fn job_workflow(config: &CLIConfig) {
 fn job_debug(config: &CLIConfig) {
     let mut sgl_cache = HashMap::<String, StackGraphLanguage>::new();
     let root_dir = std::env::current_dir().unwrap();
+    let mut suc = 0;
+    let mut tot = 0;
     let mut report_text: String = String::from(
 "# Quality Report
 
@@ -248,12 +250,30 @@ fn job_debug(config: &CLIConfig) {
                     
                     skullian::graph::dg::build_dep_graph(&mut dep_graph, Path::new(""), &stack_graph);
                     match test.verify(&dep_graph) {
-                        Ok(report) => {
-                            report_text += format!("\n\n## {:?}\n\n{}", entry.path(), report).as_str();
+                        Ok(result) => {
+                            report_text += format!(
+                                "\n\n## {:?}\n\n{}\n\nscore: {} / {} =$= {}%",
+                                entry.path(),
+                                result.get_report(),
+                                result.get_suc(),
+                                result.get_tot(),
+                                result.get_rank()
+                            ).as_str();
+                            suc += result.get_suc();
+                            tot += result.get_tot();
                             println!("`{:?}` `ok`", entry.path());
                         },
-                        Err(report) => {
-                            report_text += format!("\n\n## {:?}\n\n{}", entry.path(), report).as_str();
+                        Err(result) => {
+                            report_text += format!(
+                                "\n\n## {:?}\n\n{}\n\nscore: {} / {} =$= {}%",
+                                entry.path(),
+                                result.get_report(),
+                                result.get_suc(),
+                                result.get_tot(),
+                                result.get_rank()
+                            ).as_str();
+                            suc += result.get_suc();
+                            tot += result.get_tot();
                             println!("`{:?}` `error`", entry.path());
                         },
                     }
@@ -262,6 +282,13 @@ fn job_debug(config: &CLIConfig) {
             }
         }
     }
+    let rank = 100.0 * (suc as f64) / (tot as f64);
+    report_text += format!(
+        "\n\nscore: {} / {} =$= {}%",
+        suc,
+        tot,
+        rank
+    ).as_str();
     let output_file = Path::new(&config.output_file);
     if output_file.as_os_str() != "" {
         match std::fs::write(output_file, report_text) {
