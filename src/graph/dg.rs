@@ -288,6 +288,13 @@ fn walk_step(
     }
 }
 
+pub fn save_to_data_string(output_file: &std::path::Path, dep_graph: &DepGraph) {
+    std::fs::write(
+        output_file,
+        dep_graph.to_string()
+    ).unwrap();
+}
+
 pub fn save_to_data_json(output_file: &std::path::Path, dep_graph: &DepGraph) {
     std::fs::write(
         output_file,
@@ -551,9 +558,8 @@ pub fn build_dep_graph(
     walk_step(&mut explorer, dep_graph, stack_graph);
     log::info!("Explorer is_done_with exploring graph");
     if output_file.as_os_str() != "" {
-        save_to_data_json(output_file, dep_graph);
+        save_to_data_string(output_file, dep_graph);
         log::info!("Explorer is_done_with saving_graph_to_json");
     }
     fun_facts(&dep_graph);
-    println!("{}", &dep_graph);
 }
