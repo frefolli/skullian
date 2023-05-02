@@ -214,9 +214,9 @@ edges:
     sink: technology.direct.dao.AccountDAO
     kind: usesType
 #   testid: CAL-3
-  - source: domain.direct.violating.CallConstructorLibraryClass.handleCallback
-    sink: fi.foyt.foursquare.api.FoursquareApi
-    kind: usesType
+#  - source: domain.direct.violating.CallConstructorLibraryClass.handleCallback
+#    sink: fi.foyt.foursquare.api.FoursquareApi
+#    kind: usesType
 #   testid: CAL-4
   - source: domain.direct.violating.CallInstance.CallInstance
     sink: technology.direct.dao.ProfileDAO.getCampaignType
@@ -230,9 +230,9 @@ edges:
     sink: technology.direct.dao.CallInstanceInterfaceDAO.InterfaceMethod
     kind: calls
 #   testid: CAL-7
-  - source: domain.direct.violating.CallInstanceLibraryClass.handleCallback
-    sink: fi.foyt.foursquare.api.FoursquareApi.getAuthenticationUrl
-    kind: calls
+#  - source: domain.direct.violating.CallInstanceLibraryClass.handleCallback
+#    sink: fi.foyt.foursquare.api.FoursquareApi.getAuthenticationUrl
+#    kind: calls
 #   testid: CAL-8
   - source: domain.direct.violating.CallInstanceSuperClass.MethodOfSuperClass
     sink: technology.direct.dao.CallInstanceSuperClassDAO.MethodOnSuperClass

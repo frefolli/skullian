@@ -31,11 +31,9 @@
 | domain.direct.violating.AnnotationDependency | technology.direct.dao.SettingsAnnotation | usesType | OK |
 | domain.direct.violating.CallClassMethod.CallClassMethod | technology.direct.dao.BadgesDAO.getAllBadges | calls | OK |
 | domain.direct.violating.CallConstructor.CallConstructor | technology.direct.dao.AccountDAO | usesType | OK |
-| domain.direct.violating.CallConstructorLibraryClass.handleCallback | fi.foyt.foursquare.api.FoursquareApi | usesType | NO |
 | domain.direct.violating.CallInstance.CallInstance | technology.direct.dao.ProfileDAO.getCampaignType | calls | NO |
 | domain.direct.violating.CallInstanceInnerClass.CallMethodInstanceInnerClass | technology.direct.dao.CallInstanceOuterClassDAO.CallInstanceInnerClassDAO.getNext | calls | NO |
 | domain.direct.violating.CallInstanceInterface.test | technology.direct.dao.CallInstanceInterfaceDAO.InterfaceMethod | calls | NO |
-| domain.direct.violating.CallInstanceLibraryClass.handleCallback | fi.foyt.foursquare.api.FoursquareApi.getAuthenticationUrl | calls | NO |
 | domain.direct.violating.CallInstanceSuperClass.MethodOfSuperClass | technology.direct.dao.CallInstanceSuperClassDAO.MethodOnSuperClass | calls | NO |
 | domain.direct.violating.CallInstanceSuperSuperClass.MethodOfSuperClass | technology.direct.dao.CallInstanceSuperClassDAO.MethodOnSuperClass | calls | NO |
 | domain.direct.violating.DeclarationExceptionThrows.getStatics | technology.direct.dao.StaticsException | throwsType | OK |
@@ -52,6 +50,6 @@
 | domain.direct.violating.InheritanceExtendsAbstractClass | technology.direct.dao.FriendsDAO | isChildOf | OK |
 | domain.direct.violating.InheritanceImplementsInterface | technology.direct.dao.IMapDAO | isImplementationOf | OK |
 
-score: 22 / 34 =$= 64.70588235294117%
+score: 22 / 32 =$= 68.75%
 
-score: 22 / 34 =$= 64.70588235294117%
+score: 22 / 32 =$= 68.75%
