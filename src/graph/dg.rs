@@ -13,6 +13,7 @@ pub mod dep_graph;
 pub mod dep_graph_node;
 pub mod dep_graph_edge;
 pub mod testing;
+use stack_graphs::graph::Node::PushSymbol;
 use std::{collections::{HashMap, VecDeque}, ops::Index};
 use stack_graphs::{graph::{StackGraph, Node}, arena::Handle, NoCancellation, CancellationFlag, paths::{Path, Paths}};
 use dep_graph::DepGraph;
@@ -380,18 +381,23 @@ pub fn resolve_all_paths_manual_extension(
     let mut references = Vec::<Handle<Node>>::new();
     log::info!("finding references");
     for node_handle in stack_graph.iter_nodes() {
-        if stack_graph.index(node_handle).is_reference() {
-            let refkind = Refkind::from(find_debug_info(
-                stack_graph,
-                node_handle,
-                "refkind".to_string()
-            ).unwrap_or_default());
-            match refkind.is_nothing() {
-                false => {
-                    references.push(node_handle);
-                },
-                true => (),
-            }
+        match stack_graph.index(node_handle) {
+            PushSymbol(_) => {
+                if stack_graph.index(node_handle).is_reference() {
+                    let refkind = Refkind::from(find_debug_info(
+                        stack_graph,
+                        node_handle,
+                        "refkind".to_string()
+                    ).unwrap_or_default());
+                    match refkind.is_nothing() {
+                        false => {
+                            references.push(node_handle);
+                        },
+                        true => (),
+                    }
+                }
+            },
+            _ => {}
         }
     }
     log::info!("found {} references", references.len());

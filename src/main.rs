@@ -74,6 +74,7 @@ fn stack_graph_process(
     }
 
     let sgl = sgl_cache.get(&language_name.to_string()).unwrap();
+    log::info!("StackGraphProcessor is_doing {}", path_str.display());
     stack_graph.extend(globals, path_str, sgl);
     log::info!("StackGraphProcessor is_done_with {}", path_str.display());
 }

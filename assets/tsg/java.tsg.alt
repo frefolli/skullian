@@ -41,6 +41,7 @@ attribute refkind = kind                => debug_refkind = kind
 
 ;; generics
 [
+  (modifiers)@this
   (program)@this
   (this)@this
   (annotation_type_declaration)@this
@@ -59,6 +60,10 @@ attribute refkind = kind                => debug_refkind = kind
   (enum_body)@this
   (annotation_type_body)@this
   (block)@this
+  (synchronized_statement)@this
+  (static_initializer)@this
+  (catch_clause)@this
+  (finally_clause)@this
   (constructor_body)@this
   (formal_parameters)@this
   (enum_body_declarations)@this
@@ -67,12 +72,19 @@ attribute refkind = kind                => debug_refkind = kind
   (return_statement)@this
   (binary_expression)@this
   (assignment_expression)@this
+  (instanceof_expression)@this
+  (parenthesized_expression)@this
   (decimal_integer_literal)@this
+  (decimal_floating_point_literal)@this
+  (character_literal)@this
+  (try_statement)@this
   (true)@this
   (false)@this
   (string_literal)@this
   (null_literal)@this
+  (class_literal)@this
   (void_type)@this
+  (floating_point_type)@this
   (integral_type)@this
   (boolean_type)@this
   (line_comment)@this
@@ -91,10 +103,51 @@ attribute refkind = kind                => debug_refkind = kind
   (explicit_constructor_invocation)@this
   (super)@this
   (argument_list)@this
+  (unary_expression)@this
+  (generic_type)@this
+  (type_arguments)@this
+  (ternary_expression)@this
+  (wildcard)@this
+  (catch_formal_parameter)@this
+  (catch_type)@this
+  (break_statement)@this
+  (continue_statement)@this
+  (enhanced_for_statement)@this
+  (spread_parameter)@this ;; TODO
+  (switch_expression)@this ;; TODO
+  (array_initializer)@this
+  (assert_statement)@this
 ] {
   node @this.scope
   node @this.pop_start
   let @this.push_start = @this.scope
+}
+
+[
+  (parenthesized_expression)@this
+  (unary_expression)@this
+  (generic_type)@this
+  (type_arguments)@this
+  (ternary_expression)@this
+  (wildcard)@this
+  (class_literal)@this
+  (string_literal)@this
+  (enhanced_for_statement)@this ;; TODO
+  (synchronized_statement)@this
+  (static_initializer)@this
+  (modifiers)@this
+  (switch_expression)@this 
+  (array_initializer)@this
+  (assert_statement)@this
+] {
+  let @this.push_end = @this.scope
+}
+
+[
+  (catch_type . (_)@child)@this
+  (array_access array: (_)@child)@this
+] {
+  let @this.push_end = @child.push_end
 }
 
 [
@@ -115,6 +168,7 @@ attribute refkind = kind                => debug_refkind = kind
   (void_type)@this
   (integral_type)@this
   (boolean_type)@this
+  (floating_point_type)@this
 ] {
   ;attr (@this.push_start)
   ;  push_node = @this
@@ -167,6 +221,7 @@ attribute refkind = kind                => debug_refkind = kind
   (local_variable_declaration declarator: (variable_declarator name: (_)@name))@this
   (local_variable_declaration declarator: (variable_declarator value: (_)@name))@this
   (formal_parameter name: (_)@name)@this
+  (catch_formal_parameter name: (_)@name)@this
   (annotation_type_element_declaration name: (_)@name)@this
   (enum_constant name: (_)@name)@this
 ] {
@@ -180,11 +235,16 @@ attribute refkind = kind                => debug_refkind = kind
 
 [
   (program (_)@child)@this
+  (synchronized_statement (_)@child)@this
+  (static_initializer (_)@child)@this
   (class_body (_)@child)@this
   (annotation_type_body (_)@child)@this
   (interface_body (_)@child)@this
   (enum_body (_)@child)@this
   (block (_)@child)@this
+  (try_statement (_)@child)@this
+  (catch_clause (_)@child)@this
+  (finally_clause (_)@child)@this
   (constructor_body (_)@child)@this
   (formal_parameters (_)@child)@this
   (enum_body_declarations (_)@child)@this
@@ -195,6 +255,9 @@ attribute refkind = kind                => debug_refkind = kind
   (binary_expression right: (_)@child)@this
   (assignment_expression right: (_)@child)@this
   (array_type element: (_)@child)@this
+  (ternary_expression condition: (_)@child)@this
+  (ternary_expression consequence: (_)@child)@this
+  (ternary_expression alternative: (_)@child)@this
   (if_statement condition: (_)@child)@this
   (if_statement consequence: (_)@child)@this
   (if_statement alternative: (_)@child)@this
@@ -203,6 +266,7 @@ attribute refkind = kind                => debug_refkind = kind
   (return_statement (_)@child)@this
   (cast_expression value: (_)@child)@this
   (for_statement init: (_)@child)@this
+  (array_initializer (_)@child)@this
   (for_statement condition: (_)@child)@this
   (for_statement update: (_)@child)@this
   (for_statement body: (_)@child)@this
@@ -214,6 +278,14 @@ attribute refkind = kind                => debug_refkind = kind
   (explicit_constructor_invocation (_)@child)@this
   (argument_list (_)@child)@this
   (method_invocation arguments: (argument_list)@child)@this
+  (instanceof_expression left: (_)@child)@this
+  (instanceof_expression right: (_)@child)@this
+  (parenthesized_expression (_)@child)@this
+  (unary_expression operand: (_)@child)@this
+  (generic_type (_)@child)@this
+  (type_arguments (_)@child)@this
+  (catch_type (_)@child)@this
+  (assert_statement (_)@child)@this
 ] {
   if (eq "package_declaration" (node-type @child)) {} else {
     edge @child.scope -> @this.scope
@@ -249,17 +321,28 @@ attribute refkind = kind                => debug_refkind = kind
 }
 
 [
+  (method_declaration type: (_)@type)@this
+  (field_declaration type: (_)@type)@this
+  (constant_declaration type: (_)@type)@this
+  (local_variable_declaration type: (_)@type)@this
+  (formal_parameter type: (_)@type)@this
+  (catch_formal_parameter (_)@type name: (_) .)@this
+  (annotation_type_element_declaration type: (_)@type)@this
+] {
+  attr (@type.push_start)
+    is_reference, refkind = "usesType"
+  edge @type.push_end -> @this.scope
+}
+
+[
   (method_declaration type: (_)@type name: (_)@name)@this
   (field_declaration type: (_)@type declarator: (variable_declarator name: (_)@name))@this
   (constant_declaration type: (_)@type declarator: (variable_declarator name: (_)@name))@this
   (local_variable_declaration type: (_)@type declarator: (variable_declarator name: (_)@name))@this
   (formal_parameter type: (_)@type name: (_)@name)@this
+  (catch_formal_parameter (_)@type name: (_)@name .)@this
   (annotation_type_element_declaration type: (_)@type name: (_)@name)@this
 ] {
-  attr (@type.push_start)
-    is_reference, refkind = "usesType"
-
-  edge @type.push_end -> @this.scope
   edge @name.pop_end -> @type.push_start
 }
 
@@ -302,14 +385,15 @@ attribute refkind = kind                => debug_refkind = kind
   edge @this.push_end -> @this.scope
 }
 
-;; this
+;; this, super
 [
   (this)@this
+  (super)@this
 ] {
   let @this.pop_end = @this.pop_start
 
   attr (@this.push_start)
-    push_symbol = "this"
+    push_node = @this
   let @this.push_end = @this.push_start
   edge @this.push_end -> @this.scope
 }
@@ -346,7 +430,7 @@ attribute refkind = kind                => debug_refkind = kind
 ;; imports
 (program
   (import_declaration
-    (_)@name
+    . (_)@name
   )@this
 )@parent {
   node @this.scope
@@ -452,6 +536,13 @@ attribute refkind = kind                => debug_refkind = kind
 }
 
 ;; parameters
+(catch_formal_parameter
+  name: (_)@name
+)@this {
+  attr (@name.pop_end) defkind = "parameter"
+}
+
+;; parameters
 (formal_parameter
   name: (_)@name
 )@this {
@@ -529,7 +620,7 @@ attribute refkind = kind                => debug_refkind = kind
 }
 
 (throw_statement
-  (_ type: (_)@type)
+  (object_creation_expression type: (_)@type)
 )@this {
   attr (@type.push_start)
     is_reference, refkind = "throwsType"

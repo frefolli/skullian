@@ -18,12 +18,16 @@ impl ExtendableWithTSGrammar for StackGraph {
     ) {
         let source_code = std::fs::read_to_string(file_path).expect("no inputs file issued");
         let file_handle = self.get_or_create_file(file_path.as_os_str().to_str().unwrap());
-        stack_graph_language.build_stack_graph_into(
+        match stack_graph_language.build_stack_graph_into(
             self,
             file_handle,
             source_code.as_str(),
             globals,
             &tree_sitter_stack_graphs::NoCancellation
-        ).expect("unable to load stack_graph");
+        ) {
+            Err(e) => log::info!("{}",e),
+            //Err(e) => panic!("{}",e),
+            _ => ()
+        }
     }
 }
