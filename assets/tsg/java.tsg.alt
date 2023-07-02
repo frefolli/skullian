@@ -160,10 +160,6 @@ attribute refkind = kind                => debug_refkind = kind
   node @this.push_start
 }
 
-(program)@this {
-  ;; edge @this.scope -> @this.pop_start
-}
-
 [
   (void_type)@this
   (integral_type)@this
@@ -227,10 +223,6 @@ attribute refkind = kind                => debug_refkind = kind
 ] {
   edge @name.scope -> @this.scope
   edge @this.pop_start -> @name.pop_start
-}
-
-(package_declaration (_)@name)@this {
-  ;; edge @name.scope -> @this.scope
 }
 
 [
@@ -335,13 +327,13 @@ attribute refkind = kind                => debug_refkind = kind
 }
 
 [
-  (method_declaration type: (_)@type name: (_)@name)@this
-  (field_declaration type: (_)@type declarator: (variable_declarator name: (_)@name))@this
-  (constant_declaration type: (_)@type declarator: (variable_declarator name: (_)@name))@this
-  (local_variable_declaration type: (_)@type declarator: (variable_declarator name: (_)@name))@this
-  (formal_parameter type: (_)@type name: (_)@name)@this
-  (catch_formal_parameter (_)@type name: (_)@name .)@this
-  (annotation_type_element_declaration type: (_)@type name: (_)@name)@this
+  (method_declaration type: (_)@type name: (_)@name)
+  (field_declaration type: (_)@type declarator: (variable_declarator name: (_)@name))
+  (constant_declaration type: (_)@type declarator: (variable_declarator name: (_)@name))
+  (local_variable_declaration type: (_)@type declarator: (variable_declarator name: (_)@name))
+  (formal_parameter type: (_)@type name: (_)@name)
+  (catch_formal_parameter (_)@type name: (_)@name .)
+  (annotation_type_element_declaration type: (_)@type name: (_)@name)
 ] {
   edge @name.pop_end -> @type.push_start
 }
@@ -432,7 +424,7 @@ attribute refkind = kind                => debug_refkind = kind
   (import_declaration
     . (_)@name
   )@this
-)@parent {
+) {
   node @this.scope
   attr (@name.push_start) is_reference, refkind = "includes"
   let @this.pop_end = (node)
@@ -475,91 +467,91 @@ attribute refkind = kind                => debug_refkind = kind
 ;; classes
 (class_declaration
   name: (_)@name
-)@this {
+) {
   attr (@name.pop_end) defkind = "class"
 }
 
 ;; interfaces
 (interface_declaration
   name: (_)@name
-)@this {
+) {
   attr (@name.pop_end) defkind = "interface"
 }
 
 ;; enums
 (enum_declaration
   name: (_)@name
-)@this {
+) {
   attr (@name.pop_end) defkind = "enum"
 }
 
 ;; annotations
 (annotation_type_declaration
   name: (_)@name
-)@this {
+) {
   attr (@name.pop_end) defkind = "annotation"
 }
 
 ;; methods
 (method_declaration
   name: (_)@name
-)@this {
+) {
   attr (@name.pop_end) defkind = "function"
 }
 
 ;; constructor
 (constructor_declaration
   name: (_)@name
-)@this {
+) {
   attr (@name.pop_end) defkind = "function"
 }
 
 ;; fields
 (field_declaration
   declarator: (variable_declarator name: (_)@name)
-)@this {
+) {
   attr (@name.pop_end) defkind = "attribute"
 }
 
 ;; constants
 (constant_declaration
   declarator: (variable_declarator name: (_)@name)
-)@this {
+) {
   attr (@name.pop_end) defkind = "constant"
 }
 
 ;; annotation_elements
 (annotation_type_element_declaration
   name: (_)@name
-)@this {
+) {
   attr (@name.pop_end) defkind = "annotationElement"
 }
 
 ;; parameters
 (catch_formal_parameter
   name: (_)@name
-)@this {
+) {
   attr (@name.pop_end) defkind = "parameter"
 }
 
 ;; parameters
 (formal_parameter
   name: (_)@name
-)@this {
+) {
   attr (@name.pop_end) defkind = "parameter"
 }
 
 ;; local_variable_declaration
 (local_variable_declaration
   declarator: (variable_declarator name: (_)@name)
-)@this {
+) {
   attr (@name.pop_end) defkind = "attribute"
 }
 
 ;; enum_constant
 (enum_constant
   name: (_)@name
-)@this {
+) {
   attr (@name.pop_end) defkind = "enumVariant"
 }
 
