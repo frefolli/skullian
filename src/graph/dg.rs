@@ -418,31 +418,33 @@ pub fn resolve_references_with_database(
     let progress_bar = indicatif::ProgressBar::new(references.len().try_into().unwrap());
     let mut bindings = 0;
     log::info!("resolving references");
-    match find_all_complete_partial_paths(
-        stack_graph, paths,
-        database, references,
-        &NoCancellation, |_sg, _ps, path| {
-        if path.is_complete(stack_graph) {
-            match Defkind::from(
-                find_debug_info(
-                    stack_graph,
-                    path.end_node,
-                    "defkind".to_string()
-                ).unwrap_or_default()
-            ).is_nothing() {
-                true => {},
-                false => {
-                    if explorer.name_bindings.get(&path.start_node).is_none() {
-                        bindings += 1;
-                        progress_bar.inc(1);
-                        explorer.set_name_binding(path.start_node, path.end_node);
+    for reference in references {
+        match find_all_complete_partial_paths(
+            stack_graph, paths,
+            database, [reference],
+            &NoCancellation, |_sg, _ps, path| {
+            if path.is_complete(stack_graph) {
+                match Defkind::from(
+                    find_debug_info(
+                        stack_graph,
+                        path.end_node,
+                        "defkind".to_string()
+                    ).unwrap_or_default()
+                ).is_nothing() {
+                    true => {},
+                    false => {
+                        if explorer.name_bindings.get(&path.start_node).is_none() {
+                            bindings += 1;
+                            progress_bar.inc(1);
+                            explorer.set_name_binding(path.start_node, path.end_node);
+                        }
                     }
                 }
             }
+        }) {
+            Err(e) => panic!("{}",e),
+            _ => ()
         }
-    }) {
-        Err(e) => panic!("{}",e),
-        _ => ()
     }
     progress_bar.finish();
     log::info!("found {} bindings", bindings);
