@@ -14,13 +14,21 @@ pub mod dep_graph_node;
 pub mod dep_graph_edge;
 pub mod testing;
 use stack_graphs::graph::Node::PushSymbol;
-use std::{collections::{HashMap, VecDeque}, ops::Index};
-use stack_graphs::{graph::{StackGraph, Node}, arena::Handle, NoCancellation, CancellationFlag, paths::{Path, Paths}};
+use std::{collections::{HashMap, HashSet}, ops::Index};
+use stack_graphs::{graph::{StackGraph, Node}, arena::Handle};
 use dep_graph::DepGraph;
 
 use self::{dep_graph_node::DepGraphNode, dep_graph_edge::DepGraphEdge, defkind::Defkind, refkind::Refkind, edge_label::EdgeLabel};
 
+#[derive(PartialEq, Eq, Hash)]
+pub struct ReferenceQuery {
+    source: Handle<Node>,
+    sink: Vec<String>,
+    kind: Refkind
+}
+
 pub struct SynchroExplorer {
+    reference_queries: HashSet<ReferenceQuery>,
     name_bindings: HashMap<Handle<Node>, Handle<Node>>,
     visited_modes: HashMap<Handle<Node>, bool>,
     current_node: Option<Handle<Node>>,
@@ -31,6 +39,7 @@ pub struct SynchroExplorer {
 impl SynchroExplorer {
     pub fn new() -> SynchroExplorer {
         SynchroExplorer {
+            reference_queries: HashSet::<ReferenceQuery>::new(),
             name_bindings: HashMap::<Handle<Node>, Handle<Node>>::new(),
             visited_modes: HashMap::<Handle<Node>, bool>::new(),
             current_node: None,
@@ -165,102 +174,10 @@ fn walk_step(
         } else if concrete_node.is_reference() {
             match current_parent {
                 Some(parent) => {
-                let refkind = Refkind::from(find_debug_info(
-                    stack_graph,
-                    current_node,
-                    "refkind".to_string()
-                ).unwrap_or_default());
-                match refkind {
-                    Refkind::Extends => {
-                        let sink = explorer.get_name_binding(current_node);
-                        if sink.is_some() {
-                            dep_graph.add_edge(
-                                DepGraphEdge::new(
-                                    parent,
-                                    *sink.unwrap(),
-                                    EdgeLabel::IsChildOf
-                                ));
-                        }
-                    },
-                    Refkind::Implements => {
-                        let sink = explorer.get_name_binding(current_node);
-                        if sink.is_some() {
-                            dep_graph.add_edge(
-                                DepGraphEdge::new(
-                                    parent,
-                                    *sink.unwrap(),
-                                    EdgeLabel::IsImplementationOf
-                                ));
-                        }
-                    },
-                    Refkind::Includes => {
-                        let sink = explorer.get_name_binding(current_node);
-                        if sink.is_some() {
-                            dep_graph.add_edge(
-                                DepGraphEdge::new(
-                                    parent,
-                                    *sink.unwrap(),
-                                    EdgeLabel::Includes
-                                ));
-                        }
-                    },
-                    Refkind::UsesType => {
-                        let sink = explorer.get_name_binding(current_node);
-                        if sink.is_some() {
-                            dep_graph.add_edge(
-                                DepGraphEdge::new(
-                                    parent,
-                                    *sink.unwrap(),
-                                    EdgeLabel::UsesType
-                                ));
-                        }
-                    },
-                    Refkind::AccessField => {
-                        let sink = explorer.get_name_binding(current_node);
-                        if sink.is_some() {
-                            dep_graph.add_edge(
-                                DepGraphEdge::new(
-                                    parent,
-                                    *sink.unwrap(),
-                                    EdgeLabel::AccessField
-                                ));
-                        }
-                    },
-                    Refkind::Calls => {
-                        let sink = explorer.get_name_binding(current_node);
-                        if sink.is_some() {
-                            dep_graph.add_edge(
-                                DepGraphEdge::new(
-                                    parent,
-                                    *sink.unwrap(),
-                                    EdgeLabel::Calls
-                                ));
-                        }
-                    },
-                    Refkind::CastsType => {
-                        let sink = explorer.get_name_binding(current_node);
-                        if sink.is_some() {
-                            dep_graph.add_edge(
-                                DepGraphEdge::new(
-                                    parent,
-                                    *sink.unwrap(),
-                                    EdgeLabel::CastsType
-                                ));
-                        }
-                    },
-                    Refkind::ThrowsType => {
-                        let sink = explorer.get_name_binding(current_node);
-                        if sink.is_some() {
-                            dep_graph.add_edge(
-                                DepGraphEdge::new(
-                                    parent,
-                                    *sink.unwrap(),
-                                    EdgeLabel::ThrowsType
-                                ));
-                        }
-                    },
-                    Refkind::Nothing => ()
-                }},
+                    if valid_reference(stack_graph, current_node) {
+                        unroll_reference(explorer, stack_graph, parent, current_node);
+                    }
+                },
                 None => ()
             };
         }
@@ -303,145 +220,74 @@ pub fn save_to_data_json(output_file: &std::path::Path, dep_graph: &DepGraph) {
     ).unwrap();
 }
 
-pub fn resolve_all_paths(
+pub fn unroll_reference(
     explorer: &mut SynchroExplorer,
-    stack_graph: &StackGraph
-) {
-    let mut paths = stack_graphs::paths::Paths::new();
-    paths.find_all_paths(
+    stack_graph: &StackGraph,
+    source: Handle<Node>,
+    reference: Handle<Node>) {
+    let mut node_handle = reference;
+    let kind = 
+    Refkind::from(find_debug_info(
         stack_graph,
-        stack_graph.iter_nodes(),
-        &NoCancellation,
-        |sg,_ps,p| {
-            if p.is_complete(sg) {
-                explorer.set_name_binding(p.start_node, p.end_node);
-            }
-        }
-    ).unwrap();
-}
-
-pub fn resolve_all_paths_only_of_references(
-    explorer: &mut SynchroExplorer,
-    stack_graph: &StackGraph
-) {
-    let mut paths = stack_graphs::paths::Paths::new();
-    let mut references = Vec::<Handle<Node>>::new();
-    log::info!("finding references");
-    for node_handle in stack_graph.iter_nodes() {
-        if stack_graph.index(node_handle).is_reference() {
-            let refkind = Refkind::from(find_debug_info(
-                stack_graph,
-                node_handle,
-                "refkind".to_string()
-            ).unwrap_or_default());
-            match refkind.is_nothing() {
-                false => {
-                    references.push(node_handle);
+        node_handle,
+        "refkind".to_string()
+    ).unwrap_or_default());
+    let mut symbols = Vec::<String>::new();
+    symbols.push(stack_graph.index(stack_graph.index(node_handle).symbol().unwrap()).to_string());
+    loop {
+        let mut found = false;
+        for edge in stack_graph.outgoing_edges(node_handle) {
+            match stack_graph.index(edge.sink).symbol() {
+                Some(obj) => {
+                    found = true;
+                    symbols.push(stack_graph.index(obj).to_string());
+                    node_handle = edge.sink;
+                    break;
                 },
-                true => (),
+                None => {}
             }
+        }
+        if !(found) {
+            break;
         }
     }
-    log::info!("found {} references", references.len());
-    let mut bindings = 0;
-    let progress_bar = indicatif::ProgressBar::new(references.len().try_into().unwrap());
-    paths.find_all_paths(
-        stack_graph,
-        references.into_iter(),
-        &NoCancellation,
-        |sg,_ps,p| {
-            if p.is_complete(sg) {
-                match Defkind::from(
-                    find_debug_info(
-                        stack_graph,
-                        p.end_node,
-                        "defkind".to_string()
-                    ).unwrap_or_default()
-                ).is_nothing() {
-                    true => {},
-                    false => {
-                        if explorer.name_bindings.get(&p.start_node).is_none() {
-                            bindings += 1;
-                            progress_bar.inc(1);
-                            explorer.set_name_binding(p.start_node, p.end_node);
-                        }
-                    }
-                }
-            }
-        }
-    ).unwrap();
-    progress_bar.finish();
-    log::info!("found {} bindings", bindings);
+    symbols.reverse();
+    explorer.reference_queries.insert(ReferenceQuery { source: source, sink: symbols, kind: kind });
+    
 }
 
-pub fn resolve_all_paths_manual_extension(
+pub fn valid_reference(
+    stack_graph: &StackGraph,
+    reference: Handle<Node>
+) -> bool {
+    let mut ok = false;
+    match stack_graph.index(reference) {
+        PushSymbol(_) => {
+            if stack_graph.index(reference).is_reference() {
+                let refkind = Refkind::from(find_debug_info(
+                    stack_graph,
+                    reference,
+                    "refkind".to_string()
+                ).unwrap_or_default());
+                if ! refkind.is_nothing() {
+                    ok = true;
+                }
+            }
+        },
+        _ => {}
+    }
+    return ok;
+}
+
+pub fn resolve_references(
     explorer: &mut SynchroExplorer,
+    dep_graph: &DepGraph,
     stack_graph: &StackGraph
 ) {
-    let mut references = Vec::<Handle<Node>>::new();
-    log::info!("finding references");
-    for node_handle in stack_graph.iter_nodes() {
-        match stack_graph.index(node_handle) {
-            PushSymbol(_) => {
-                if stack_graph.index(node_handle).is_reference() {
-                    let refkind = Refkind::from(find_debug_info(
-                        stack_graph,
-                        node_handle,
-                        "refkind".to_string()
-                    ).unwrap_or_default());
-                    match refkind.is_nothing() {
-                        false => {
-                            references.push(node_handle);
-                        },
-                        true => (),
-                    }
-                }
-            },
-            _ => {}
-        }
+    for obj in explorer.reference_queries.iter() {
+        let name = dep_graph.get_node(&obj.source).unwrap().get_qualified_name();
+        std::println!("{} ---> {} {:?}", name, obj.kind, obj.sink);
     }
-    log::info!("found {} references", references.len());
-    
-    let mut bindings = 0;
-    let progress_bar = indicatif::ProgressBar::new(references.len().try_into().unwrap());
-    for node_handle in references {
-        let mut paths = Paths::new();
-        let mut cycle_detector = crate::graph::lavatrice::Lavatrice::new();
-        let mut queue = [node_handle].iter()
-            .into_iter()
-            .filter_map(|node| Path::from_node(stack_graph, &mut paths, *node))
-            .collect::<VecDeque<_>>();
-        while let Some(path) = queue.pop_front() {
-            NoCancellation.check("finding paths").unwrap();
-            if !cycle_detector.should_process_path(&path, |probe| probe.cmp(stack_graph, &mut paths, &path)) {
-                continue;
-            }
-            if path.is_complete(stack_graph) {
-                match Defkind::from(
-                    find_debug_info(
-                        stack_graph,
-                        path.end_node,
-                        "defkind".to_string()
-                    ).unwrap_or_default()
-                ).is_nothing() {
-                    true => {},
-                    false => {
-                        if explorer.name_bindings.get(&path.start_node).is_none() {
-                            bindings += 1;
-                            progress_bar.inc(1);
-                            explorer.set_name_binding(path.start_node, path.end_node);
-                            break;
-                        } else {
-                            log::warn!("found a duplicate for a name binding")
-                        }
-                    }
-                }
-            }
-            path.extend(stack_graph, &mut paths, &mut queue);
-        }
-    }
-    progress_bar.finish();
-    log::info!("found {} bindings", bindings);
 }
 
 fn fun_facts_about_nodes(dep_graph: &DepGraph) {
@@ -558,10 +404,9 @@ pub fn build_dep_graph(
 ) {
     let mut explorer = SynchroExplorer::new();
     explorer.set_current_node(Some(stack_graphs::graph::StackGraph::root_node()));
-    // resolve_all_paths_only_of_references(&mut explorer, stack_graph);
-    resolve_all_paths_manual_extension(&mut explorer, stack_graph);
     log::info!("Explorer is_done_with resolving_paths");
     walk_step(&mut explorer, dep_graph, stack_graph);
+    resolve_references(&mut explorer, dep_graph, stack_graph);
     log::info!("Explorer is_done_with exploring graph");
     if output_file.as_os_str() != "" {
         save_to_data_string(output_file, dep_graph);
