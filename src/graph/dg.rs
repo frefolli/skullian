@@ -13,9 +13,9 @@ pub mod dep_graph;
 pub mod dep_graph_node;
 pub mod dep_graph_edge;
 pub mod testing;
-use stack_graphs::graph::Node::PushSymbol;
+use stack_graphs::{graph::Node::PushSymbol, stitching::{ForwardPartialPathStitcher, GraphEdges, GraphEdgeCandidates, Database, DatabaseCandidates}, storage::SQLiteReader};
 use std::{collections::{HashMap, VecDeque}, ops::Index};
-use stack_graphs::{graph::{StackGraph, Node}, arena::Handle, NoCancellation, CancellationFlag, paths::{Path, Paths}};
+use stack_graphs::{graph::{StackGraph, Node}, arena::Handle, NoCancellation, CancellationFlag, partial::{PartialPath, PartialPaths}};
 use dep_graph::DepGraph;
 
 use self::{dep_graph_node::DepGraphNode, dep_graph_edge::DepGraphEdge, defkind::Defkind, refkind::Refkind, edge_label::EdgeLabel};
@@ -85,7 +85,7 @@ fn find_debug_info(
     node_handle: Handle<Node>,
     key: String
 ) -> Option<String> {
-    let debug_infos = stack_graph.debug_info(node_handle)?;
+    let debug_infos = stack_graph.node_debug_info(node_handle)?;
     for entry in debug_infos.iter() {
         if key == stack_graph.index(entry.key) {
             return Some(stack_graph.index(entry.value).to_string());
@@ -303,28 +303,27 @@ pub fn save_to_data_json(output_file: &std::path::Path, dep_graph: &DepGraph) {
     ).unwrap();
 }
 
-pub fn resolve_all_paths(
-    explorer: &mut SynchroExplorer,
-    stack_graph: &StackGraph
-) {
-    let mut paths = stack_graphs::paths::Paths::new();
-    paths.find_all_paths(
-        stack_graph,
-        stack_graph.iter_nodes(),
-        &NoCancellation,
-        |sg,_ps,p| {
-            if p.is_complete(sg) {
-                explorer.set_name_binding(p.start_node, p.end_node);
-            }
-        }
-    ).unwrap();
-}
+// pub fn resolve_all_paths(
+//     explorer: &mut SynchroExplorer,
+//     stack_graph: &StackGraph
+// ) {
+//     let mut paths = stack_graphs::paths::Paths::new();
+//     paths.find_all_paths(
+//         stack_graph,
+//         stack_graph.iter_nodes(),
+//         &NoCancellation,
+//         |sg,_ps,p| {
+//             if p.is_complete(sg) {
+//                 explorer.set_name_binding(p.start_node, p.end_node);
+//             }
+//         }
+//     ).unwrap();
+// }
 
 pub fn resolve_all_paths_only_of_references(
     explorer: &mut SynchroExplorer,
     stack_graph: &StackGraph
 ) {
-    let mut paths = stack_graphs::paths::Paths::new();
     let mut references = Vec::<Handle<Node>>::new();
     log::info!("finding references");
     for node_handle in stack_graph.iter_nodes() {
@@ -345,8 +344,9 @@ pub fn resolve_all_paths_only_of_references(
     log::info!("found {} references", references.len());
     let mut bindings = 0;
     let progress_bar = indicatif::ProgressBar::new(references.len().try_into().unwrap());
-    paths.find_all_paths(
-        stack_graph,
+    let mut partials = stack_graphs::partial::PartialPaths::new();
+    ForwardPartialPathStitcher::find_all_complete_partial_paths(
+        &mut GraphEdgeCandidates::new(stack_graph, &mut partials, None),
         references.into_iter(),
         &NoCancellation,
         |sg,_ps,p| {
@@ -374,71 +374,191 @@ pub fn resolve_all_paths_only_of_references(
     log::info!("found {} bindings", bindings);
 }
 
-pub fn resolve_all_paths_manual_extension(
+// pub fn resolve_all_paths_manual_extension(
+//     explorer: &mut SynchroExplorer,
+//     stack_graph: &StackGraph
+// ) {
+//     let mut references = Vec::<Handle<Node>>::new();
+//     log::info!("finding references");
+//     for node_handle in stack_graph.iter_nodes() {
+//         match stack_graph.index(node_handle) {
+//             PushSymbol(_) => {
+//                 if stack_graph.index(node_handle).is_reference() {
+//                     let refkind = Refkind::from(find_debug_info(
+//                         stack_graph,
+//                         node_handle,
+//                         "refkind".to_string()
+//                     ).unwrap_or_default());
+//                     match refkind.is_nothing() {
+//                         false => {
+//                             references.push(node_handle);
+//                         },
+//                         true => (),
+//                     }
+//                 }
+//             },
+//             _ => {}
+//         }
+//     }
+//     log::info!("found {} references", references.len());
+    
+//     let mut bindings = 0;
+//     let progress_bar = indicatif::ProgressBar::new(references.len().try_into().unwrap());
+//     for node_handle in references {
+//         let mut paths = Paths::new();
+//         let mut cycle_detector = crate::graph::lavatrice::Lavatrice::new();
+//         let mut queue = [node_handle].iter()
+//             .into_iter()
+//             .filter_map(|node| Path::from_node(stack_graph, &mut paths, *node))
+//             .collect::<VecDeque<_>>();
+//         while let Some(path) = queue.pop_front() {
+//             NoCancellation.check("finding paths").unwrap();
+//             if !cycle_detector.should_process_path(&path, |probe| probe.cmp(stack_graph, &mut paths, &path)) {
+//                 continue;
+//             }
+//             if path.is_complete(stack_graph) {
+//                 match Defkind::from(
+//                     find_debug_info(
+//                         stack_graph,
+//                         path.end_node,
+//                         "defkind".to_string()
+//                     ).unwrap_or_default()
+//                 ).is_nothing() {
+//                     true => {},
+//                     false => {
+//                         if explorer.name_bindings.get(&path.start_node).is_none() {
+//                             bindings += 1;
+//                             progress_bar.inc(1);
+//                             explorer.set_name_binding(path.start_node, path.end_node);
+//                             break;
+//                         } else {
+//                             log::warn!("found a duplicate for a name binding")
+//                         }
+//                     }
+//                 }
+//             }
+//             path.extend(stack_graph, &mut paths, &mut queue);
+//         }
+//     }
+//     progress_bar.finish();
+//     log::info!("found {} bindings", bindings);
+// }
+
+pub fn resolve_all_paths_reference_by_reference(
     explorer: &mut SynchroExplorer,
     stack_graph: &StackGraph
 ) {
     let mut references = Vec::<Handle<Node>>::new();
     log::info!("finding references");
     for node_handle in stack_graph.iter_nodes() {
-        match stack_graph.index(node_handle) {
-            PushSymbol(_) => {
-                if stack_graph.index(node_handle).is_reference() {
-                    let refkind = Refkind::from(find_debug_info(
-                        stack_graph,
-                        node_handle,
-                        "refkind".to_string()
-                    ).unwrap_or_default());
-                    match refkind.is_nothing() {
-                        false => {
-                            references.push(node_handle);
-                        },
-                        true => (),
-                    }
-                }
-            },
-            _ => {}
+        if stack_graph.index(node_handle).is_reference() {
+            let refkind = Refkind::from(find_debug_info(
+                stack_graph,
+                node_handle,
+                "refkind".to_string()
+            ).unwrap_or_default());
+            match refkind.is_nothing() {
+                false => {
+                    references.push(node_handle);
+                },
+                true => (),
+            }
         }
     }
     log::info!("found {} references", references.len());
-    
     let mut bindings = 0;
     let progress_bar = indicatif::ProgressBar::new(references.len().try_into().unwrap());
-    for node_handle in references {
-        let mut paths = Paths::new();
-        let mut cycle_detector = crate::graph::lavatrice::Lavatrice::new();
-        let mut queue = [node_handle].iter()
-            .into_iter()
-            .filter_map(|node| Path::from_node(stack_graph, &mut paths, *node))
-            .collect::<VecDeque<_>>();
-        while let Some(path) = queue.pop_front() {
-            NoCancellation.check("finding paths").unwrap();
-            if !cycle_detector.should_process_path(&path, |probe| probe.cmp(stack_graph, &mut paths, &path)) {
-                continue;
-            }
-            if path.is_complete(stack_graph) {
-                match Defkind::from(
-                    find_debug_info(
-                        stack_graph,
-                        path.end_node,
-                        "defkind".to_string()
-                    ).unwrap_or_default()
-                ).is_nothing() {
-                    true => {},
-                    false => {
-                        if explorer.name_bindings.get(&path.start_node).is_none() {
-                            bindings += 1;
-                            progress_bar.inc(1);
-                            explorer.set_name_binding(path.start_node, path.end_node);
-                            break;
-                        } else {
-                            log::warn!("found a duplicate for a name binding")
+    for reference in references {
+        let mut partials = stack_graphs::partial::PartialPaths::new();
+        ForwardPartialPathStitcher::find_all_complete_partial_paths(
+            &mut GraphEdgeCandidates::new(stack_graph, &mut partials, None),
+            std::iter::once(reference),
+            &NoCancellation,
+            |sg,_ps,p| {
+                if p.is_complete(sg) {
+                    match Defkind::from(
+                        find_debug_info(
+                            stack_graph,
+                            p.end_node,
+                            "defkind".to_string()
+                        ).unwrap_or_default()
+                    ).is_nothing() {
+                        true => {},
+                        false => {
+                            if explorer.name_bindings.get(&p.start_node).is_none() {
+                                bindings += 1;
+                                progress_bar.inc(1);
+                                explorer.set_name_binding(p.start_node, p.end_node);
+                            }
                         }
                     }
                 }
             }
-            path.extend(stack_graph, &mut paths, &mut queue);
+        ).unwrap();
+    }
+    progress_bar.finish();
+    log::info!("found {} bindings", bindings);
+}
+
+pub fn resolve_all_paths_with_partial_paths(
+    explorer: &mut SynchroExplorer,
+    stack_graph: &StackGraph
+) {
+    let mut partials = PartialPaths::new();
+    let mut db = Database::new();
+    for file in stack_graph.iter_files() {
+        ForwardPartialPathStitcher::find_minimal_partial_path_set_in_file(stack_graph, &mut partials, file, &NoCancellation, |g,ps,p| {
+            db.add_partial_path(g, ps, p.clone());
+        }).unwrap();
+    }
+
+    let mut references = Vec::<Handle<Node>>::new();
+    log::info!("finding references");
+    for node_handle in stack_graph.iter_nodes() {
+        if stack_graph.index(node_handle).is_reference() {
+            let refkind = Refkind::from(find_debug_info(
+                stack_graph,
+                node_handle,
+                "refkind".to_string()
+            ).unwrap_or_default());
+            match refkind.is_nothing() {
+                false => {
+                    references.push(node_handle);
+                },
+                true => (),
+            }
         }
+    }
+    log::info!("found {} references", references.len());
+    let mut bindings = 0;
+    let progress_bar = indicatif::ProgressBar::new(references.len().try_into().unwrap());
+    for reference in references {
+        let mut partials = partials.clone();
+        ForwardPartialPathStitcher::find_all_complete_partial_paths(
+            &mut DatabaseCandidates::new(stack_graph, &mut partials, &mut db),
+            std::iter::once(reference),
+            &NoCancellation,
+            |sg,_ps,p| {
+                if p.is_complete(sg) {
+                    match Defkind::from(
+                        find_debug_info(
+                            stack_graph,
+                            p.end_node,
+                            "defkind".to_string()
+                        ).unwrap_or_default()
+                    ).is_nothing() {
+                        true => {},
+                        false => {
+                            if explorer.name_bindings.get(&p.start_node).is_none() {
+                                bindings += 1;
+                                progress_bar.inc(1);
+                                explorer.set_name_binding(p.start_node, p.end_node);
+                            }
+                        }
+                    }
+                }
+            }
+        ).unwrap();
     }
     progress_bar.finish();
     log::info!("found {} bindings", bindings);
@@ -558,14 +678,40 @@ pub fn build_dep_graph(
 ) {
     let mut explorer = SynchroExplorer::new();
     explorer.set_current_node(Some(stack_graphs::graph::StackGraph::root_node()));
+
+    // resolve_all_paths(&mut explorer, stack_graph);
     // resolve_all_paths_only_of_references(&mut explorer, stack_graph);
-    resolve_all_paths_manual_extension(&mut explorer, stack_graph);
+    // resolve_all_paths_manual_extension(&mut explorer, stack_graph);
+
+    resolve_all_paths_reference_by_reference(&mut explorer, stack_graph);
+    // resolve_all_paths_with_partial_paths(&mut explorer, stack_graph);
+
     log::info!("Explorer is_done_with resolving_paths");
     walk_step(&mut explorer, dep_graph, stack_graph);
     log::info!("Explorer is_done_with exploring graph");
+
     if output_file.as_os_str() != "" {
         save_to_data_string(output_file, dep_graph);
         log::info!("Explorer is_done_with saving_graph_to_json");
     }
     fun_facts(&dep_graph);
+}
+
+fn stack_graph_to_db(stack_graph: &StackGraph) -> SQLiteReader {
+    // create an in-memory database
+    let mut db = stack_graphs::storage::SQLiteWriter::open_in_memory().unwrap();
+
+    // find partial paths per file
+    let mut paths = Vec::new();
+    for file in stack_graph.iter_files() {
+        paths.clear();
+        let mut partials = stack_graphs::partial::PartialPaths::new();
+        ForwardPartialPathStitcher::find_minimal_partial_path_set_in_file(stack_graph, &mut partials, file, &NoCancellation, |_g,_ps,p| {
+            paths.push(p.clone());
+        }).unwrap();
+        db.store_result_for_file(stack_graph, file, "", &mut partials, &paths).unwrap();
+    }
+
+    // convert to a reader database
+    db.into_reader()
 }
