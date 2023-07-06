@@ -18,7 +18,7 @@ tree-sitter-c="*"
 tree-sitter-cpp="*"
 tree-sitter-rust="*"
 tree-sitter-python="*"
-stack-graphs="*"
+stack-graphs={ version = "*", features = ["storage"] }
 tree-sitter-stack-graphs="*"
 argparse="*"
 walkdir="*"
@@ -30,3 +30,7 @@ serde="*"
 serde_yaml="*"
 smallvec = "*"
 time = ">=0.2.23"
+
+[patch.crates-io]
+stack-graphs = { git = "https://github.com/github/stack-graphs", branch = "skullian" }
+tree-sitter-stack-graphs = { git = "https://github.com/github/stack-graphs", branch = "skullian" }
