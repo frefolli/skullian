@@ -1,6 +1,7 @@
 use std::fmt::Display;
 use super::defkind::Defkind;
 pub struct DepGraphNode {
+    proper_name: String,
     qualified_name: String,
     defkind: Defkind
 }
@@ -15,10 +16,12 @@ impl Display for DepGraphNode {
 
 impl DepGraphNode {
     pub fn new(
+        proper_name: String,
         qualified_name: String,
         defkind: Defkind
     ) -> DepGraphNode {
         DepGraphNode {
+            proper_name: proper_name,
             qualified_name: qualified_name,
             defkind: defkind
         }
@@ -26,6 +29,10 @@ impl DepGraphNode {
 
     pub fn get_qualified_name(&self) -> String {
         self.qualified_name.clone()
+    }
+
+    pub fn get_proper_name(&self) -> String {
+        self.proper_name.clone()
     }
 
     pub fn get_defkind(&self) -> Defkind {

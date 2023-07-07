@@ -1,14 +1,20 @@
+use std::collections::HashSet;
 use std::{collections::HashMap, fmt::Display};
 use stack_graphs::{arena::Handle, graph::Node};
 
 use super::defkind::Defkind;
 use super::dep_graph_node::DepGraphNode;
 use super::dep_graph_edge::DepGraphEdge;
+use super::edge_label::EdgeLabel;
 
 pub struct DepGraph {
     names: HashMap<String, Handle<Node>>,
     nodes: HashMap<Handle<Node>, DepGraphNode>,
-    edges: HashMap<Handle<Node>, Vec<DepGraphEdge>>
+    edges: HashMap<Handle<Node>, Vec<DepGraphEdge>>,
+    parents: HashMap<Handle<Node>, Handle<Node>>,
+    childrens: HashMap<Handle<Node>, HashSet<Handle<Node>>>,
+    typing: HashMap<Handle<Node>, Handle<Node>>,
+    extension: HashMap<Handle<Node>, Handle<Node>>
 }
 
 impl DepGraph {
@@ -16,8 +22,20 @@ impl DepGraph {
         DepGraph {
             names: HashMap::<String, Handle<Node>>::new(),
             nodes: HashMap::<Handle<Node>, DepGraphNode>::new(),
-            edges: HashMap::<Handle<Node>, Vec<DepGraphEdge>>::new()
+            edges: HashMap::<Handle<Node>, Vec<DepGraphEdge>>::new(),
+            parents: HashMap::<Handle<Node>, Handle<Node>>::new(),
+            childrens: HashMap::<Handle<Node>, HashSet<Handle<Node>>>::new(),
+            typing: HashMap::<Handle<Node>, Handle<Node>>::new(),
+            extension: HashMap::<Handle<Node>, Handle<Node>>::new()
         }
+    }
+
+    pub fn set_god(&mut self, root: Handle<Node>) {
+        self.add_node(root, 
+            DepGraphNode::new(
+                String::from(""),
+                String::from(""),
+                Defkind::Nothing));
     }
 
     pub fn get_node(&self, node_handle: &Handle<Node>) -> Option<&DepGraphNode> {
@@ -31,6 +49,61 @@ impl DepGraph {
     pub fn add_node(&mut self, node_handle: Handle<Node>, data: DepGraphNode) {
         self.nodes.insert(node_handle, data);
         self.edges.insert(node_handle, Vec::<DepGraphEdge>::new());
+    }
+
+    pub fn set_parentship(&mut self, child: Handle<Node>, parent: Handle<Node>) {
+        let current_defkind = self.get_node(&child).unwrap().get_defkind();
+        let parent_defkind = self.get_node(&parent).unwrap().get_defkind();
+        let edge_kind = match current_defkind == parent_defkind {
+            true => EdgeLabel::NestedTo,
+            false => EdgeLabel::DefinedBy
+        };
+        self.add_edge(
+            DepGraphEdge::new(
+                child,
+                parent,
+                edge_kind
+        ));
+
+        // child -> parent
+        self.parents.insert(child, parent);
+        
+        // parent -> child
+        if !self.childrens.contains_key(&parent) {
+            self.childrens.insert(parent, HashSet::<Handle<Node>>::new());
+        }
+        self.childrens.get_mut(&parent).unwrap().insert(child);
+    }
+
+    pub fn set_inclusion(&mut self, source: Handle<Node>, sink: Handle<Node>) {
+        if !self.childrens.contains_key(&source) {
+            self.childrens.insert(source, HashSet::<Handle<Node>>::new());
+        }
+        self.childrens.get_mut(&source).unwrap().insert(sink);
+    }
+
+    pub fn set_type(&mut self, source: Handle<Node>, sink: Handle<Node>) {
+        self.typing.insert(source, sink);
+    }
+
+    pub fn set_extension(&mut self, source: Handle<Node>, sink: Handle<Node>) {
+        self.extension.insert(source, sink);
+    }
+
+    pub fn iter_children(&self, node: Handle<Node>) -> Option<&HashSet::<Handle<Node>>> {
+        self.childrens.get(&node)
+    }
+
+    pub fn get_parent(&self, node: Handle<Node>) -> Option<&Handle<Node>> {
+        self.parents.get(&node)
+    }
+
+    pub fn get_type(&self, node: Handle<Node>) -> Option<&Handle<Node>> {
+        self.typing.get(&node)
+    }
+
+    pub fn get_extension(&self, node: Handle<Node>) -> Option<&Handle<Node>> {
+        self.extension.get(&node)
     }
 
     pub fn add_edge(&mut self, edge: DepGraphEdge) {

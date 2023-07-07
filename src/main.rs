@@ -3,7 +3,7 @@ use std::{path::Path, collections::HashMap, ops::Index};
 use log::LevelFilter;
 use log4rs::{append::console::ConsoleAppender, Config, config::{Appender, Root}};
 use skullian::{cli::CLIConfig, graph::{sg::ExtendableWithTSGrammar, dg::{testing::TestCase, dep_graph::DepGraph}}};
-use stack_graphs::graph::StackGraph;
+use stack_graphs::graph::{StackGraph, InternedString};
 use tree_sitter_stack_graphs::{StackGraphLanguage, Variables};
 
 fn tree_sitter_process(config: &CLIConfig, path_str : &std::path::Path) {
