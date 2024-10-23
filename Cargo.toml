@@ -3,9 +3,9 @@ name = "skullian"
 description = "Arcan DepGraph Generator with TS and SG"
 version = "0.1.0"
 edition = "2021"
-authors = ["Refolli Francesco <f.refolli@campus.unimib.it>"]
+authors = ["REDACTED"]
 readme = "README.md"
-repository = "https://github.com/frefolli/skullian/"
+repository = "https://github.com/redacted/skullian/"
 license-file = "LICENSE"
 include = ["/assets", "/src", "/docs", "LICENSE", "README.md"]
 

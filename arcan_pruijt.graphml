@@ -61,7 +61,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/direct/violating/DeclarationVariableLocal.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/direct/violating/DeclarationVariableLocal.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -84,7 +84,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/indirect/violatingfrom/AccessInstanceVariableIndirect_SuperSuperClass.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/indirect/violatingfrom/AccessInstanceVariableIndirect_SuperSuperClass.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -107,7 +107,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/direct/violating/DeclarationTypeCastOfArgument.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/direct/violating/DeclarationTypeCastOfArgument.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -130,7 +130,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/indirect/allowedfrom/CallInstanceMethodIndirect_MethodMethodToString.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/indirect/allowedfrom/CallInstanceMethodIndirect_MethodMethodToString.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -153,7 +153,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/indirect/allowedfrom/AccessStaticVariableIndirect_VarVar.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/indirect/allowedfrom/AccessStaticVariableIndirect_VarVar.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -176,7 +176,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/direct/allowed/AccessClassVariableInterface.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/direct/allowed/AccessClassVariableInterface.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -199,7 +199,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/direct/allowed/InheritanceExtendsAbstractClass.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/direct/allowed/InheritanceExtendsAbstractClass.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -222,7 +222,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/indirect/violatingfrom/CallInstanceMethodIndirect_MethodMethodViaConstructor.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/indirect/violatingfrom/CallInstanceMethodIndirect_MethodMethodViaConstructor.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -245,7 +245,7 @@
             INTERFACE
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/technology/direct/dao/ISierraDAO.java
+            /home/user/Documents/skullian/boh/pruijt/src/technology/direct/dao/ISierraDAO.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -268,7 +268,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/direct/violating/InheritanceImplementsInterface.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/direct/violating/InheritanceImplementsInterface.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -291,7 +291,7 @@
             ABSTRACT_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/technology/direct/dao/FriendsDAO.java
+            /home/user/Documents/skullian/boh/pruijt/src/technology/direct/dao/FriendsDAO.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -314,7 +314,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/direct/violating/DeclarationTypeCast.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/direct/violating/DeclarationTypeCast.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -337,7 +337,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/indirect/violatingfrom/CallInstanceMethodIndirect_SuperClass.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/indirect/violatingfrom/CallInstanceMethodIndirect_SuperClass.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -360,7 +360,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/indirect/allowedfrom/AccessInstanceVariableIndirectIndirect_VarVarVar.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/indirect/allowedfrom/AccessInstanceVariableIndirectIndirect_VarVarVar.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -383,7 +383,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/indirect/allowedfrom/AccessStaticVariableIndirectIndirect_MethodVarVar.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/indirect/allowedfrom/AccessStaticVariableIndirectIndirect_MethodVarVar.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -406,7 +406,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/indirect/violatingfrom/CallInstanceMethodIndirect_SuperSuperClass.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/indirect/violatingfrom/CallInstanceMethodIndirect_SuperSuperClass.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -429,7 +429,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/direct/allowed/DeclarationReturnType.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/direct/allowed/DeclarationReturnType.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -452,7 +452,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/direct/violating/DeclarationExceptionThrows.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/direct/violating/DeclarationExceptionThrows.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -475,7 +475,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/direct/violating/AnnotationDependency.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/direct/violating/AnnotationDependency.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -498,7 +498,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/indirect/BaseIndirect.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/indirect/BaseIndirect.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -521,7 +521,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/direct/allowed/AnnotationDependency.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/direct/allowed/AnnotationDependency.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -544,7 +544,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/indirect/violatingfrom/AccessObjectReferenceIndirect_AsParameter.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/indirect/violatingfrom/AccessObjectReferenceIndirect_AsParameter.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -567,7 +567,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/indirect/allowedfrom/AccessObjectReferenceIndirect_WithinIfStament.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/indirect/allowedfrom/AccessObjectReferenceIndirect_WithinIfStament.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -590,7 +590,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/indirect/allowedfrom/AccessInstanceVariableIndirect_MethodVar.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/indirect/allowedfrom/AccessInstanceVariableIndirect_MethodVar.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -613,7 +613,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/technology/direct/dao/VenueDAO.java
+            /home/user/Documents/skullian/boh/pruijt/src/technology/direct/dao/VenueDAO.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -636,7 +636,7 @@
             ANNOTATION
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/technology/direct/dao/SettingsAnnotation.java
+            /home/user/Documents/skullian/boh/pruijt/src/technology/direct/dao/SettingsAnnotation.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -659,7 +659,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/direct/violating/AccessInstanceVariableSuperSuperClass.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/direct/violating/AccessInstanceVariableSuperSuperClass.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -682,7 +682,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/direct/violating/CallInstance.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/direct/violating/CallInstance.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -705,7 +705,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/indirect/violatingfrom/CallStaticMethodIndirect_MethodStaticMethod.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/indirect/violatingfrom/CallStaticMethodIndirect_MethodStaticMethod.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -728,7 +728,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/indirect/violatingfrom/AccessInstanceVariableIndirectIndirect_MethodVarVar.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/indirect/violatingfrom/AccessInstanceVariableIndirectIndirect_MethodVarVar.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -751,7 +751,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/indirect/allowedfrom/CallInstanceMethodIndirectIndirect_VarVarMethod.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/indirect/allowedfrom/CallInstanceMethodIndirectIndirect_VarVarMethod.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -774,7 +774,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/indirect/allowedfrom/CallStaticMethodIndirect_VarStaticMethod.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/indirect/allowedfrom/CallStaticMethodIndirect_VarStaticMethod.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -797,7 +797,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/direct/allowed/AccessInstanceVariableConstant.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/direct/allowed/AccessInstanceVariableConstant.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -820,7 +820,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/direct/allowed/CallConstructor.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/direct/allowed/CallConstructor.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -843,7 +843,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/direct/violating/CallInstanceLibraryClass.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/direct/violating/CallInstanceLibraryClass.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -866,7 +866,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/direct/violating/CallClassMethod.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/direct/violating/CallClassMethod.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -889,7 +889,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/indirect/violatingfrom/CallInstanceMethodIndirect_StaticMethodInstanceMethod.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/indirect/violatingfrom/CallInstanceMethodIndirect_StaticMethodInstanceMethod.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -912,7 +912,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/indirect/allowedfrom/CallInstanceMethodIndirect_VarMethod.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/indirect/allowedfrom/CallInstanceMethodIndirect_VarMethod.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -935,7 +935,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/indirect/violatingfrom/AccessInstanceVariableIndirect_MethodVar.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/indirect/violatingfrom/AccessInstanceVariableIndirect_MethodVar.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -958,7 +958,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/technology/direct/dao/AccountDAO.java
+            /home/user/Documents/skullian/boh/pruijt/src/technology/direct/dao/AccountDAO.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -981,7 +981,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/direct/allowed/AccessInstanceVariableWrite.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/direct/allowed/AccessInstanceVariableWrite.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -1004,7 +1004,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/direct/violating/CallConstructorLibraryClass.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/direct/violating/CallConstructorLibraryClass.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -1027,7 +1027,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/indirect/violatingfrom/AccessInstanceVariableIndirect_VarVarToString.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/indirect/violatingfrom/AccessInstanceVariableIndirect_VarVarToString.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -1050,7 +1050,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/direct/violating/AccessInstanceVariableRead.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/direct/violating/AccessInstanceVariableRead.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -1073,7 +1073,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/indirect/allowedfrom/AccessStaticVariableIndirect_VarVarToString.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/indirect/allowedfrom/AccessStaticVariableIndirect_VarVarToString.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -1096,7 +1096,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/direct/allowed/DeclarationVariableLocal_Initialized.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/direct/allowed/DeclarationVariableLocal_Initialized.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -1119,7 +1119,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/indirect/violatingfrom/CallStaticMethodIndirect_VarStaticMethod.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/indirect/violatingfrom/CallStaticMethodIndirect_VarStaticMethod.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -1142,7 +1142,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/direct/allowed/CallInstance.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/direct/allowed/CallInstance.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -1165,7 +1165,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/direct/violating/AccessInstanceVariableConstant.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/direct/violating/AccessInstanceVariableConstant.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -1188,7 +1188,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/technology/direct/dao/ProfileDAO.java
+            /home/user/Documents/skullian/boh/pruijt/src/technology/direct/dao/ProfileDAO.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -1211,7 +1211,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/indirect/violatingfrom/AccessObjectReferenceIndirect_AsParameter_POI.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/indirect/violatingfrom/AccessObjectReferenceIndirect_AsParameter_POI.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -1234,7 +1234,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/indirect/allowedfrom/InheritanceImplementsExtendsIndirect.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/indirect/allowedfrom/InheritanceImplementsExtendsIndirect.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -1257,7 +1257,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/indirect/violatingfrom/AccessStaticVariableIndirectIndirect_MethodVarVar.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/indirect/violatingfrom/AccessStaticVariableIndirectIndirect_MethodVarVar.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -1280,7 +1280,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/direct/violating/AccessEnumeration.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/direct/violating/AccessEnumeration.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -1303,7 +1303,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/indirect/intermediate/ServiceTwo.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/indirect/intermediate/ServiceTwo.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -1326,7 +1326,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/direct/allowed/CallInstanceSuperClass.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/direct/allowed/CallInstanceSuperClass.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -1349,7 +1349,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/direct/allowed/CallInstanceInterface.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/direct/allowed/CallInstanceInterface.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -1372,7 +1372,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/direct/violating/AccessObjectReferenceWithinIfStatement.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/direct/violating/AccessObjectReferenceWithinIfStatement.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -1395,7 +1395,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/indirect/allowedfrom/AccessInstanceVariableIndirect_VarVar.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/indirect/allowedfrom/AccessInstanceVariableIndirect_VarVar.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -1418,7 +1418,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/indirect/violatingfrom/InheritanceExtendsImplementsIndirect.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/indirect/violatingfrom/InheritanceExtendsImplementsIndirect.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -1441,7 +1441,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/direct/Base.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/direct/Base.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -1464,7 +1464,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/indirect/violatingfrom/AccessInstanceVariableIndirectIndirect_VarVarVar.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/indirect/violatingfrom/AccessInstanceVariableIndirectIndirect_VarVarVar.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -1510,7 +1510,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/indirect/intermediate/Whrrl.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/indirect/intermediate/Whrrl.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -1533,7 +1533,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/direct/allowed/CallConstructorLibraryClass.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/direct/allowed/CallConstructorLibraryClass.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -1556,7 +1556,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/direct/violating/AccessObjectReferenceAsParameter.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/direct/violating/AccessObjectReferenceAsParameter.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -1579,7 +1579,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/indirect/allowedfrom/InheritanceExtendsImplementsIndirect.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/indirect/allowedfrom/InheritanceExtendsImplementsIndirect.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -1602,7 +1602,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/direct/allowed/CallInstanceSuperSuperClass.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/direct/allowed/CallInstanceSuperSuperClass.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -1625,7 +1625,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/direct/violating/DeclarationParameter.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/direct/violating/DeclarationParameter.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -1671,7 +1671,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/direct/allowed/InheritanceExtends.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/direct/allowed/InheritanceExtends.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -1694,7 +1694,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/indirect/violatingfrom/AccessStaticVariableIndirectIndirect_VarVarVar.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/indirect/violatingfrom/AccessStaticVariableIndirectIndirect_VarVarVar.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -1717,7 +1717,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/indirect/violatingfrom/AccessInstanceVariableIndirect_VarVar.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/indirect/violatingfrom/AccessInstanceVariableIndirect_VarVar.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -1763,7 +1763,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/technology/direct/dao/HistoryDAO.java
+            /home/user/Documents/skullian/boh/pruijt/src/technology/direct/dao/HistoryDAO.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -1786,7 +1786,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/indirect/allowedfrom/CallInstanceMethodIndirect_SuperSuperClass.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/indirect/allowedfrom/CallInstanceMethodIndirect_SuperSuperClass.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -1809,7 +1809,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/direct/allowed/DeclarationVariableInstance.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/direct/allowed/DeclarationVariableInstance.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -1832,7 +1832,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/direct/violating/AccessInstanceVariableWrite.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/direct/violating/AccessInstanceVariableWrite.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -1878,7 +1878,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/indirect/violatingfrom/AccessObjectReferenceIndirect_WithinIfStament.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/indirect/violatingfrom/AccessObjectReferenceIndirect_WithinIfStament.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -1924,7 +1924,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/indirect/allowedfrom/AccessStaticVariableIndirect_MethodVar.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/indirect/allowedfrom/AccessStaticVariableIndirect_MethodVar.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -1947,7 +1947,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/direct/allowed/DeclarationTypeCastOfArgument.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/direct/allowed/DeclarationTypeCastOfArgument.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -1970,7 +1970,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/direct/allowed/AccessClassVariableConstant.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/direct/allowed/AccessClassVariableConstant.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -1993,7 +1993,7 @@
             INTERFACE
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/indirect/indirectto/IPreferences.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/indirect/indirectto/IPreferences.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -2016,7 +2016,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/indirect/violatingfrom/CallInstanceMethodIndirectIndirect_MethodVarMethod.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/indirect/violatingfrom/CallInstanceMethodIndirectIndirect_MethodVarMethod.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -2039,7 +2039,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/direct/violating/AccessInstanceVariableSuperClass.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/direct/violating/AccessInstanceVariableSuperClass.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -2062,7 +2062,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/technology/direct/dao/UserDAO.java
+            /home/user/Documents/skullian/boh/pruijt/src/technology/direct/dao/UserDAO.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -2085,7 +2085,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/direct/allowed/DeclarationTypeCast.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/direct/allowed/DeclarationTypeCast.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -2108,7 +2108,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/technology/direct/dao/CallInstanceOuterClassDAO.java
+            /home/user/Documents/skullian/boh/pruijt/src/technology/direct/dao/CallInstanceOuterClassDAO.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -2131,7 +2131,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/indirect/allowedfrom/AccessInstanceVariableIndirect_SuperClass.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/indirect/allowedfrom/AccessInstanceVariableIndirect_SuperClass.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -2154,7 +2154,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/indirect/violatingfrom/AccessInstanceVariableIndirect_SuperClass.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/indirect/violatingfrom/AccessInstanceVariableIndirect_SuperClass.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -2177,7 +2177,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/direct/allowed/DeclarationParameter.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/direct/allowed/DeclarationParameter.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -2200,7 +2200,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/direct/allowed/AccessEnumeration.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/direct/allowed/AccessEnumeration.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -2223,7 +2223,7 @@
             ABSTRACT_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/indirect/indirectto/POI.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/indirect/indirectto/POI.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -2246,7 +2246,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/direct/violating/InheritanceExtends.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/direct/violating/InheritanceExtends.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -2269,7 +2269,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/indirect/allowedfrom/AccessObjectReferenceIndirect_AsParameter_POI.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/indirect/allowedfrom/AccessObjectReferenceIndirect_AsParameter_POI.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -2292,7 +2292,7 @@
             ENUM
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/technology/direct/dao/TipDAO.java
+            /home/user/Documents/skullian/boh/pruijt/src/technology/direct/dao/TipDAO.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -2315,7 +2315,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/direct/allowed/AccessClassVariable.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/direct/allowed/AccessClassVariable.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -2338,7 +2338,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/indirect/violatingfrom/AccessObjectReferenceIndirect_WithinIfStament_POI.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/indirect/violatingfrom/AccessObjectReferenceIndirect_WithinIfStament_POI.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -2361,7 +2361,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/technology/direct/dao/CheckInDAO.java
+            /home/user/Documents/skullian/boh/pruijt/src/technology/direct/dao/CheckInDAO.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -2384,7 +2384,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/direct/violating/DeclarationVariableInstance.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/direct/violating/DeclarationVariableInstance.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -2407,7 +2407,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/indirect/allowedfrom/CallInstanceMethodIndirect_SuperClass.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/indirect/allowedfrom/CallInstanceMethodIndirect_SuperClass.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -2430,7 +2430,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/direct/allowed/DeclarationExceptionThrows.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/direct/allowed/DeclarationExceptionThrows.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -2453,7 +2453,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/indirect/violatingfrom/AccessStaticVariableIndirect_VarVar.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/indirect/violatingfrom/AccessStaticVariableIndirect_VarVar.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -2476,7 +2476,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/technology/direct/dao/StaticsException.java
+            /home/user/Documents/skullian/boh/pruijt/src/technology/direct/dao/StaticsException.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -2499,7 +2499,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/direct/allowed/ImportDependencyUnused.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/direct/allowed/ImportDependencyUnused.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -2545,7 +2545,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/direct/violating/DeclarationVariableStatic.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/direct/violating/DeclarationVariableStatic.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -2568,7 +2568,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/indirect/allowedfrom/AccessObjectReferenceIndirect_AsParameter.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/indirect/allowedfrom/AccessObjectReferenceIndirect_AsParameter.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -2591,7 +2591,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/indirect/violatingfrom/CallInstanceMethodIndirect_MethodMethod.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/indirect/violatingfrom/CallInstanceMethodIndirect_MethodMethod.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -2637,7 +2637,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/direct/allowed/CallClassMethod.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/direct/allowed/CallClassMethod.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -2660,7 +2660,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/direct/allowed/DeclarationVariableStatic.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/direct/allowed/DeclarationVariableStatic.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -2683,7 +2683,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/direct/violating/CallConstructor.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/direct/violating/CallConstructor.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -2706,7 +2706,7 @@
             INTERFACE
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/technology/direct/dao/CallInstanceInterfaceDAO.java
+            /home/user/Documents/skullian/boh/pruijt/src/technology/direct/dao/CallInstanceInterfaceDAO.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -2729,7 +2729,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/indirect/allowedfrom/CallInstanceMethodIndirect_MethodMethod.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/indirect/allowedfrom/CallInstanceMethodIndirect_MethodMethod.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -2752,7 +2752,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/indirect/violatingfrom/CallInstanceMethodIndirect_MethodMethodToString.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/indirect/violatingfrom/CallInstanceMethodIndirect_MethodMethodToString.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -2775,7 +2775,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/technology/direct/dao/BadgesDAO.java
+            /home/user/Documents/skullian/boh/pruijt/src/technology/direct/dao/BadgesDAO.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -2821,7 +2821,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/direct/allowed/AccessObjectReferenceWithinIfStatement.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/direct/allowed/AccessObjectReferenceWithinIfStatement.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -2844,7 +2844,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/direct/violating/CallInstanceInnerClass.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/direct/violating/CallInstanceInnerClass.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -2867,7 +2867,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/technology/direct/subclass/CallInstanceSubClassDOA.java
+            /home/user/Documents/skullian/boh/pruijt/src/technology/direct/subclass/CallInstanceSubClassDOA.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -2890,7 +2890,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/indirect/allowedfrom/CallInstanceMethodIndirect_MethodMethodViaConstructor.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/indirect/allowedfrom/CallInstanceMethodIndirect_MethodMethodViaConstructor.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -2913,7 +2913,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/indirect/violatingfrom/CallInstanceMethodIndirectIndirect_VarVarMethod.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/indirect/violatingfrom/CallInstanceMethodIndirectIndirect_VarVarMethod.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -2936,7 +2936,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/direct/allowed/CallInstanceInnerClass.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/direct/allowed/CallInstanceInnerClass.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -2959,7 +2959,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/direct/allowed/AccessInstanceVariableRead.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/direct/allowed/AccessInstanceVariableRead.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -2982,7 +2982,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/direct/violating/DeclarationVariableLocal_Initialized.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/direct/violating/DeclarationVariableLocal_Initialized.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -3005,7 +3005,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/indirect/allowedfrom/CallInstanceMethodIndirect_StaticMethodInstanceMethod.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/indirect/allowedfrom/CallInstanceMethodIndirect_StaticMethodInstanceMethod.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -3028,7 +3028,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/technology/direct/subclass/CallInstanceSubSubClassDOA.java
+            /home/user/Documents/skullian/boh/pruijt/src/technology/direct/subclass/CallInstanceSubSubClassDOA.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -3051,7 +3051,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/indirect/violatingfrom/InheritanceImplementsExtendsIndirect.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/indirect/violatingfrom/InheritanceImplementsExtendsIndirect.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -3074,7 +3074,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/direct/allowed/DeclarationVariableLocal.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/direct/allowed/DeclarationVariableLocal.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -3120,7 +3120,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/direct/violating/AccessClassVariableInterface.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/direct/violating/AccessClassVariableInterface.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -3143,7 +3143,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/indirect/allowedfrom/AccessStaticVariableIndirectIndirect_VarVarVar.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/indirect/allowedfrom/AccessStaticVariableIndirectIndirect_VarVarVar.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -3166,7 +3166,7 @@
             INTERFACE
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/indirect/intermediate/IWhrrl.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/indirect/intermediate/IWhrrl.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -3189,7 +3189,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/direct/allowed/AccessObjectReferenceAsParameter.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/direct/allowed/AccessObjectReferenceAsParameter.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -3235,7 +3235,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/direct/allowed/AccessInstanceVariableSuperSuperClass.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/direct/allowed/AccessInstanceVariableSuperSuperClass.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -3258,7 +3258,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/direct/violating/AccessClassVariable.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/direct/violating/AccessClassVariable.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -3281,7 +3281,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/direct/violating/AccessClassVariableConstant.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/direct/violating/AccessClassVariableConstant.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -3304,7 +3304,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/technology/direct/dao/CallInstanceSuperClassDAO.java
+            /home/user/Documents/skullian/boh/pruijt/src/technology/direct/dao/CallInstanceSuperClassDAO.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -3327,7 +3327,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/indirect/allowedfrom/AccessInstanceVariableIndirectIndirect_MethodVarVar.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/indirect/allowedfrom/AccessInstanceVariableIndirectIndirect_MethodVarVar.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -3350,7 +3350,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/indirect/violatingfrom/CallInstanceMethodIndirect_VarMethod.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/indirect/violatingfrom/CallInstanceMethodIndirect_VarMethod.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -3396,7 +3396,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/direct/allowed/AccessInstanceVariableSuperClass.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/direct/allowed/AccessInstanceVariableSuperClass.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -3419,7 +3419,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/direct/violating/CallInstanceInterface.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/direct/violating/CallInstanceInterface.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -3442,7 +3442,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/indirect/allowedfrom/CallInstanceMethodIndirectIndirect_MethodVarMethod.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/indirect/allowedfrom/CallInstanceMethodIndirectIndirect_MethodVarMethod.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -3465,7 +3465,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/direct/violating/CallInstanceSuperSuperClass.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/direct/violating/CallInstanceSuperSuperClass.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -3488,7 +3488,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/indirect/violatingfrom/InheritanceExtendsExtendsIndirect.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/indirect/violatingfrom/InheritanceExtendsExtendsIndirect.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -3511,7 +3511,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/indirect/allowedfrom/AccessObjectReferenceIndirect_WithinIfStament_POI.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/indirect/allowedfrom/AccessObjectReferenceIndirect_WithinIfStament_POI.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -3534,7 +3534,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/direct/allowed/InheritanceImplementsInterface.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/direct/allowed/InheritanceImplementsInterface.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -3580,7 +3580,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/indirect/intermediate/MapsService.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/indirect/intermediate/MapsService.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -3603,7 +3603,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/indirect/allowedfrom/AccessInstanceVariableIndirect_SuperSuperClass.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/indirect/allowedfrom/AccessInstanceVariableIndirect_SuperSuperClass.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -3626,7 +3626,7 @@
             INTERFACE
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/technology/direct/dao/IMapDAO.java
+            /home/user/Documents/skullian/boh/pruijt/src/technology/direct/dao/IMapDAO.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -3649,7 +3649,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/direct/violating/InheritanceExtendsAbstractClass.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/direct/violating/InheritanceExtendsAbstractClass.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -3672,7 +3672,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/direct/violating/DeclarationReturnType.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/direct/violating/DeclarationReturnType.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -3695,7 +3695,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/indirect/violatingfrom/AccessStaticVariableIndirect_MethodVar.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/indirect/violatingfrom/AccessStaticVariableIndirect_MethodVar.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -3718,7 +3718,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/indirect/allowedfrom/AccessInstanceVariableIndirect_VarVarToString.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/indirect/allowedfrom/AccessInstanceVariableIndirect_VarVarToString.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -3741,7 +3741,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/indirect/indirectto/ServiceOne.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/indirect/indirectto/ServiceOne.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -3764,7 +3764,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/indirect/violatingfrom/AccessStaticVariableIndirect_VarVarToString.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/indirect/violatingfrom/AccessStaticVariableIndirect_VarVarToString.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -3787,7 +3787,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/direct/violating/CallInstanceSuperClass.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/direct/violating/CallInstanceSuperClass.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -3810,7 +3810,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/direct/violating/ImportDependencyUnused.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/direct/violating/ImportDependencyUnused.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -3833,7 +3833,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/indirect/allowedfrom/InheritanceExtendsExtendsIndirect.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/indirect/allowedfrom/InheritanceExtendsExtendsIndirect.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -3856,7 +3856,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/direct/allowed/CallInstanceLibraryClass.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/direct/allowed/CallInstanceLibraryClass.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -3879,7 +3879,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/indirect/allowedfrom/CallStaticMethodIndirect_MethodStaticMethod.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/indirect/allowedfrom/CallStaticMethodIndirect_MethodStaticMethod.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit
@@ -3902,7 +3902,7 @@
             CONCRETE_CLASS
         </data>
         <data key="filePathReal">
-            /home/refo/Documents/skullian/boh/pruijt/src/domain/indirect/intermediate/BackgroundService.java
+            /home/user/Documents/skullian/boh/pruijt/src/domain/indirect/intermediate/BackgroundService.java
         </data>
         <data key="ferma_typeV">
             com.arcan.data.graphs.depend.Unit

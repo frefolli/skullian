@@ -2,7 +2,7 @@
 
 PoC DepGraph Generator with Tree Sitter and Stack Graphs
 
-Goto [md documentation](docs/README.md) or [hosted documentation](https://frefolli.github.io/skullian/skullian/index.html)
+Goto [md documentation](docs/README.md) or [hosted documentation](https://redacted.github.io/skullian/skullian/index.html)
 
 ## TODO
 
