@@ -564,8 +564,14 @@ pub fn build_dep_graph(
     walk_step(&mut explorer, dep_graph, stack_graph);
     log::info!("Explorer is_done_with exploring graph");
     if output_file.as_os_str() != "" {
-        save_to_data_string(output_file, dep_graph);
-        log::info!("Explorer is_done_with saving_graph_to_json");
+      if output_file.extension().unwrap_or_default() == "json" {
+          save_to_data_json(output_file, dep_graph);
+          log::info!("Explorer is_done_with saving_graph_to_json");
+      } else {
+          save_to_data_string(output_file, dep_graph);
+          log::info!("Explorer is_done_with saving_graph_to_string");
+          println!("STRING");
+      }
     }
     fun_facts(&dep_graph);
 }
